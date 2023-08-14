@@ -20,6 +20,9 @@ class CheckAuth implements MiddlewareInterface
      */
     public function process(Request $request, callable $handler): Response
     {
+        // 检测 .env 文件，正式环境后可删除
+        if (!is_file(base_path() . DIRECTORY_SEPARATOR . ".env")) return $this->error('请配置.env文件');
+
         $adminId         = session('admin.id', 0);
         $adminConfig     = config('admin');
         $controllerClass = explode(DIRECTORY_SEPARATOR, $request->controller);

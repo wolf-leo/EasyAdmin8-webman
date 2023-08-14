@@ -30,8 +30,6 @@ class InstallController
             return view('install', $result);
         }
         if ($errorInfo) return $this->error($errorInfo);
-        $envFile = base_path() . DIRECTORY_SEPARATOR . '.env';
-        if (!is_file($envFile)) return $this->error('.env 配置文件不存在');
         $charset = 'utf8mb4';
 
         $post       = $request->post();
@@ -110,10 +108,16 @@ class InstallController
             $_password = password($password);
             $tableName = 'system_admin';
             $update    = [
-                'username' => $username, 'head_img' => '/static/admin/images/head.jpg', 'password' => $_password, 'create_time' => time(), 'update_time' => time()
+                'username'    => $username,
+                'head_img'    => '/static/admin/images/head.jpg',
+                'password'    => $_password,
+                'create_time' => time(),
+                'update_time' => time()
             ];
+            foreach ($update as $_k => $_up) {
+                mysqli_query($conn, "UPDATE {$config['prefix']}{$tableName} SET {$_k} = '{$_up}' WHERE id = 1");
+            }
             mysqli_close($conn);
-            Db::table($tableName)->where('id', 1)->update($update);
             //  处理安装文件
             !is_dir($installPath) && @mkdir($installPath);
             !is_dir($installPath . 'lock' . DIRECTORY_SEPARATOR) && @mkdir($installPath . 'lock' . DIRECTORY_SEPARATOR);
