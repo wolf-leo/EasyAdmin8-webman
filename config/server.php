@@ -13,7 +13,7 @@
  */
 
 return [
-    'listen'           => 'http://0.0.0.0:' . env('APP_PORT', 8555),
+    'listen'           => 'http://0.0.0.0:' . env('APP_PORT', 8787),
     'transport'        => 'tcp',
     'context'          => [],
     'name'             => 'webman',
