@@ -123,7 +123,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Laravel版本</td>
+                                <td>webman版本</td>
                                 <td>
                                     <button type="button" class="layui-btn layui-btn-xs layui-btn-primary">{{$versions['webmanVersion']??''}}</button>
                                 </td>
