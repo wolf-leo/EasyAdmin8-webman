@@ -116,7 +116,7 @@ trait Curd
         $list = $this->model->where($where)->limit(100000)->orderByDesc('id')->get();
         if (empty($list)) return $this->error('暂无数据');
         $list     = $list->toArray();
-        $fileName = time();
+        $fileName = '后台导出文件';
         try {
             $excelKeys = [];
             for ($x = 'A'; $x != 'IW'; $x++) $excelKeys[] = $x;
@@ -135,11 +135,11 @@ trait Curd
                 }
             }
             $writer    = new Xlsx($spreadsheet);
-            $file_path = public_path() . '/' . $fileName . '.xlsx';
+            $file_path = runtime_path() . '/' . $fileName . '.xlsx';
             // 保存文件到 public 下
             $writer->save($file_path);
             // 下载文件
-            return response()->download($file_path, date('Y-m-d H:i:s') . '_导出文件.xlsx');
+            return response()->download($file_path, $fileName . '.xlsx');
         } catch (\Exception | \PhpOffice\PhpSpreadsheet\Exception$e) {
             return $this->error($e->getMessage());
         }
