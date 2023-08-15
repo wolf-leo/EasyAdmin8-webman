@@ -108,7 +108,7 @@ class AuthService
      */
     public function getCurrentNode(): string
     {
-        $controllerClass = explode(DIRECTORY_SEPARATOR, request()->controller);
+        $controllerClass = explode('\\', request()->controller);
         $controller      = strtolower(str_replace('Controller', '', array_pop($controllerClass)));
         $action          = $request->action ?? 'index';
         return 'admin' . '.' . ($controller ?? '') . '/' . ($action ?? '');

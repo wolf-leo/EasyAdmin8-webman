@@ -65,7 +65,7 @@ class AdminController
         $request              = \request();
         $this->adminConfig    = $adminConfig = config('admin', []);
         $this->isDemo         = env('EASYADMIN.IS_DEMO', false);
-        $controllerClass      = explode(DIRECTORY_SEPARATOR, $request->controller);
+        $controllerClass      = explode('\\', $request->controller);
         $controller           = strtolower(str_replace('Controller', '', array_pop($controllerClass)));
         $_lastCtr             = array_pop($controllerClass);
         $secondary            = $_lastCtr == 'controller' ? '' : $_lastCtr;
