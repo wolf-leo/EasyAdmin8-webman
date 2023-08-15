@@ -15,5 +15,6 @@
 use support\Request;
 use Webman\Route;
 
-
-
+Route::group('/common',function (){
+    return "222";
+});
