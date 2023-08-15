@@ -39,7 +39,7 @@ class SystemLog implements MiddlewareInterface
             if (in_array($method, ['post', 'put', 'delete'])) {
                 $ip   = $request->getRealIp(true);
                 $data = [
-                    'admin_id'    => $request->session()->get('admin.id'),
+                    'admin_id'    => session('admin.id'),
                     'url'         => $url,
                     'method'      => $method,
                     'ip'          => $ip,
