@@ -1,6 +1,6 @@
 ## 项目介绍
 
-> `EasyAdmin8_webman` 在 [`EasyAdmin`](https://gitee.com/zhongshaofa/easyadmin) 的基础上使用 webman 最新版重构，PHP 最低版本要求不低于 8.0
+> `EasyAdmin8-webman` 在 [`EasyAdmin`](https://gitee.com/zhongshaofa/easyadmin) 的基础上使用 webman 最新版重构，PHP 最低版本要求不低于 8.0
 >
 > webman 和 layui v2.8.x 的快速开发的后台管理系统。
 >
@@ -12,18 +12,18 @@
 
 ## 安装教程
 
-> EasyAdmin8_webman 使用 Composer 来管理项目依赖。因此，在使用 EasyAdmin8_webman 之前，请确保你的机器已经安装了 Composer。
+> EasyAdmin8-webman 使用 Composer 来管理项目依赖。因此，在使用 EasyAdmin8-webman 之前，请确保你的机器已经安装了 Composer。
 
 ### 通过git下载安装包，composer安装依赖包
 
 ```
 1.下载安装包
 
-  git clone https://github.com/wolf-leo/EasyAdmin8_webman
+  git clone https://github.com/wolf-leo/EasyAdmin8-webman
 
   或者
 
-  git clone https://gitee.com/wolf18/EasyAdmin8_webman
+  git clone https://gitee.com/wolf18/EasyAdmin8-webman
 
 2.安装依赖包（确保 PHP 版本 >= 8.0）
 
@@ -91,21 +91,21 @@ server {
 >
 > #### Laravel :
 >
->   [https://github.com/wolf-leo/EasyAdmin8_Laravel](https://github.com/wolf-leo/EasyAdmin8_Laravel)
+>   [https://github.com/wolf-leo/EasyAdmin8-Laravel](https://github.com/wolf-leo/EasyAdmin8-Laravel)
 >
->   [https://gitee.com/wolf18/EasyAdmin8_Laravel](https://gitee.com/wolf18/EasyAdmin8_Laravel)
+>   [https://gitee.com/wolf18/EasyAdmin8-Laravel](https://gitee.com/wolf18/EasyAdmin8-Laravel)
 >
 > #### webman :
 >
->   [https://github.com/wolf-leo/EasyAdmin8_webman](https://github.com/wolf-leo/EasyAdmin8_webman)
+>   [https://github.com/wolf-leo/EasyAdmin8-webman](https://github.com/wolf-leo/EasyAdmin8-webman)
 >
->   [https://gitee.com/wolf18/EasyAdmin8_webman](https://gitee.com/wolf18/EasyAdmin8_webman)
+>   [https://gitee.com/wolf18/EasyAdmin8-webman](https://gitee.com/wolf18/EasyAdmin8-webman)
 
 ## 交流群
 
 <center>
 
-![EasyAdmin8_webman 交流群](public/static/common/images/EasyAdmin8_webman.png)
+![EasyAdmin8-webman 交流群](public/static/common/images/EasyAdmin8-webman.png)
 
 </center>
 
@@ -131,19 +131,19 @@ server {
 
 ## 免责声明
 
-> 任何用户在使用 `EasyAdmin8_webman` 后台框架前，请您仔细阅读并透彻理解本声明。您可以选择不使用`EasyAdmin8_webman`后台框架，若您一旦使用`EasyAdmin8_webman`后台框架，您的使用行为即被视为对本声明全部内容的认可和接受。
+> 任何用户在使用 `EasyAdmin8-webman` 后台框架前，请您仔细阅读并透彻理解本声明。您可以选择不使用`EasyAdmin8-webman`后台框架，若您一旦使用`EasyAdmin8-webman`后台框架，您的使用行为即被视为对本声明全部内容的认可和接受。
 
-* 请留意`EasyAdmin8_webman` 对应的协议，个人或企业商用请遵循协议或得到相应授权。
+* 请留意`EasyAdmin8-webman` 对应的协议，个人或企业商用请遵循协议或得到相应授权。
 
-* `EasyAdmin8_webman`后台框架是一款开源的后台快速开发框架 ，主要用于更便捷地开发后台管理；其尊重并保护所有用户的个人隐私权，不窃取任何用户计算机中的信息。更不具备用户数据存储等网络传输功能。
+* `EasyAdmin8-webman`后台框架是一款开源的后台快速开发框架 ，主要用于更便捷地开发后台管理；其尊重并保护所有用户的个人隐私权，不窃取任何用户计算机中的信息。更不具备用户数据存储等网络传输功能。
 
-* 您承诺秉着合法、合理的原则使用`EasyAdmin8_webman`后台框架，不利用`EasyAdmin8_webman`后台框架进行任何违法、侵害他人合法利益等恶意的行为，亦不将`EasyAdmin8_webman`后台框架运用于任何违反我国法律法规的 Web 平台。
+* 您承诺秉着合法、合理的原则使用`EasyAdmin8-webman`后台框架，不利用`EasyAdmin8-webman`后台框架进行任何违法、侵害他人合法利益等恶意的行为，亦不将`EasyAdmin8-webman`后台框架运用于任何违反我国法律法规的 Web 平台。
 
-* 任何单位或个人因下载使用`EasyAdmin8_webman`后台框架而产生的任何意外、疏忽、合约毁坏、诽谤、版权或知识产权侵犯及其造成的损失 (包括但不限于直接、间接、附带或衍生的损失等)，本开源项目不承担任何法律责任。
+* 任何单位或个人因下载使用`EasyAdmin8-webman`后台框架而产生的任何意外、疏忽、合约毁坏、诽谤、版权或知识产权侵犯及其造成的损失 (包括但不限于直接、间接、附带或衍生的损失等)，本开源项目不承担任何法律责任。
 
-* 用户明确并同意本声明条款列举的全部内容，对使用`EasyAdmin8_webman`后台框架可能存在的风险和相关后果将完全由用户自行承担，本开源项目不承担任何法律责任。
+* 用户明确并同意本声明条款列举的全部内容，对使用`EasyAdmin8-webman`后台框架可能存在的风险和相关后果将完全由用户自行承担，本开源项目不承担任何法律责任。
 
-* 任何单位或个人在阅读本免责声明后，应在《MIT 开源许可证》所允许的范围内进行合法的发布、传播和使用`EasyAdmin8_webman`后台框架等行为，若违反本免责声明条款或违反法律法规所造成的法律责任(包括但不限于民事赔偿和刑事责任），由违约者自行承担。
+* 任何单位或个人在阅读本免责声明后，应在《MIT 开源许可证》所允许的范围内进行合法的发布、传播和使用`EasyAdmin8-webman`后台框架等行为，若违反本免责声明条款或违反法律法规所造成的法律责任(包括但不限于民事赔偿和刑事责任），由违约者自行承担。
 
 * 如果本声明的任何部分被认为无效或不可执行，其余部分仍具有完全效力。不可执行的部分声明，并不构成我们放弃执行该声明的权利。
 
