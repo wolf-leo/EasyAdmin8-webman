@@ -2,10 +2,10 @@
 
 namespace common\services\curd;
 
-use App\Http\Services\curd\exceptions\FileException;
-use App\Http\Services\curd\exceptions\TableException;
-use App\Http\Services\tool\CommonTool;
-use Illuminate\Support\Facades\DB;
+use common\services\curd\exceptions\FileException;
+use common\services\curd\exceptions\TableException;
+use common\services\tool\CommonTool;
+use support\Db;
 
 /**
  * 快速构建系统CURD
@@ -251,7 +251,7 @@ class BuildCurd
         try {
 
             // 获取表列注释
-            $columns = DB::select("SHOW FULL COLUMNS FROM {$this->tablePrefix}{$this->table}");
+            $columns = Db::select("SHOW FULL COLUMNS FROM {$this->tablePrefix}{$this->table}");
             foreach ($columns as $vo) {
                 $column = [
                     'type'     => $vo->Type,
@@ -272,7 +272,7 @@ class BuildCurd
             }
 
             // 获取表名注释
-            $tableSchema        = DB::select("SELECT table_name,table_comment FROM information_schema.TABLES WHERE table_schema = 'easyadmin' AND table_name = '{$this->tablePrefix}{$this->table}'");
+            $tableSchema        = Db::select("SELECT table_name,table_comment FROM information_schema.TABLES WHERE table_schema = 'easyadmin' AND table_name = '{$this->tablePrefix}{$this->table}'");
             $this->tableComment = (isset($tableSchema[0]['table_comment']) && !empty($tableSchema[0]['table_comment'])) ? $tableSchema[0]['table_comment'] : $this->table;
         } catch (\Exception $e) {
             throw new TableException($e->getMessage());
@@ -574,7 +574,7 @@ class BuildCurd
         foreach ($nodeArray as $vo) {
             $formatArray[] = CommonTool::humpToLine(lcfirst($vo));
         }
-        $this->controllerUrl = implode('.', $formatArray);
+        $this->controllerUrl = implode('/', $formatArray);
         $this->viewFilename  = implode($this->DS, $formatArray);
         $this->jsFilename    = $this->viewFilename;
 
@@ -582,7 +582,7 @@ class BuildCurd
         $namespaceArray            = $nodeArray;
         $this->controllerName      = array_pop($namespaceArray);
         $namespaceSuffix           = implode('\\', $namespaceArray);
-        $this->controllerNamespace = empty($namespaceSuffix) ? "App\Http\Controllers\admin" : "App\Http\Controllers\admin\\{$namespaceSuffix}";
+        $this->controllerNamespace = empty($namespaceSuffix) ? "app\admin\controller" : "app\admin\controller\\{$namespaceSuffix}";
 
         // 主表模型命名
         $modelArray = explode($this->DS, $this->modelFilename);
@@ -970,7 +970,7 @@ class BuildCurd
      */
     protected function renderController(): static
     {
-        $controllerFile = "{$this->rootDir}{$this->DS}app{$this->DS}Http{$this->DS}Controllers{$this->DS}admin{$this->DS}{$this->controllerFilename}Controller.php";
+        $controllerFile = "{$this->rootDir}{$this->DS}app{$this->DS}admin{$this->DS}controller{$this->DS}{$this->controllerFilename}Controller.php";
         if (empty($this->relationArray)) {
             $controllerIndexMethod = '';
         } else {
@@ -1006,7 +1006,7 @@ class BuildCurd
                 'controllerName'       => $this->controllerName,
                 'controllerNamespace'  => $this->controllerNamespace,
                 'controllerAnnotation' => $this->tableComment,
-                'modelFilename'        => "\App\Models\\{$modelFilenameExtend}",
+                'modelFilename'        => "\app\admin\model\\{$modelFilenameExtend}",
                 'indexMethod'          => $controllerIndexMethod,
                 'selectList'           => $selectList,
             ]);
@@ -1021,7 +1021,7 @@ class BuildCurd
     protected function renderModel(): static
     {
         // 主表模型
-        $modelFile = "{$this->rootDir}{$this->DS}app{$this->DS}Models{$this->DS}{$this->modelFilename}.php";
+        $modelFile = "{$this->rootDir}{$this->DS}app{$this->DS}admin{$this->DS}model{$this->DS}{$this->modelFilename}.php";
         if (empty($this->relationArray)) {
             $relationList = '';
         } else {
@@ -1032,7 +1032,7 @@ class BuildCurd
                     $this->getTemplate("model{$this->DS}relation"),
                     [
                         'relationMethod' => $relation,
-                        'relationModel'  => "\App\Models\\{$val['modelFilename']}",
+                        'relationModel'  => "\app\admin\model\\{$val['modelFilename']}",
                         'foreignKey'     => $val['foreignKey'],
                         'primaryKey'     => $val['primaryKey'],
                     ]);
@@ -1063,7 +1063,7 @@ class BuildCurd
             $this->getTemplate("model{$this->DS}model"),
             [
                 'modelName'      => $this->modelName,
-                'modelNamespace' => "App\Models{$extendNamespace}",
+                'modelNamespace' => "app\admin\model{$extendNamespace}",
                 'table'          => $this->table,
                 'deleteTime'     => $this->delete ? '"delete_time"' : 'false',
                 'relationList'   => $relationList,
@@ -1095,7 +1095,7 @@ class BuildCurd
                 $this->getTemplate("model{$this->DS}model"),
                 [
                     'modelName'      => $val['modelName'],
-                    'modelNamespace' => "App\Models{$extendNamespace}",
+                    'modelNamespace' => "app\admin\model{$extendNamespace}",
                     'table'          => $key,
                     'deleteTime'     => $val['delete'] ? '"delete_time"' : 'false',
                     'relationList'   => '',
@@ -1113,7 +1113,7 @@ class BuildCurd
     protected function renderView(): static
     {
         // 列表页面
-        $viewIndexFile                  = "{$this->rootDir}{$this->DS}resources{$this->DS}views{$this->DS}admin{$this->DS}{$this->viewFilename}{$this->DS}index.blade.php";
+        $viewIndexFile                  = "{$this->rootDir}{$this->DS}app{$this->DS}admin{$this->DS}view{$this->DS}admin{$this->DS}{$this->viewFilename}{$this->DS}index.blade.php";
         $viewIndexValue                 = CommonTool::replaceTemplate(
             $this->getTemplate("view{$this->DS}index"),
             [
@@ -1122,7 +1122,7 @@ class BuildCurd
         $this->fileList[$viewIndexFile] = $viewIndexValue;
 
         // 添加页面
-        $viewAddFile = "{$this->rootDir}{$this->DS}resources{$this->DS}views{$this->DS}admin{$this->DS}{$this->viewFilename}{$this->DS}add.blade.php";
+        $viewAddFile = "{$this->rootDir}{$this->DS}app{$this->DS}admin{$this->DS}view{$this->DS}admin{$this->DS}{$this->viewFilename}{$this->DS}add.blade.php";
         $addFormList = '';
 
         foreach ($this->tableColumns as $field => $val) {
@@ -1153,7 +1153,7 @@ class BuildCurd
 
 
         // 编辑页面
-        $viewEditFile = "{$this->rootDir}{$this->DS}resources{$this->DS}views{$this->DS}admin{$this->DS}{$this->viewFilename}{$this->DS}edit.blade.php";
+        $viewEditFile = "{$this->rootDir}{$this->DS}app{$this->DS}admin{$this->DS}view{$this->DS}admin{$this->DS}{$this->viewFilename}{$this->DS}edit.blade.php";
         $editFormList = '';
         foreach ($this->tableColumns as $field => $val) {
 

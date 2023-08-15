@@ -2,6 +2,7 @@
 
 namespace app\command;
 
+use common\services\curd\BuildCurd;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,7 +21,17 @@ class Curd extends Command
         $table = $input->getOption('table');
         $output->writeln('>>>>>>>>>>>>>>>');
         $output->writeln($table);
+        $build = (new BuildCurd())->setTable($table);
+        $build->render();
+        $fileList = $build->getFileList();
+        $output->writeln(">>>>>>>>>>>>>>>");
+        $build->create();
+        foreach ($fileList as $key => $val) {
+            $output->writeln($key);
+        }
+        $output->writeln(">>>>>>>>>>>>>>>");
+        $output->writeln('自动生成CURD成功');
         return self::SUCCESS;
     }
-    
+
 }
