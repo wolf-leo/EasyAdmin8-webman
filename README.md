@@ -69,13 +69,7 @@ server {
   <img src="public/static/common/images/easyadmin8-01.png" />
 </center>
 
-## CURD命令大全
-
-> 参考 [CURD命令大全](CURD.md)
-
-## 界面预览
-
-###                      
+###                 
 
 <center>
   <img src="public/static/common/images/easyadmin8-02.png" />
