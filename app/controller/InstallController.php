@@ -2,7 +2,7 @@
 
 namespace app\controller;
 
-use app\common\traits\JumpTrait;
+use common\traits\JumpTrait;
 use support\Request;
 use support\Response;
 use support\Db;

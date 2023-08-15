@@ -3,9 +3,9 @@
 namespace app\admin\controller\system;
 
 use app\admin\model\SystemLog;
-use app\common\controller\AdminController;
-use app\common\services\annotation\ControllerAnnotation;
-use app\common\services\annotation\NodeAnnotation;
+use common\controller\AdminController;
+use common\services\annotation\ControllerAnnotation;
+use common\services\annotation\NodeAnnotation;
 use support\Request;
 use support\Response;
 

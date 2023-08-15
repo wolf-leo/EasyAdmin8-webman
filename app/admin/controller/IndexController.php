@@ -4,7 +4,7 @@ namespace app\admin\controller;
 
 use app\admin\model\SystemAdmin;
 use app\admin\model\SystemQuick;
-use app\common\controller\AdminController;
+use common\controller\AdminController;
 use support\Db;
 use support\Request;
 use support\Response;

@@ -12,11 +12,4 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-use support\Request;
 use Webman\Route;
-
-Route::group('/common', function () {
-    Route::any('[{path:.+}]', function () {
-        return view('404', ['error' => 'some error'])->withStatus(404);
-    });
-});

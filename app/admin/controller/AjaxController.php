@@ -3,9 +3,9 @@
 namespace app\admin\controller;
 
 use app\admin\model\SystemUploadfile;
-use app\common\controller\AdminController;
-use app\common\services\MenuService;
-use app\common\services\UploadService;
+use common\controller\AdminController;
+use common\services\MenuService;
+use common\services\UploadService;
 use Illuminate\View\View;
 use Respect\Validation\Validator;
 use Shopwwi\LaravelCache\Cache;

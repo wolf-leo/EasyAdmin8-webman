@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b33738b76bdfc408883b3aa56a5178a",
+    "content-hash": "6ae9e7a7267e4b7e82fe9b501cb291cd",
     "packages": [
         {
             "name": "brick/math",
@@ -2783,6 +2783,46 @@
                 "view"
             ],
             "time": "2023-03-26T02:18:57+00:00"
+        },
+        {
+            "name": "webman/console",
+            "version": "v1.2.37",
+            "dist": {
+                "type": "zip",
+                "url": "https://mirrors.cloud.tencent.com/repository/composer/webman/console/v1.2.37/webman-console-v1.2.37.zip",
+                "reference": "c94d7f351ac09435825e1f84a67413cf5caa1a2a",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/inflector": "^2.0",
+                "symfony/console": ">=5.0"
+            },
+            "require-dev": {
+                "workerman/webman": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Webman\\Console\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "walkor",
+                    "email": "walkor@workerman.net",
+                    "homepage": "http://www.workerman.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Webman console",
+            "homepage": "http://www.workerman.net",
+            "keywords": [
+                "webman console"
+            ],
+            "time": "2023-07-26T06:31:50+00:00"
         },
         {
             "name": "workerman/validation",

@@ -82,7 +82,7 @@ if (!function_exists('auths')) {
      */
     function auths($node = null): bool
     {
-        $authService = new \app\common\services\AuthService(session('admin.id'));
+        $authService = new \common\services\AuthService(session('admin.id'));
         return $authService->checkNode($node);
     }
 

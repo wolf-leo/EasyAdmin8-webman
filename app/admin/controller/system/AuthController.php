@@ -4,12 +4,12 @@ namespace app\admin\controller\system;
 
 use app\admin\model\SystemAuth;
 use app\admin\model\SystemAuthNode;
-use app\common\controller\AdminController;
-use app\common\services\TriggerService;
+use common\controller\AdminController;
+use common\services\TriggerService;
 use support\Request;
 use support\Response;
-use app\common\services\annotation\ControllerAnnotation;
-use app\common\services\annotation\NodeAnnotation;
+use common\services\annotation\ControllerAnnotation;
+use common\services\annotation\NodeAnnotation;
 
 /**
  * @ControllerAnnotation(title="角色权限管理")

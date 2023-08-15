@@ -2,7 +2,7 @@
 
 namespace app\middleware;
 
-use app\common\services\SystemLogService;
+use common\services\SystemLogService;
 use Webman\Http\Request;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;

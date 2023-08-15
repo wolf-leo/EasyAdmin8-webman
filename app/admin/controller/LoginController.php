@@ -3,7 +3,7 @@
 namespace app\admin\controller;
 
 use app\admin\model\SystemAdmin;
-use app\common\controller\AdminController;
+use common\controller\AdminController;
 use support\Request;
 use support\Response;
 use Respect\Validation\Validator;

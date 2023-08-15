@@ -2,7 +2,7 @@
 
 namespace app\admin\model;
 
-use app\common\services\SystemLogService;
+use common\services\SystemLogService;
 use app\model\BaseModel;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
