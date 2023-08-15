@@ -55,8 +55,8 @@ foreach (config('plugin', []) as $firm => $projects) {
 function write_process_file($runtimeProcessPath, $processName, $firm): string
 {
     $processParam = $firm ? "plugin.$firm.$processName" : $processName;
-    $configParam  = $firm ? "config('plugin.$firm.process')['$processName']" : "config('process')['$processName']";
-    $fileContent  = <<<EOF
+    $configParam = $firm ? "config('plugin.$firm.process')['$processName']" : "config('process')['$processName']";
+    $fileContent = <<<EOF
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -82,7 +82,7 @@ if (DIRECTORY_SEPARATOR != "/") {
 Worker::runAll();
 
 EOF;
-    $processFile  = $runtimeProcessPath . DIRECTORY_SEPARATOR . "start_$processParam.php";
+    $processFile = $runtimeProcessPath . DIRECTORY_SEPARATOR . "start_$processParam.php";
     file_put_contents($processFile, $fileContent);
     return $processFile;
 }
@@ -95,7 +95,7 @@ function popen_processes($processFiles)
 {
     $cmd = '"' . PHP_BINARY . '" ' . implode(' ', $processFiles);
     $descriptorspec = [STDIN, STDOUT, STDOUT];
-    $resource       = proc_open($cmd, $descriptorspec, $pipes, null, null, ['bypass_shell' => true]);
+    $resource = proc_open($cmd, $descriptorspec, $pipes, null, null, ['bypass_shell' => true]);
     if (!$resource) {
         exit("Can not execute $cmd\r\n");
     }
@@ -108,7 +108,7 @@ while (1) {
     sleep(1);
     if (!empty($monitor) && $monitor->checkAllFilesChange()) {
         $status = proc_get_status($resource);
-        $pid    = $status['pid'];
+        $pid = $status['pid'];
         shell_exec("taskkill /F /T /PID $pid");
         proc_close($resource);
         $resource = popen_processes($processFiles);
