@@ -31,10 +31,10 @@
   
 3.拷贝 .example.env 文件重命名为 .env ，命令 cp .example.env .env ，修改数据库账号密码参数
 
-4.命令启动(php start.php start || php start,php start -d)
-详细启动配置区别请点击:https://www.workerman.net/doc/webman/install.html#2.%20%E8%BF%90%E8%A1%8C
+4.命令启动(php start.php start 或者 php start.php start -d)
+详细启动配置区别请点击：https://www.workerman.net/doc/webman/install.html#2.%20%E8%BF%90%E8%A1%8C
 
-或者反向代理(以 Nginx 为例)
+或者反向代理(以 Nginx 为例，其中8787端口号可以在 .env 配置中修改)
   
 upstream webman {
     server 127.0.0.1:8787;
@@ -63,19 +63,19 @@ server {
 
 ## 界面预览
 
-###              
+###                 
 
 <center>
   <img src="public/static/common/images/easyadmin8-01.png" />
 </center>
 
-###              
+###                 
 
 <center>
   <img src="public/static/common/images/easyadmin8-02.png" />
 </center>
 
-###              
+###                 
 
 <center>
   <img src="public/static/common/images/easyadmin8-03.png" />
@@ -90,6 +90,12 @@ server {
 >   [https://gitee.com/wolf18/easyAdmin8](https://gitee.com/wolf18/easyAdmin8)
 >
 > #### Laravel :
+>
+>   [https://github.com/wolf-leo/EasyAdmin8_Laravel](https://github.com/wolf-leo/EasyAdmin8_Laravel)
+>
+>   [https://gitee.com/wolf18/EasyAdmin8_Laravel](https://gitee.com/wolf18/EasyAdmin8_Laravel)
+>
+> #### webman :
 >
 >   [https://github.com/wolf-leo/EasyAdmin8_webman](https://github.com/wolf-leo/EasyAdmin8_webman)
 >
