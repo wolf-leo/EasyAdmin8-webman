@@ -119,13 +119,7 @@ if (!function_exists('insertFields')) {
         $post   = request()->post();
         $fields = Db::Schema()->getColumnListing($model->getTable());
         if (in_array('create_time', $fields)) $post['create_time'] = time();
-        $tableColumn = array_keys($post);
-        $fields      = array_intersect($tableColumn, $fields);
-        foreach ($fields as $value) {
-            if (isset($params[$value])) $post[$value] = $params[$value];
-            $model->$value = $post[$value] ?? '';
-        }
-        return $model->save();
+        return extracted($post, $fields, $params, $model);
     }
 
 }
@@ -136,6 +130,18 @@ if (!function_exists('updateFields')) {
         $post   = request()->post();
         $fields = Db::Schema()->getColumnListing($model->getTable());
         if (in_array('update_time', $fields)) $post['update_time'] = time();
+        return extracted($post, $fields, $params, $row);
+    }
+
+    /**
+     * @param mixed $post
+     * @param array $fields
+     * @param array $params
+     * @param $row
+     * @return mixed
+     */
+    function extracted(mixed $post, array $fields, array $params, $row): mixed
+    {
         $tableColumn = array_keys($post);
         $fields      = array_intersect($tableColumn, $fields);
         foreach ($fields as $value) {
