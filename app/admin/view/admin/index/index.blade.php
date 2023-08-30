@@ -1,7 +1,7 @@
 @include('admin.layout.head')
 <link rel="stylesheet" href="/static/plugs/lay-module/layuimini/layuimini.css?v={{$version}}" media="all">
 <link rel="stylesheet" href="/static/plugs/lay-module/layuimini/themes/default.css?v={{$version}}" media="all">
-
+<style id="layuimini-bg-color"></style>
 <div class="layui-layout-body layuimini-all">
     <div class="layui-layout layui-layout-admin">
 
