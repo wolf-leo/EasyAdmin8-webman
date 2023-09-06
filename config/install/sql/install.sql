@@ -261,7 +261,7 @@ VALUES ('81', 'cos_secret_key', 'upload', '填你的', '腾讯云cos私钥', '0'
 INSERT INTO `ea_system_config`
 VALUES ('82', 'cos_region', 'upload', '填你的', '存储桶地域', '0', null, null);
 INSERT INTO `ea_system_config`
-VALUES ('83', 'tecos_bucket', 'upload', '填你的', '存储桶名称', '0', null, null);
+VALUES ('83', 'cos_bucket', 'upload', '填你的', '存储桶名称', '0', null, null);
 
 -- ----------------------------
 -- Table structure for ea_system_menu

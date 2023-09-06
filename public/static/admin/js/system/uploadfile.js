@@ -19,7 +19,7 @@ define(["jquery", "easy-admin"], function ($, ea) {
                 cols: [[
                     {type: "checkbox"},
                     {field: 'id', width: 80, title: 'ID', searchOp: '='},
-                    {field: 'upload_type', minWidth: 80, title: '存储位置', search: 'select', selectList: {'local': '本地', 'alioss': '阿里云', 'qnoss': '七牛云', ',txcos': '腾讯云'}},
+                    {field: 'upload_type', minWidth: 80, title: '存储位置', search: 'select', selectList: upload_types},
                     {field: 'url', minWidth: 80, search: false, title: '图片信息', templet: ea.table.image},
                     {field: 'url', minWidth: 120, title: '保存地址', templet: ea.table.url},
                     {field: 'original_name', minWidth: 80, title: '文件原名'},
