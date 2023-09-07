@@ -26,9 +26,8 @@ class CheckAuth implements MiddlewareInterface
         $adminId         = session('admin.id', 0);
         $adminConfig     = config('admin');
         $controllerClass = explode('\\', $request->controller);
-        var_dump($controllerClass);
-        $controller = strtolower(str_replace('Controller', '', array_pop($controllerClass)));
-        $action     = $request->action ?? 'index';
+        $controller      = strtolower(str_replace('Controller', '', array_pop($controllerClass)));
+        $action          = $request->action ?? 'index';
         if ($controller == 'login') {
             if ($request->method() == 'GET' && !empty($adminId) && $action != 'out') {
                 return redirect(__url());
