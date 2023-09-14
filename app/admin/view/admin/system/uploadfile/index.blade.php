@@ -2,9 +2,9 @@
 <div class="layuimini-container">
     <div class="layuimini-main">
         <table id="currentTable" class="layui-table layui-hide"
-               data-auth-add="{:auth('system/uploadfile/add')}"
-               data-auth-edit="{:auth('system/uploadfile/edit')}"
-               data-auth-delete="{:auth('system/uploadfile/delete')}"
+               data-auth-add="{{auths('system/uploadfile/add')}}"
+               data-auth-edit="{{auths('system/uploadfile/edit')}}"
+               data-auth-delete="{{auths('system/uploadfile/delete')}}"
                lay-filter="currentTable">
         </table>
     </div>

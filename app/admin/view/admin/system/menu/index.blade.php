@@ -10,9 +10,9 @@
 <div class="layuimini-container">
     <div class="layuimini-main">
         <table id="currentTable" class="layui-table layui-hide"
-               data-auth-add="{:auth('system/menu/add')}"
-               data-auth-edit="{:auth('system/menu/edit')}"
-               data-auth-delete="{:auth('system/menu/delete')}"
+               data-auth-add="{{auths('system/menu/add')}}"
+               data-auth-edit="{{auths('system/menu/edit')}}"
+               data-auth-delete="{{auths('system/menu/delete')}}"
                lay-filter="currentTable">
         </table>
     </div>
