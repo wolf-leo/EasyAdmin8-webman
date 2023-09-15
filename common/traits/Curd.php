@@ -68,7 +68,7 @@ trait Curd
         if ($request->isAjax()) {
             try {
                 $save = updateFields($this->model, $row);
-            } catch (\PDOException | \Exception $e) {
+            } catch (\PDOException|\Exception $e) {
                 return $this->error('保存失败:' . $e->getMessage());
             }
             return $save ? $this->success('保存成功') : $this->error('保存失败');
@@ -89,7 +89,7 @@ trait Curd
         if (empty($row)) return $this->error('数据不存在');
         try {
             $save = $this->model->whereIn('id', $id)->delete();
-        } catch (\PDOException | \Exception $e) {
+        } catch (\PDOException|\Exception $e) {
             return $this->error('删除失败:' . $e->getMessage());
         }
         return $save ? $this->success('删除成功') : $this->error('删除失败');
@@ -100,6 +100,9 @@ trait Curd
      */
     public function export(Request $request): Response|bool
     {
+        if (env('EASYADMIN.IS_DEMO', false)) {
+            return $this->error('演示环境下不允许操作');
+        }
         # 功能简单，请根据业务自行扩展
         list($page, $limit, $where) = $this->buildTableParams();
         $tableName = $this->model->getTable();
@@ -140,7 +143,7 @@ trait Curd
             $writer->save($file_path);
             // 下载文件
             return response()->download($file_path, $fileName . '.xlsx');
-        } catch (\Exception | \PhpOffice\PhpSpreadsheet\Exception$e) {
+        } catch (\Exception|\PhpOffice\PhpSpreadsheet\Exception$e) {
             return $this->error($e->getMessage());
         }
     }
@@ -163,7 +166,7 @@ trait Curd
         try {
             foreach ($post as $key => $item) if ($key == 'field') $row->$item = $post['value'];
             $row->save();
-        } catch (\PDOException | \Exception $e) {
+        } catch (\PDOException|\Exception $e) {
             return $this->error("操作失败:" . $e->getMessage());
         }
         return $this->success('保存成功');

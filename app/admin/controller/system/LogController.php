@@ -54,6 +54,9 @@ class LogController extends AdminController
      */
     public function export(Request $request): Response|bool
     {
+        if (env('EASYADMIN.IS_DEMO', false)) {
+            return $this->error('演示环境下不允许操作');
+        }
         # 功能简单，请根据业务自行扩展
         [$page, $limit, $where, $excludeFields] = $this->buildTableParams(['month']);
         $tableName = $this->model->getTable();
