@@ -37,6 +37,7 @@ return [
     'upload_types'         => [
         'local' => '本地存储',
         'oss'   => '阿里云oss',
-        'cos'   => '腾讯云cos'
+        'cos'   => '腾讯云cos',
+        'qnoss' => '七牛云'
     ],
 ];
