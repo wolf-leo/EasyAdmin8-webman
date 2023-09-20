@@ -53,10 +53,14 @@ class NodeController extends AdminController
         $model = new SystemNode();
         try {
             if ($force == 1) {
-                $updateNodeList = $model->where('node', 'IN', array_column($nodeList, 'node'))->get()->toArray();
+                $where[]        = [function ($query) use ($nodeList) {
+                    $query->whereIn('node', array_column($nodeList, 'node'));
+                }];
+                $updateNodeList = $model->where($where)->get()->toArray();
                 $formatNodeList = [];
                 array_map(function ($value) use (&$formatNodeList) {
-                    $formatNodeList[$value['node']] = $value['title'];
+                    $formatNodeList[$value['node']]['title']   = $value['title'];
+                    $formatNodeList[$value['node']]['is_auth'] = $value['is_auth'];
                 }, $nodeList);
                 foreach ($updateNodeList as $vo) {
                     if (isset($formatNodeList[$vo['node']])) {
