@@ -20,10 +20,11 @@ class IndexController extends AdminController
 
     public function welcome(Request $request): Response
     {
+        $branch        = file_get_contents(base_path() . DIRECTORY_SEPARATOR . 'branch');
         $webmanVersion = \Composer\InstalledVersions::getVersion('workerman/webman-framework');
         $mysqlVersion  = Db::select("select VERSION() as version")[0]->version ?? '未知';
         $phpVersion    = phpversion();
-        $versions      = compact('webmanVersion', 'mysqlVersion', 'phpVersion');
+        $versions      = compact('webmanVersion', 'mysqlVersion', 'phpVersion', 'branch');
         $quicks        = SystemQuick::where('status', 1)->select('id', 'title', 'icon', 'href')->orderByDesc('sort')->limit(8)->get()->toArray();
         return $this->fetch('', compact('quicks', 'versions'));
         return $this->fetch();
