@@ -4,6 +4,8 @@
 >
 > webman 和 layui v2.8.x 的快速开发的后台管理系统。
 >
+> 请注意，该分支为`main`，主要用到了`Laravel`相关组件
+>
 > 项目地址：[http://easyadmin8.top](http://easyadmin8.top)
 >
 > 演示地址：[http://webman.easyadmin8.top/admin](http://webman.easyadmin8.top/admin)
