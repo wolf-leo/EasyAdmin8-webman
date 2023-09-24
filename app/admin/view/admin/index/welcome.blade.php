@@ -123,6 +123,12 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>分支版本</td>
+                                <td>
+                                    <button type="button" class="layui-btn layui-btn-xs layui-btn-primary">{{$versions['branch']??'main'}}</button>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>webman版本</td>
                                 <td>
                                     <button type="button" class="layui-btn layui-btn-xs layui-btn-primary">{{$versions['webmanVersion']??''}}</button>
