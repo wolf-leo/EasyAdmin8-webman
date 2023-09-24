@@ -2,8 +2,8 @@
 
 namespace common\services;
 
-use support\Db;
-use Illuminate\Support\Str;
+use think\facade\Db;
+use think\helper\Str;
 
 /**
  * 权限验证服务
@@ -123,38 +123,32 @@ class AuthService
     public function getAdminNode(): array
     {
         $nodeList  = [];
-        $adminInfo = Db::table($this->config['system_admin'])
+        $adminInfo = Db::name($this->config['system_admin'])
             ->where([
                         'id'     => $this->adminId,
                         'status' => 1,
-                    ])->first();
-        $adminInfo = get_object_vars($adminInfo);
+                    ])->find();
         if (!empty($adminInfo) && !empty($adminInfo['auth_ids'])) {
-
-            $nodeIds  = Db::table($this->config['system_auth_node'])
+            $nodeIds  = Db::name($this->config['system_auth_node'])
                 ->whereIn('auth_id', explode(',', $adminInfo['auth_ids']))
-                ->select('node_id')->get()->map(function ($value) {
-                    return (array)$value;
-                })->toArray();
-            $nodeList = Db::table($this->config['system_node'])
-                ->whereIn('id', $nodeIds)->get()->keyBy('node')->map(function ($value) {
-                    return (array)$value;
-                })->toArray();
+                ->column('node_id');
+            $nodeList = Db::name($this->config['system_node'])->whereIn('id', $nodeIds)->select()->toArray();
         }
         return $nodeList;
     }
 
     public function getNodeList(): array
     {
-        return Db::table($this->config['system_node'])->select('id', 'node', 'title', 'type', 'is_auth')->get()->keyBy('node')->toArray();
+        $list = Db::name($this->config['system_node'])->order('node', 'desc')->select()->toArray();
+        return $list;
     }
 
     public function getAdminInfo()
     {
-        $result = Db::table($this->config['system_admin'])
+        return Db::name($this->config['system_admin'])
             ->where('id', $this->adminId)
-            ->first();
-        return get_object_vars($result);
+            ->find();
+        $result;
     }
 
     /**

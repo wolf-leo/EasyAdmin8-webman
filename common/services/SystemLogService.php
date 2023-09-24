@@ -2,8 +2,8 @@
 
 namespace common\services;
 
-use Shopwwi\LaravelCache\Cache;
-use support\Db;
+use think\facade\Cache;
+use think\facade\Db;
 
 /**
  * 系统日志表
@@ -65,10 +65,10 @@ class SystemLogService
      */
     public function save($data): bool
     {
-        Db::beginTransaction();
+        Db::startTrans();
         try {
             $this->detectTable();
-            Db::table($this->tableName)->insert($data);
+            Db::name($this->tableName)->insert($data);
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
@@ -87,12 +87,12 @@ class SystemLogService
         $key   = md5("systemLog{$this->tableName}Table");
         $isset = Cache::get($key);
         if ($isset) return true;
-        $check = Db::select("show tables like '{$this->tablePrefix}{$this->tableName}'");
+        $check = Db::query("show tables like '{$this->tablePrefix}{$this->tableName}'");
         if (empty($check)) {
             $sql = $this->getCreateSql();
-            Db::statement($sql);
+            Db::execute($sql);
         }
-        Cache::put($key, !empty($check));
+        Cache::set($key, !empty($check));
         return true;
     }
 

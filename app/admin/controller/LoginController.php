@@ -6,7 +6,7 @@ use app\admin\model\SystemAdmin;
 use common\controller\AdminController;
 use support\Request;
 use support\Response;
-use Respect\Validation\Validator;
+use think\Exception;
 use Webman\Captcha\CaptchaBuilder;
 use Webman\Captcha\PhraseBuilder;
 
@@ -20,16 +20,21 @@ class LoginController extends AdminController
             return $this->fetch('', compact('captcha'));
         }
         $post = $request->post();
-        Validator::input($post, [
-            'username' => Validator::notEmpty()->setName('用户名'),
-            'password' => Validator::notEmpty()->setName('密码')
-        ]);
+        $rule = [
+            'username|用户名' => 'require',
+            'password|密码'   => 'require',
+        ];
+        try {
+            $this->validate($post, $rule);
+        } catch (Exception $exception) {
+            return $this->error($exception->getMessage());
+        }
         if ($captcha) {
             if (strtolower($request->post('captcha')) !== $request->session()->get('captcha')) {
                 return $this->error('图片验证码错误');
             }
         }
-        $admin = SystemAdmin::where(['username' => $post['username']])->first();
+        $admin = SystemAdmin::where(['username' => $post['username']])->find();
         if (empty($admin) || password($post['password']) != $admin->password) {
             return $this->error('用户名或密码有误');
         }

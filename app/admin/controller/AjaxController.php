@@ -6,11 +6,10 @@ use app\admin\model\SystemUploadfile;
 use common\controller\AdminController;
 use common\services\MenuService;
 use common\services\UploadService;
-use Illuminate\View\View;
-use Respect\Validation\Validator;
-use Shopwwi\LaravelCache\Cache;
+use think\facade\Cache;
 use support\Request;
 use support\Response;
+use think\Exception;
 
 class AjaxController extends AdminController
 {
@@ -34,7 +33,7 @@ class AjaxController extends AdminController
             'homeInfo' => $menuService->getHomeInfo(),
             'menuInfo' => $menuService->getMenuTree(),
         ];
-        Cache::put('initAdmin_' . session('admin.id'), $data);
+        Cache::set('initAdmin_' . session('admin.id'), $data);
         return json($data);
     }
 
@@ -44,7 +43,7 @@ class AjaxController extends AdminController
      */
     public function clearCache(): Response
     {
-        Cache::flush();
+        Cache::clear();
         return $this->success('清理缓存成功');
     }
 
@@ -64,10 +63,15 @@ class AjaxController extends AdminController
         ];
         $uploadConfig = sysconfig('upload');
         empty($data['upload_type']) && $data['upload_type'] = $uploadConfig['upload_type'];
-        Validator::input($data, [
-            'upload_type' => Validator::notEmpty()->setName('指定上传类型'),
-            'file'        => Validator::notEmpty()->setName('文件')
-        ]);
+        $rule = [
+            'upload_type|指定上传类型' => 'require',
+            'file|文件'                => 'require',
+        ];
+        try {
+            $this->validate($data, $rule);
+        } catch (Exception $exception) {
+            return $this->error($exception->getMessage());
+        }
         $file = $data['file'];
         if (!in_array($file->getUploadExtension(), explode(',', $uploadConfig['upload_allow_ext']))) {
             return $this->error('上传文件类型不在允许范围');
@@ -110,7 +114,7 @@ class AjaxController extends AdminController
         $where       = [];
         if ($title) $where[] = ['original_name', 'LIKE', "%{$title}%"];
         $count = $this->model->where($where)->count();
-        $list  = $this->model->where($where)->orderByDesc($this->order)->paginate($limit)->items();
+        $list  = $this->model->where($where)->order($this->order)->limit($limit)->select()->toArray();
         $data  = [
             'code'  => 0,
             'msg'   => '',

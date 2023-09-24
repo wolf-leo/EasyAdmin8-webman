@@ -9,7 +9,7 @@ use common\services\annotation\NodeAnnotation;
 use common\services\tool\CommonTool;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use support\Db;
+use think\facade\Db;
 use support\Request;
 use support\Response;
 
@@ -35,7 +35,7 @@ class LogController extends AdminController
         if (empty($month)) $month = date('Ym');
         try {
             $count = $this->model->setMonth($month)->where($where)->count();
-            $list  = $this->model->setMonth($month)->where($where)->orderByDesc($this->order)->with(['admin'])->paginate($limit)->items();
+            $list  = $this->model->setMonth($month)->where($where)->order($this->order)->with(['admin'])->limit($limit)->select()->toArray();
         } catch (\PDOException|\Exception $exception) {
             $count = 0;
             $list  = [];
@@ -61,24 +61,22 @@ class LogController extends AdminController
         [$page, $limit, $where, $excludeFields] = $this->buildTableParams(['month']);
         $tableName = $this->model->getTable();
         $tableName = CommonTool::humpToLine(lcfirst($tableName));
-        $prefix    = config('database.connections.mysql.prefix');
-        $dbList    = Db::select("show full columns from {$prefix}{$tableName}");
+        $dbList    = Db::query("show full columns from {$tableName}");
         $header    = [];
         foreach ($dbList as $vo) {
-            $comment = !empty($vo->Comment) ? $vo->Comment : $vo->Field;
-            if (!in_array($vo->Field, $this->noExportFields)) {
-                $header[] = [$comment, $vo->Field];
+            $comment = !empty($vo['Comment']) ? $vo['Comment'] : $vo['Field'];
+            if (!in_array($vo['Field'], $this->noExportFields)) {
+                $header[] = [$comment, $vo['Field']];
             }
         }
         $month = !empty($excludeFields['month']) ? date('Ym', strtotime($excludeFields['month'])) : date('Ym');
         if (empty($month)) $month = date('Ym');
         try {
-            $list = $this->model->setMonth($month)->where($where)->orderByDesc('id')->limit(100000)->get();
+            $list = $this->model->setMonth($month)->where($where)->order($this->order)->limit(100000)->select()->toArray();
         } catch (\PDOException|\Exception $exception) {
             return $this->error($exception->getMessage());
         }
         if (empty($list)) return $this->error('暂无数据');
-        $list     = $list->toArray();
         $fileName = '后台导出文件';
         try {
             $excelKeys = [];

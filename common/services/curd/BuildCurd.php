@@ -1113,7 +1113,7 @@ class BuildCurd
     protected function renderView(): static
     {
         // 列表页面
-        $viewIndexFile                  = "{$this->rootDir}{$this->DS}app{$this->DS}admin{$this->DS}view{$this->DS}admin{$this->DS}{$this->viewFilename}{$this->DS}index.blade.php";
+        $viewIndexFile                  = "{$this->rootDir}{$this->DS}app{$this->DS}admin{$this->DS}view{$this->DS}{$this->viewFilename}{$this->DS}index.html";
         $viewIndexValue                 = CommonTool::replaceTemplate(
             $this->getTemplate("view{$this->DS}index"),
             [
@@ -1122,7 +1122,7 @@ class BuildCurd
         $this->fileList[$viewIndexFile] = $viewIndexValue;
 
         // 添加页面
-        $viewAddFile = "{$this->rootDir}{$this->DS}app{$this->DS}admin{$this->DS}view{$this->DS}admin{$this->DS}{$this->viewFilename}{$this->DS}add.blade.php";
+        $viewAddFile = "{$this->rootDir}{$this->DS}app{$this->DS}admin{$this->DS}view{$this->DS}{$this->viewFilename}{$this->DS}add.html";
         $addFormList = '';
 
         foreach ($this->tableColumns as $field => $val) {
@@ -1153,7 +1153,7 @@ class BuildCurd
 
 
         // 编辑页面
-        $viewEditFile = "{$this->rootDir}{$this->DS}app{$this->DS}admin{$this->DS}view{$this->DS}admin{$this->DS}{$this->viewFilename}{$this->DS}edit.blade.php";
+        $viewEditFile = "{$this->rootDir}{$this->DS}app{$this->DS}admin{$this->DS}view{$this->DS}{$this->viewFilename}{$this->DS}edit.html";
         $editFormList = '';
         foreach ($this->tableColumns as $field => $val) {
 
@@ -1164,7 +1164,7 @@ class BuildCurd
             $templateFile = "view{$this->DS}module{$this->DS}input";
 
             $define = '';
-            $value  = '{{$row[\'' . $field . '\']}}';
+            $value  = '{$row.' . $field . '|default=\'\'}';
 
             $editFormList .= CommonTool::replaceTemplate(
                 $this->getTemplate($templateFile),

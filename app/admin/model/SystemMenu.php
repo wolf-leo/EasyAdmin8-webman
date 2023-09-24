@@ -8,11 +8,11 @@ class SystemMenu extends BaseModel
 {
     public function getPidMenuList(): array
     {
-        $list        = $this->select(explode(',', 'id,pid,title'))
+        $list        = $this->field('id,pid,title')
             ->where([
                         ['pid', '<>', HOME_PID],
                         ['status', '=', 1],
-                    ])->get()->toArray();
+                    ])->select()->toArray();
         $pidMenuList = $this->buildPidMenu(0, $list);
         return array_merge([['id' => 0, 'pid' => 0, 'title' => '顶级菜单']], $pidMenuList);
     }

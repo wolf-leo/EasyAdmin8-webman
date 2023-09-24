@@ -6,6 +6,7 @@ use common\traits\JumpTrait;
 use support\Request;
 use support\Response;
 use support\Db;
+use think\facade\Cache;
 
 class InstallController
 {
@@ -16,7 +17,7 @@ class InstallController
         $isInstall   = false;
         $installPath = config_path() . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR;
         $errorInfo   = null;
-        if (is_file($installPath . DIRECTORY_SEPARATOR . 'lock' . DIRECTORY_SEPARATOR . 'install.lock')) {
+        if (is_file($installPath . 'lock' . DIRECTORY_SEPARATOR . 'install.lock')) {
             $isInstall = true;
             $errorInfo = '已安装系统，如需重新安装请删除文件：/config/install/lock/install.lock，或者删除 /install 路由';
         } elseif (version_compare(phpversion(), '8.0.0', '<')) {
@@ -122,13 +123,14 @@ class InstallController
             !is_dir($installPath) && @mkdir($installPath);
             !is_dir($installPath . 'lock' . DIRECTORY_SEPARATOR) && @mkdir($installPath . 'lock' . DIRECTORY_SEPARATOR);
             @file_put_contents($installPath . 'lock' . DIRECTORY_SEPARATOR . 'install.lock', date('Y-m-d H:i:s'));
-        } catch (\Exception | \PDOException | \Throwable $e) {
+        } catch (\Exception|\PDOException|\Throwable $e) {
             $data = [
                 'code' => 0,
                 'msg'  => "系统安装失败：" . $e->getMessage(),
             ];
             return $this->error('', $data);
         }
+        Cache::clear();
         return true;
     }
 

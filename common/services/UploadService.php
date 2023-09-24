@@ -6,8 +6,7 @@ use app\admin\model\SystemUploadfile;
 use OSS\Core\OssException;
 use OSS\OssClient;
 use webman\Http\UploadFile;
-use support\Db;
-use Illuminate\Support\Str;
+use think\helper\Str;
 use Qcloud\Cos\Client;
 use Exception;
 use Qiniu\Storage\UploadManager;
@@ -209,6 +208,6 @@ class UploadService
         $data                = $this->saveData;
         $data['url']         = $url;
         $data['upload_time'] = time();
-        return DB::table((new SystemUploadfile())->getTable())->insert($data);
+        return (new SystemUploadfile())->insert($data);
     }
 }

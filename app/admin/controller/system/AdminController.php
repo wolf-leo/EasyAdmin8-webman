@@ -7,9 +7,9 @@ use app\admin\model\SystemAdmin;
 use common\services\TriggerService;
 use support\Request;
 use support\Response;
-use Respect\Validation\Validator;
 use common\services\annotation\ControllerAnnotation;
 use common\services\annotation\NodeAnnotation;
+use think\Exception;
 
 /**
  * @ControllerAnnotation(title="管理员管理")
@@ -30,13 +30,13 @@ class AdminController extends Controller
     public function add(Request $request): Response
     {
         if ($request->isAjax()) {
-            $post               = $request->post();
-            $authIds            = $request->post('auth_ids', []);
-            $params['auth_ids'] = implode(',', array_keys($authIds));
+            $post             = $request->post();
+            $authIds          = $request->post('auth_ids', []);
+            $post['auth_ids'] = implode(',', array_keys($authIds));
             if (empty($post['password'])) $post['password'] = '123456';
-            $params['password'] = password($post['password']);
+            $post['password'] = password($post['password']);
             try {
-                $save = insertFields($this->model, $params);
+                $save = $this->model->save($post);
             } catch (\Exception $e) {
                 return $this->error('保存失败:' . $e->getMessage());
             }
@@ -54,12 +54,12 @@ class AdminController extends Controller
         $row = $this->model->find($id);
         if (empty($row)) return $this->error('数据不存在');
         if ($request->isAjax()) {
-            $post               = $request->post();
-            $authIds            = $request->post('auth_ids', []);
-            $params['auth_ids'] = implode(',', array_keys($authIds));
+            $post             = $request->post();
+            $authIds          = $request->post('auth_ids', []);
+            $post['auth_ids'] = implode(',', array_keys($authIds));
             if (isset($row['password'])) unset($row['password']);
             try {
-                $save = updateFields($this->model, $row, $params);
+                $save = $row->save($post);
                 TriggerService::updateMenu(session('admin.id'));
             } catch (\Exception $e) {
                 return $this->error('保存失败:' . $e->getMessage());
@@ -81,10 +81,15 @@ class AdminController extends Controller
         if (empty($row)) return $this->error('数据不存在');
         if ($request->isAjax()) {
             $post = $request->post();
-            Validator::input($post, [
-                'password'       => Validator::notEmpty()->setName('密码'),
-                'password_again' => Validator::notEmpty()->setName('确认密码'),
-            ]);
+            $rule = [
+                'password|密码'          => 'require',
+                'password_again|确认密码' => 'require',
+            ];
+            try {
+                $this->validate($post, $rule);
+            } catch (Exception $exception) {
+                return $this->error($exception->getMessage());
+            }
             if ($post['password'] != $post['password_again']) {
                 return $this->error('两次密码输入不一致');
             }

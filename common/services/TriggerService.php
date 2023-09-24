@@ -2,7 +2,7 @@
 
 namespace common\services;
 
-use Shopwwi\LaravelCache\Cache;
+use think\facade\Cache;
 
 class TriggerService
 {
@@ -15,9 +15,9 @@ class TriggerService
     public static function updateMenu($adminId = null): bool
     {
         if (empty($adminId)) {
-            Cache::flush();
+            Cache::clear();
         } else {
-            Cache::forget('initAdmin_' . $adminId);
+            Cache::delete('initAdmin_' . $adminId);
         }
         return true;
     }
@@ -30,9 +30,9 @@ class TriggerService
     public static function updateNode($adminId = null): bool
     {
         if (empty($adminId)) {
-            Cache::flush();
+            Cache::clear();
         } else {
-            Cache::forget('allAuthNode_' . $adminId);
+            Cache::delete('allAuthNode_' . $adminId);
         }
         return true;
     }
@@ -43,7 +43,7 @@ class TriggerService
      */
     public static function updateSysConfig(): bool
     {
-        Cache::flush();
+        Cache::clear();
         return true;
     }
 

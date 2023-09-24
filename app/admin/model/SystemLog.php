@@ -4,26 +4,26 @@ namespace app\admin\model;
 
 use common\services\SystemLogService;
 use app\model\BaseModel;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use think\model\relation\HasOne;
 
 class SystemLog extends BaseModel
 {
 
-    public function __construct(array $attributes = [])
+    public function __construct(array $data = [])
     {
-        parent::__construct($attributes);
-        $this->table = 'system_log_' . date('Ym');
+        parent::__construct($data);
+        $this->name = 'system_log_' . date('Ym');
     }
 
     public function admin(): HasOne
     {
-        return $this->hasOne(SystemAdmin::class, 'id', 'admin_id')->select('id', 'username');
+        return $this->hasOne(SystemAdmin::class, 'id', 'admin_id')->field('id,username');
     }
 
     public function setMonth($month): static
     {
         SystemLogService::instance()->detectTable();
-        $this->table = 'system_log_' . $month;
+        $this->name = 'system_log_' . $month;
         return $this;
     }
 }

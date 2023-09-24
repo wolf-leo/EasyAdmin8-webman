@@ -4,9 +4,11 @@ namespace common\controller;
 
 use common\traits\Curd;
 use common\traits\JumpTrait;
-use Shopwwi\LaravelCache\Cache;
+use think\facade\Cache;
 use support\Response;
 use support\View;
+use think\Exception;
+use think\Validate;
 
 class AdminController
 {
@@ -25,9 +27,11 @@ class AdminController
     protected object $model;
 
     /**
-     * @var string
+     * @var array
      */
-    public string $order = 'id';
+    public array $order = [
+        'id' => 'desc',
+    ];
 
     /**
      * 不导出的字段信息
@@ -81,8 +85,8 @@ class AdminController
         $version              = Cache::get('version');
         if (empty($version)) {
             $version = sysconfig('site', 'site_version');
-            Cache::put('site_version', $version);
-            Cache::put('version', $version, 3600);
+            Cache::set('site_version', $version);
+            Cache::set('version', $version, 3600);
         }
         $data = [
             'adminModuleName'      => $adminModuleName,
@@ -101,7 +105,7 @@ class AdminController
     /**
      * @param array $args
      */
-    public function assign(array $args = [])
+    public function assign(array $args = []): void
     {
         View::assign($args);
     }
@@ -109,14 +113,33 @@ class AdminController
     public function fetch(string $template = '', array $args = []): Response
     {
         if (empty($template)) {
-            $basePath = DIRECTORY_SEPARATOR . $this->controller . DIRECTORY_SEPARATOR . $this->action;
+            $basePath = $this->controller . DIRECTORY_SEPARATOR . $this->action;
             if ($this->secondary) {
-                $template = 'admin' . DIRECTORY_SEPARATOR . $this->secondary . $basePath;
+                $template = $this->secondary . DIRECTORY_SEPARATOR . $basePath;
             } else {
-                $template = 'admin' . $basePath;
+                $template = $basePath;
             }
         }
         return view($template, $args);
+    }
+
+    /**
+     * 重写验证规则
+     * @param array $data
+     * @param array $rule
+     * @param array $message
+     * @param bool $batch
+     * @return bool
+     * @throws Exception
+     */
+    public function validate(array $data, array $rule, array $message = [], bool $batch = false): bool
+    {
+        $validate = new Validate;
+        $validate->rule($rule)->message($message)->batch($batch);
+        if (!$validate->check($data)) {
+            throw  new Exception($validate->getError());
+        }
+        return true;
     }
 
     /**
@@ -142,7 +165,7 @@ class AdminController
                 $excludes[$key] = $val;
                 continue;
             }
-            $op = isset($ops[$key]) && !empty($ops[$key]) ? $ops[$key] : '%*%';
+            $op = !empty($ops[$key]) ? $ops[$key] : '%*%';
 
             switch (strtolower($op)) {
                 case '=':
@@ -176,7 +199,7 @@ class AdminController
     public function selectList(): Response
     {
         $fields = request()->input('selectFields');
-        $data   = $this->model->select(explode(',', $fields))->get()->toArray();
+        $data   = $this->model->field($fields)->select()->toArray();
         return $this->success('', $data);
     }
 

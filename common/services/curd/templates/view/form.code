@@ -1,4 +1,3 @@
-@include('admin.layout.head')
 <div class="layuimini-container">
     <form id="app-form" class="layui-form layuimini-form">
         {{formList}}
@@ -10,4 +9,3 @@
 
     </form>
 </div>
-@include('admin.layout.foot')

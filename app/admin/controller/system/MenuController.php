@@ -8,9 +8,9 @@ use common\controller\AdminController;
 use common\services\TriggerService;
 use support\Request;
 use support\Response;
-use Respect\Validation\Validator;
 use common\services\annotation\ControllerAnnotation;
 use common\services\annotation\NodeAnnotation;
+use think\Exception;
 
 /**
  * @ControllerAnnotation(title="菜单管理")
@@ -35,13 +35,18 @@ class MenuController extends AdminController
         }
         if ($request->isAjax()) {
             $post = $request->post();
-            Validator::input($post, [
-                'title'  => Validator::notEmpty()->setName('菜单名称'),
-                'icon'   => Validator::notEmpty()->setName('菜单图标'),
-                'target' => Validator::notEmpty()->setName('target属性')
-            ]);
+            $rule = [
+                'title|菜单名称'    => 'require',
+                'icon|菜单图标'     => 'require',
+                'target|target属性' => 'require',
+            ];
             try {
-                $save = insertFields($this->model);
+                $this->validate($post, $rule);
+            } catch (Exception $exception) {
+                return $this->error($exception->getMessage());
+            }
+            try {
+                $save = $this->model->save($post);
             } catch (\Exception $e) {
                 return $this->error('保存失败');
             }
@@ -67,15 +72,19 @@ class MenuController extends AdminController
         if (empty($row)) return $this->error('数据不存在');
         if ($request->isAjax()) {
             $post = $request->post();
-            Validator::input($post, [
-                'title'  => Validator::notEmpty()->setName('菜单名称'),
-                'icon'   => Validator::notEmpty()->setName('菜单图标'),
-                'target' => Validator::notEmpty()->setName('target属性')
-            ]);
-            $params = [];
-            if ($row->pid == HOME_PID) $params['pid'] = HOME_PID;
+            $rule = [
+                'title|菜单名称'    => 'require',
+                'icon|菜单图标'     => 'require',
+                'target|target属性' => 'require',
+            ];
             try {
-                $save = updateFields($this->model, $row, $params);
+                $this->validate($post, $rule);
+            } catch (Exception $exception) {
+                return $this->error($exception->getMessage());
+            }
+            if ($row->pid == HOME_PID) $post['pid'] = HOME_PID;
+            try {
+                $save = $row->save($post);
             } catch (\Exception $e) {
                 return $this->error('保存失败');
             }
@@ -97,10 +106,15 @@ class MenuController extends AdminController
     public function modify(Request $request): Response
     {
         $post = $request->post();
-        Validator::input($post, [
-            'id'    => Validator::notEmpty()->setName('ID'),
-            'field' => Validator::notEmpty()->setName('字段'),
-        ]);
+        $rule = [
+            'id|ID'      => 'require',
+            'field|字段' => 'require',
+        ];
+        try {
+            $this->validate($post, $rule);
+        } catch (Exception $exception) {
+            return $this->error($exception->getMessage());
+        }
         $row = $this->model->find($post['id']);
         if (empty($row)) {
             return $this->error('数据不存在');
@@ -127,11 +141,11 @@ class MenuController extends AdminController
         if (!$request->isAjax()) return $this->error();
         $id = $request->input('id');
         if (!is_array($id)) $id = (array)$id;
-        $row = $this->model->whereIn('id', $id)->get()->toArray();
+        $row = $this->model->whereIn('id', $id)->field('id')->select()->toArray();
         if (empty($row)) return $this->error('数据不存在');
         try {
             $save = $this->model->whereIn('id', $id)->delete();
-        } catch (\PDOException | \Exception $e) {
+        } catch (\PDOException|\Exception $e) {
             return $this->error('删除失败:' . $e->getMessage());
         }
         if ($save) {
@@ -148,7 +162,7 @@ class MenuController extends AdminController
     public function getMenuTips(Request $request): Response
     {
         $node = $request->input('keywords');
-        $list = SystemNode::where('node', 'Like', "%{$node}%")->limit(10)->select('node', 'title')->get()->toArray();
+        $list = SystemNode::where('node', 'Like', "%{$node}%")->limit(10)->field('node,title')->select()->toArray();
         return json([
                         'code'    => 0,
                         'content' => $list,

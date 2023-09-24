@@ -2,7 +2,7 @@
 
 namespace common\services;
 
-use support\Db;
+use think\facade\Db;
 
 class MenuService
 {
@@ -24,12 +24,12 @@ class MenuService
 
     public function getHomeInfo(): array
     {
-        $data = Db::table('system_menu')
+        $data = Db::name('system_menu')
             ->whereNull('delete_time')
             ->where('pid', HOME_PID)
-            ->select('title', 'icon', 'href')->first();
-        !empty($data) && $data->href = __url('/' . $data->href);
-        return $data ? get_object_vars($data) : [];
+            ->field('title,icon,href')->find();
+        !empty($data) && $data['href'] = __url('/' . $data['href']);
+        return $data ?: [];
     }
 
     public function getMenuTree(): array
@@ -60,14 +60,13 @@ class MenuService
 
     protected function getMenuData()
     {
-        $menuData = Db::table('system_menu')
-            ->select('id', 'pid', 'title', 'icon', 'href', 'target')
+        $menuData = Db::name('system_menu')
+            ->field('id,pid,title,icon,href,target')
             ->whereNull('delete_time')
-            ->where([['status', '=', '1'], ['pid', '<>', HOME_PID]])
-            ->orderByDesc('sort')->orderBy('id')
-            ->get()->map(function ($value) {
-                return (array)$value;
-            })->toArray();
+            ->where('status', 1)
+            ->where('pid', '<>', HOME_PID)
+            ->order('sort', 'desc')->order('id')
+            ->select()->toArray();
         return $menuData;
     }
 

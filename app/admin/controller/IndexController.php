@@ -5,7 +5,8 @@ namespace app\admin\controller;
 use app\admin\model\SystemAdmin;
 use app\admin\model\SystemQuick;
 use common\controller\AdminController;
-use support\Db;
+use think\Exception;
+use think\facade\Db;
 use support\Request;
 use support\Response;
 
@@ -20,12 +21,13 @@ class IndexController extends AdminController
 
     public function welcome(Request $request): Response
     {
+        $branch        = file_get_contents(base_path() . DIRECTORY_SEPARATOR . 'branch');
         $webmanVersion = \Composer\InstalledVersions::getVersion('workerman/webman-framework');
-        $mysqlVersion  = Db::select("select VERSION() as version")[0]->version ?? '未知';
+        $mysqlVersion  = Db::query("select VERSION() as version")[0]['version'] ?? '未知';
         $phpVersion    = phpversion();
         $versions      = compact('webmanVersion', 'mysqlVersion', 'phpVersion');
-        $quicks        = SystemQuick::where('status', 1)->select('id', 'title', 'icon', 'href')->orderByDesc('sort')->limit(8)->get()->toArray();
-        return $this->fetch('', compact('quicks', 'versions'));
+        $quicks        = SystemQuick::where('status', 1)->field('id,title,icon,href')->order('sort', 'desc')->limit(8)->select()->toArray();
+        return $this->fetch('', compact('quicks', 'versions', 'branch'));
         return $this->fetch();
     }
 
@@ -37,8 +39,11 @@ class IndexController extends AdminController
         if (empty($row)) return $this->error('用户信息不存在');
         if ($request->isAjax()) {
             if ($this->isDemo) return $this->error('演示环境下不允许修改');
+            $post = $request->post();
             try {
-                $save = updateFields($model, $row);
+                $save = $row
+                    ->allowField(['head_img', 'phone', 'remark', 'update_time'])
+                    ->save($post);
             } catch (\Exception $e) {
                 return $this->error('保存失败:' . $e->getMessage());
             }
@@ -57,16 +62,14 @@ class IndexController extends AdminController
         if ($request->isAjax()) {
             $post = request()->post();
             if ($this->isDemo) return $this->error('演示环境下不允许修改');
-            $rules     = [
-                'password'       => 'required',
-                'password_again' => 'required',
+            $rule = [
+                'password|密码'           => 'require',
+                'password_again|确认密码' => 'require',
             ];
-            $validator = Validator::make($post, $rules, [
-                'password'       => '密码不能为空或格式错误',
-                'password_again' => '确认密码不能为空或格式错误',
-            ]);
-            if ($validator->fails()) {
-                return $this->error($validator->errors()->first());
+            try {
+                $this->validate($post, $rule);
+            } catch (Exception $exception) {
+                return $this->error($exception->getMessage());
             }
             if ($post['password'] != $post['password_again']) {
                 return $this->error('两次密码输入不一致');

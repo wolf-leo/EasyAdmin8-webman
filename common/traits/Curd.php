@@ -6,7 +6,7 @@ use common\services\tool\CommonTool;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Respect\Validation\Validator;
-use support\Db;
+use think\facade\Db;
 use support\Request;
 use support\Response;
 use common\services\annotation\ControllerAnnotation;
@@ -31,7 +31,7 @@ trait Curd
         }
         list($page, $limit, $where) = $this->buildTableParams();
         $count = $this->model->where($where)->count();
-        $list  = $this->model->where($where)->orderByDesc($this->order)->paginate($limit)->items();
+        $list  = $this->model->where($where)->order($this->order)->limit($limit)->select()->toArray();
         $data  = [
             'code'  => 0,
             'msg'   => '',
@@ -47,8 +47,9 @@ trait Curd
     public function add(Request $request): Response
     {
         if ($request->isAjax()) {
+            $post = $request->post();
             try {
-                $save = insertFields($this->model);
+                $save = $this->model->save($post);
             } catch (\Exception $e) {
                 return $this->error('保存失败:' . $e->getMessage());
             }
@@ -66,8 +67,9 @@ trait Curd
         $row = $this->model->find($id);
         if (empty($row)) return $this->error('数据不存在');
         if ($request->isAjax()) {
+            $post = $request->post();
             try {
-                $save = updateFields($this->model, $row);
+                $save = $row->save($post);
             } catch (\PDOException|\Exception $e) {
                 return $this->error('保存失败:' . $e->getMessage());
             }
@@ -85,7 +87,7 @@ trait Curd
         if (!$request->isAjax()) return $this->error();
         $id = $request->input('id');
         if (!is_array($id)) $id = (array)$id;
-        $row = $this->model->whereIn('id', $id)->get()->toArray();
+        $row = $this->model->whereIn('id', $id)->field('id')->select()->toArray();
         if (empty($row)) return $this->error('数据不存在');
         try {
             $save = $this->model->whereIn('id', $id)->delete();
@@ -107,18 +109,16 @@ trait Curd
         list($page, $limit, $where) = $this->buildTableParams();
         $tableName = $this->model->getTable();
         $tableName = CommonTool::humpToLine(lcfirst($tableName));
-        $prefix    = config('database.connections.mysql.prefix');
-        $dbList    = Db::select("show full columns from {$prefix}{$tableName}");
+        $dbList    = Db::query("show full columns from {$tableName}");
         $header    = [];
         foreach ($dbList as $vo) {
-            $comment = !empty($vo->Comment) ? $vo->Comment : $vo->Field;
-            if (!in_array($vo->Field, $this->noExportFields)) {
-                $header[] = [$comment, $vo->Field];
+            $comment = !empty($vo['Comment']) ? $vo['Comment'] : $vo['Field'];
+            if (!in_array($vo['Field'], $this->noExportFields)) {
+                $header[] = [$comment, $vo['Field']];
             }
         }
-        $list = $this->model->where($where)->limit(100000)->orderByDesc('id')->get();
+        $list = $this->model->where($where)->limit(100000)->order('id', 'desc')->select()->toArray();
         if (empty($list)) return $this->error('暂无数据');
-        $list     = $list->toArray();
         $fileName = '后台导出文件';
         try {
             $excelKeys = [];

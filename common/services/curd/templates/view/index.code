@@ -1,12 +1,10 @@
-@include('admin.layout.head')
 <div class="layuimini-container">
     <div class="layuimini-main">
         <table id="currentTable" class="layui-table layui-hide"
-               data-auth-add="{{auths('{{controllerUrl}}/add')}}"
-               data-auth-edit="{{auths('{{controllerUrl}}/edit')}}"
-               data-auth-delete="{{auths('{{controllerUrl}}/delete')}}"
+               data-auth-add="{:auths('{{controllerUrl}}/add')}"
+               data-auth-edit="{:auths('{{controllerUrl}}/edit')}"
+               data-auth-delete="{:auths('{{controllerUrl}}/delete')}"
                lay-filter="currentTable">
         </table>
     </div>
 </div>
-@include('admin.layout.foot')

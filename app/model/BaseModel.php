@@ -2,55 +2,25 @@
 
 namespace app\model;
 
-use Illuminate\Database\Eloquent\Model;
-use support\Db;
+use think\Model;
 
 class BaseModel extends Model
 {
     /**
-     * 与模型关联的数据表。
-     *
+     * 自动时间戳类型
      * @var string
      */
-    protected $table = "";
+    protected $autoWriteTimestamp = true;
 
     /**
-     * 指示模型是否主动维护时间戳。
-     *
-     * @var bool
+     * 添加时间
+     * @var string
      */
-    public $timestamps = false;
-
-    protected $casts = [
-        'create_time' => 'datetime:Y-m-d H:i:s',
-        'update_time' => 'datetime:Y-m-d H:i:s',
-        'delete_time' => 'datetime:Y-m-d H:i:s',
-    ];
-
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $calledClass = get_called_class();
-        $className   = substr(strrchr($calledClass, '\\'), 1);
-        $this->table = $this->getTableName($className);
-    }
+    protected $createTime = 'create_time';
 
     /**
-     * @param string $className
-     * @return string
+     * 更新时间
+     * @var string
      */
-    public function getTableName(string $className): string
-    {
-        return parse_name($className);
-    }
-
-    /**
-     * @param array $data
-     * @return bool
-     */
-    public function addAll(array $data = []): bool
-    {
-        return Db::table($this->getTable())->insert($data);
-    }
-
+    protected $updateTime = 'update_time';
 }

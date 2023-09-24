@@ -1,0 +1,202 @@
+<link rel="stylesheet" href="/static/admin/css/welcome.css?v={$version}" media="all">
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md8">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header"><i class="fa fa-warning icon"></i>数据统计</div>
+                            <div class="layui-card-body">
+                                <div class="welcome-module">
+                                    <div class="layui-row layui-col-space10">
+                                        <div class="layui-col-xs6">
+                                            <div class="panel layui-bg-number">
+                                                <div class="panel-body">
+                                                    <div class="panel-title">
+                                                        <span class="label pull-right layui-bg-blue">实时</span>
+                                                        <h5>用户统计</h5>
+                                                    </div>
+                                                    <div class="panel-content">
+                                                        <h1 class="no-margins">1234</h1>
+                                                        <small>当前分类总记录数</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-xs6">
+                                            <div class="panel layui-bg-number">
+                                                <div class="panel-body">
+                                                    <div class="panel-title">
+                                                        <span class="label pull-right layui-bg-cyan">实时</span>
+                                                        <h5>商品统计</h5>
+                                                    </div>
+                                                    <div class="panel-content">
+                                                        <h1 class="no-margins">1234</h1>
+                                                        <small>当前分类总记录数</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-xs6">
+                                            <div class="panel layui-bg-number">
+                                                <div class="panel-body">
+                                                    <div class="panel-title">
+                                                        <span class="label pull-right layui-bg-orange">实时</span>
+                                                        <h5>浏览统计</h5>
+                                                    </div>
+                                                    <div class="panel-content">
+                                                        <h1 class="no-margins">1234</h1>
+                                                        <small>当前分类总记录数</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-xs6">
+                                            <div class="panel layui-bg-number">
+                                                <div class="panel-body">
+                                                    <div class="panel-title">
+                                                        <span class="label pull-right layui-bg-green">实时</span>
+                                                        <h5>订单统计</h5>
+                                                    </div>
+                                                    <div class="panel-content">
+                                                        <h1 class="no-margins">1234</h1>
+                                                        <small>当前分类总记录数</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header"><i class="fa fa-credit-card icon icon-blue"></i>快捷入口</div>
+                            <div class="layui-card-body">
+                                <div class="welcome-module">
+                                    <div class="layui-row layui-col-space10 layuimini-qiuck">
+                                        {volist name='quicks' id='vo'}
+                                        <div class="layui-col-xs3 layuimini-qiuck-module">
+                                            <a layuimini-content-href="{:__url($vo.href)}" data-title="{$vo.title}">
+                                                <i class="{$vo.icon}"></i>
+                                                <cite>{$vo.title}</cite>
+                                            </a>
+                                        </div>
+                                        {/volist}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header"><i class="fa fa-line-chart icon"></i>报表统计</div>
+                            <div class="layui-card-body">
+                                <div id="echarts-records" style="width: 100%;min-height:500px"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-col-md4">
+
+                <div class="layui-card">
+                    <div class="layui-card-header"><i class="fa fa-fire icon"></i>版本信息</div>
+                    <div class="layui-card-body layui-text">
+                        <table class="layui-table">
+                            <colgroup>
+                                <col width="150">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <td>框架名称</td>
+                                <td>
+                                    <button type="button" class="layui-btn layui-btn-xs layui-btn-primary">EasyAdmin8-webman</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>分支版本</td>
+                                <td>
+                                    <button type="button" class="layui-btn layui-btn-xs layui-btn-primary">{$branch|default="main"}</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>webman版本</td>
+                                <td>
+                                    <button type="button" class="layui-btn layui-btn-xs layui-btn-primary">{$versions.webmanVersion??''}</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>PHP版本</td>
+                                <td>
+                                    <button type="button" class="layui-btn layui-btn-xs layui-btn-primary">{$versions.phpVersion??''}</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>MySQL版本</td>
+                                <td>
+                                    <button type="button" class="layui-btn layui-btn-xs layui-btn-primary">{$versions.mysqlVersion??''}</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Layui版本</td>
+                                <td>
+                                    <button type="button" class="layui-btn layui-btn-xs layui-btn-primary" id="layui-version">-</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>主要特色</td>
+                                <td>
+                                    <span class="layui-btn layui-btn-xs layui-btn-primary layui-border">零门槛</span>
+                                    <span class="layui-btn layui-btn-xs layui-btn-primary layui-border">响应式</span>
+                                    <span class="layui-btn layui-btn-xs layui-btn-primary layui-border">清爽</span>
+                                    <span class="layui-btn layui-btn-xs layui-btn-primary layui-border">极简</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Gitee</td>
+                                <td>
+                                    <div class="layui-btn-container">
+                                        <a href='https://gitee.com/wolf18/EasyAdmin8-webman/tree/thinkphp/' target="_blank">
+                                            <img src='https://gitee.com/wolf18/EasyAdmin8-webman/badge/star.svg?theme=dark' alt='star'/>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Github</td>
+                                <td>
+                                    <a href="https://github.com/wolf-leo/EasyAdmin8-webman/tree/thinkphp" target="_blank" style="text-decoration: none;">
+                                        <i class="layui-icon layui-icon-github" style="font-size: 25px; color: #333333;"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="layui-card">
+                    <div class="layui-card-header"><i class="fa fa-paper-plane-o icon"></i>作者心语</div>
+                    <div class="layui-card-body layui-text layadmin-text">
+                        <p>本模板基于layui2.8.x以及font-awesome-4.7.0进行实现。layui开发文档地址：<a class="layui-btn layui-btn-xs layui-btn-danger" target="_blank" href="http://layui.dev/docs">layui文档</a></p>
+                        <p class="layui-red">备注：此后台框架永久开源，但请勿进行出售或者上传到任何素材网站，否则将追究相应的责任。</p>
+                    </div>
+                </div>
+
+                <div class="layui-card">
+                    <div class="layui-card-header"><i class="fa fa-qq icon"></i>QQ交流群</div>
+                    <div class="layui-card-body layui-text layadmin-text">
+                        <img src="/static/common/images/EasyAdmin8-webman.png">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

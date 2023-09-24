@@ -14,7 +14,7 @@ class SystemAuth extends BaseModel
     {
         $checkNodeList = SystemAuthNode::where('auth_id', $authId)->pluck('node_id')->toArray();
         $systemNode    = new SystemNode();
-        $nodeList      = $systemNode->where('is_auth', 1)->select(explode(',', 'id,node,title,type,is_auth'))->get()->toArray();
+        $nodeList      = $systemNode->where('is_auth', 1)->field('id,node,title,type,is_auth')->select()->toArray();
         $newNodeList   = [];
         foreach ($nodeList as $vo) {
             if ($vo['type'] == 1) {

@@ -29,7 +29,7 @@ class GoodsController extends AdminController
         if (!$request->isAjax()) return $this->fetch();
         list($page, $limit, $where) = $this->buildTableParams();
         $count = $this->model->where($where)->count();
-        $list  = $this->model->where($where)->with(['cate'])->orderByDesc($this->order)->paginate($limit)->items();
+        $list  = $this->model->where($where)->with(['cate'])->order($this->order)->paginate($limit)->items();
         $data  = [
             'code'  => 0,
             'msg'   => '',
@@ -50,9 +50,9 @@ class GoodsController extends AdminController
         if ($request->isAjax()) {
             $post = $request->post();
             try {
-                $params['total_stock'] = $row->total_stock + $post['stock'];
-                $params['stock']       = $row->stock + $post['stock'];
-                $save                  = updateFields($this->model, $row, $params);
+                $post['total_stock'] = $row->total_stock + $post['stock'];
+                $post['stock']       = $row->stock + $post['stock'];
+                $save                = $row->save($post);
             } catch (\Exception $e) {
                 return $this->error('保存失败');
             }

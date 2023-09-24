@@ -1,7 +1,6 @@
 <?php
 
-use Shopwwi\LaravelCache\Cache;
-use support\Db;
+use think\facade\Cache;
 
 /**
  * Here is your custom functions.
@@ -62,11 +61,11 @@ if (!function_exists('sysconfig')) {
             if (!empty($name)) {
                 $where['name'] = $name;
                 $value         = \app\admin\model\SystemConfig::where($where)->value('value');
-                Cache::put("sysconfig_{$group}_{$name}", $value, 3600);
+                Cache::set("sysconfig_{$group}_{$name}", $value, 3600);
             } else {
-                $res   = \app\admin\model\SystemConfig::where($where)->select('value', 'name')->get()->toArray();
+                $res   = \app\admin\model\SystemConfig::where($where)->field('value,name')->select()->toArray();
                 $value = collect($res)->pluck('value', 'name')->toArray();
-                Cache::put("sysconfig_{$group}", $value, 3600);
+                Cache::set("sysconfig_{$group}", $value, 3600);
             }
         }
         return $value;
@@ -108,47 +107,6 @@ if (!function_exists('json')) {
     function json(array $data = []): \support\Response
     {
         return response()->json($data);
-    }
-
-}
-
-if (!function_exists('insertFields')) {
-
-    function insertFields($model, array $params = [])
-    {
-        $post   = request()->post();
-        $fields = Db::Schema()->getColumnListing($model->getTable());
-        if (in_array('create_time', $fields)) $post['create_time'] = time();
-        return extracted($post, $fields, $params, $model);
-    }
-
-}
-if (!function_exists('updateFields')) {
-
-    function updateFields($model, $row, array $params = [])
-    {
-        $post   = request()->post();
-        $fields = Db::Schema()->getColumnListing($model->getTable());
-        if (in_array('update_time', $fields)) $post['update_time'] = time();
-        return extracted($post, $fields, $params, $row);
-    }
-
-    /**
-     * @param mixed $post
-     * @param array $fields
-     * @param array $params
-     * @param $row
-     * @return mixed
-     */
-    function extracted(mixed $post, array $fields, array $params, $row): mixed
-    {
-        $tableColumn = array_keys($post);
-        $fields      = array_intersect($tableColumn, $fields);
-        foreach ($fields as $value) {
-            if (isset($params[$value])) $post[$value] = $params[$value];
-            $row->$value = $post[$value] ?? '';
-        }
-        return $row->save();
     }
 
 }
