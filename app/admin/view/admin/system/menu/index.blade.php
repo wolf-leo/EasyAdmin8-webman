@@ -19,8 +19,8 @@
 </div>
 <script type="text/html" id="toolbar">
     <button class="layui-btn layui-btn-sm layuimini-btn-primary" data-treetable-refresh><i class="fa fa-refresh"></i></button>
-    <button class="layui-btn layui-btn-normal layui-btn-sm {if !auth('system/menu/add')}layui-hide{/if}" data-open="system/menu/add" data-title="添加"><i class="fa fa-plus"></i> 添加</button>
-    <button class="layui-btn layui-btn-sm layui-btn-danger {if !auth('system/menu/delete')}layui-hide{/if}" data-url="system/menu/delete" data-treetable-delete="currentTableRenderId"><i class="fa fa-trash-o"></i> 删除</button>
+    <button class="layui-btn layui-btn-normal layui-btn-sm {if !auths('system/menu/add')}layui-hide{/if}" data-open="system/menu/add" data-title="添加"><i class="fa fa-plus"></i> 添加</button>
+    <button class="layui-btn layui-btn-sm layui-btn-danger {if !auths('system/menu/delete')}layui-hide{/if}" data-url="system/menu/delete" data-treetable-delete="currentTableRenderId"><i class="fa fa-trash-o"></i> 删除</button>
 </script>
 
 @include('admin.layout.foot')
