@@ -21,11 +21,11 @@
 ```
 1.下载安装包
 
-  git clone https://github.com/wolf-leo/EasyAdmin8-webman
+  git clone https://github.com/wolf-leo/EasyAdmin8-webman/tree/thinkphp
 
   或者
 
-  git clone https://gitee.com/wolf18/EasyAdmin8-webman
+  git clone https://gitee.com/wolf18/EasyAdmin8-webman/tree/thinkphp
 
 2.安装依赖包（确保 PHP 版本 >= 8.0）
 
