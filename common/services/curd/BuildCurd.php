@@ -572,7 +572,7 @@ class BuildCurd
         $nodeArray   = explode($this->DS, $this->controllerFilename);
         $formatArray = [];
         foreach ($nodeArray as $vo) {
-            $formatArray[] = CommonTool::humpToLine(lcfirst($vo));
+            $formatArray[] = lcfirst($vo);
         }
         $this->controllerUrl = implode('/', $formatArray);
         $this->viewFilename  = implode($this->DS, $formatArray);
