@@ -66,7 +66,7 @@ class AdminController extends Controller
             }
             return $save ? $this->success('保存成功') : $this->error('保存失败');
         }
-        $row->auth_ids = explode(',', $row->auth_ids);
+        $row->auth_ids = explode(',', $row->auth_ids ?: '');
         $this->assign(compact('row'));
         return $this->fetch();
     }
