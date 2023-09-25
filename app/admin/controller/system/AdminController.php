@@ -66,7 +66,7 @@ class AdminController extends Controller
             }
             return $save ? $this->success('保存成功') : $this->error('保存失败');
         }
-        $row->auth_ids = explode(',', $row->auth_ids);
+        $row->auth_ids = explode(',', $row->auth_ids ?: '');
         $this->assign(compact('row'));
         return $this->fetch();
     }
@@ -82,7 +82,7 @@ class AdminController extends Controller
         if ($request->isAjax()) {
             $post = $request->post();
             $rule = [
-                'password|密码'          => 'require',
+                'password|密码'           => 'require',
                 'password_again|确认密码' => 'require',
             ];
             try {
