@@ -16,8 +16,4 @@ use support\view\ThinkPHP;
 
 return [
     'handler' => ThinkPHP::class,
-    'options' => [
-        'layout_on'   => true,
-        'layout_name' => 'layout/layout',
-    ],
 ];

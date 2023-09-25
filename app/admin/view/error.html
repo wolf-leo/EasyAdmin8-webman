@@ -128,19 +128,19 @@
     </style>
 </head>
 <body>
-@php($codeText = $code == 1 ? 'success' : ($code == 0 ? 'error' : 'info'))
+{php}$codeText = $code == 1 ? 'success' : ($code == 0 ? 'error' : 'info');{/php}
 
-<div class="system-message {{$codeText}}">
+<div class="system-message {$codeText}">
     <div class="image">
-        <img src="/static/common/images/{{$codeText}}.svg" alt="" width="150"/>
+        <img src="/static/common/images/{$codeText}.svg" alt="" width="150"/>
     </div>
-    <h1>{{strip_tags($msg)}}</h1>
+    <h1>{:strip_tags($msg)}</h1>
     <p class="jump">
-        页面将在 <span id="wait">{{$wait}}</span> 秒后自动跳转
+        页面将在 <span id="wait">{$wait}</span> 秒后自动跳转
     </p>
     <p class="clearfix">
         <a href="#" onClick="javascript :history.back(-1);" class="btn btn-grey">返回上一页</a>
-        <a id="href" href="{{$url}}" class="btn btn-primary">立即跳转</a>
+        <a id="href" href="{$url}" class="btn btn-primary">立即跳转</a>
     </p>
 </div>
 <script type="text/javascript">

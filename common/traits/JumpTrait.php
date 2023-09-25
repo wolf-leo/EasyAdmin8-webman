@@ -83,7 +83,7 @@ trait JumpTrait
             'wait'      => $wait,
             '__token__' => '',
         ];
-        if ($this->getResponseType() == "html") return blade_view('error', $result);
+        if ($this->getResponseType() == "html") return view('error', $result);
         return json($result);
     }
 
