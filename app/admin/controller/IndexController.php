@@ -27,7 +27,6 @@ class IndexController extends AdminController
         $versions      = compact('webmanVersion', 'mysqlVersion', 'phpVersion', 'branch');
         $quicks        = SystemQuick::where('status', 1)->select('id', 'title', 'icon', 'href')->orderByDesc('sort')->limit(8)->get()->toArray();
         return $this->fetch('', compact('quicks', 'versions'));
-        return $this->fetch();
     }
 
     public function editAdmin(Request $request): Response
