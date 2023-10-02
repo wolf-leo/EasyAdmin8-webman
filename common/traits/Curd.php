@@ -5,7 +5,7 @@ namespace common\traits;
 use common\services\tool\CommonTool;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use Respect\Validation\Validator;
+use think\Exception;
 use think\facade\Db;
 use support\Request;
 use support\Response;
@@ -155,10 +155,15 @@ trait Curd
     {
         if (!$request->isAjax()) return $this->error();
         $post = $request->post();
-        Validator::input($post, [
-            'id'    => Validator::notEmpty()->setName('ID'),
-            'field' => Validator::notEmpty()->setName('字段'),
-        ]);
+        $rule = [
+            'id|ID'      => 'require',
+            'field|字段' => 'require',
+        ];
+        try {
+            $this->validate($post, $rule);
+        } catch (Exception $exception) {
+            return $this->error($exception->getMessage());
+        }
         $row = $this->model->find($post['id']);
         if (empty($row)) {
             return $this->error('数据不存在');
