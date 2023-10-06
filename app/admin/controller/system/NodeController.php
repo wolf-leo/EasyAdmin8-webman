@@ -53,10 +53,8 @@ class NodeController extends AdminController
         $model = new SystemNode();
         try {
             if ($force == 1) {
-                $where[]        = [function ($query) use ($nodeList) {
-                    $query->whereIn('node', array_column($nodeList, 'node'));
-                }];
-                $updateNodeList = $model->where($where)->get()->toArray();
+                $where[]        = ['node', 'IN', array_column($nodeList, 'node')];
+                $updateNodeList = $model->where($where)->select()->toArray();
                 $formatNodeList = [];
                 array_map(function ($value) use (&$formatNodeList) {
                     $formatNodeList[$value['node']]['title']   = $value['title'];
@@ -73,7 +71,7 @@ class NodeController extends AdminController
                     }
                 }
             }
-            $existNodeList = $model->select(explode(',', 'node,title,type,is_auth'))->get()->toArray();
+            $existNodeList = $model->field('node,title,type,is_auth')->select()->toArray();
             foreach ($nodeList as $key => &$vo) {
                 $vo['create_time'] = $vo['update_time'] = time();
                 foreach ($existNodeList as $v) {
@@ -83,7 +81,7 @@ class NodeController extends AdminController
                     }
                 }
             }
-            $model->addAll($nodeList);
+            $model->saveAll($nodeList);
             TriggerService::updateNode();
         } catch (\Exception $e) {
             return $this->error('节点更新失败:' . $e->getMessage());
@@ -100,7 +98,7 @@ class NodeController extends AdminController
         $nodeList = (new NodeService())->getNodeList();
         $model    = new SystemNode();
         try {
-            $existNodeList  = $model->select(explode(',', 'id,node,title,type,is_auth'))->get()->toArray();
+            $existNodeList  = $model->field('id,node,title,type,is_auth')->select()->toArray();
             $formatNodeList = [];
             array_map(function ($value) use (&$formatNodeList) {
                 $formatNodeList[$value['node']] = $value['title'];

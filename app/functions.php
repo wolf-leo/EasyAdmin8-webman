@@ -63,8 +63,7 @@ if (!function_exists('sysconfig')) {
                 $value         = \app\admin\model\SystemConfig::where($where)->value('value');
                 Cache::set("sysconfig_{$group}_{$name}", $value, 3600);
             } else {
-                $res   = \app\admin\model\SystemConfig::where($where)->field('value,name')->select()->toArray();
-                $value = collect($res)->pluck('value', 'name')->toArray();
+                $value = \app\admin\model\SystemConfig::where($where)->column('value', 'name');
                 Cache::set("sysconfig_{$group}", $value, 3600);
             }
         }

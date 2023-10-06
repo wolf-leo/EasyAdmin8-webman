@@ -60,7 +60,7 @@ class AuthController extends AdminController
                         'node_id' => $vo,
                     ];
                 }
-                $authNode->addAll($saveAll);
+                $authNode->saveAll($saveAll);
             }
             TriggerService::updateMenu();
         } catch (\Exception $e) {

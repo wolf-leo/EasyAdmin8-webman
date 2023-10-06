@@ -74,7 +74,7 @@ class AuthService
             return true;
         }
         // 判断权限验证开关
-        if ($this->config['auth_on'] == false) {
+        if (!$this->config['auth_on']) {
             return true;
         }
         // 判断是否需要获取当前节点
@@ -87,7 +87,7 @@ class AuthService
         if (!isset($this->nodeList[$node])) {
             return false;
         }
-        $nodeInfo = get_object_vars($this->nodeList[$node]);
+        $nodeInfo = $this->nodeList[$node];
         if ($nodeInfo['is_auth'] == 0) {
             return true;
         }
@@ -108,12 +108,17 @@ class AuthService
      */
     public function getCurrentNode(): string
     {
-        $controllerClass = explode('\\', request()->controller);
-        $controller      = strtolower(str_replace('Controller', '', array_pop($controllerClass)));
-        $action          = $request->action ?? 'index';
-        $_lastCtr        = array_pop($controllerClass);
-        $secondary       = $_lastCtr == 'controller' ? '' : $_lastCtr;
-        return $secondary . '/' . ($controller ?? '') . '/' . ($action ?? '');
+        $path = explode('admin/', request()->path());
+        $d    = $path[1] ?? '';
+        if (empty($d)) {
+            $controllerClass = explode('\\', request()->controller);
+            $controller      = strtolower(str_replace('Controller', '', array_pop($controllerClass)));
+            $action          = $request->action ?? 'index';
+            $_lastCtr        = array_pop($controllerClass);
+            $secondary       = $_lastCtr == 'controller' ? '' : $_lastCtr;
+            $d               = $secondary . '/' . ($controller ?? '') . '/' . ($action ?? '');
+        }
+        return $d;
     }
 
     /**
@@ -132,14 +137,14 @@ class AuthService
             $nodeIds  = Db::name($this->config['system_auth_node'])
                 ->whereIn('auth_id', explode(',', $adminInfo['auth_ids']))
                 ->column('node_id');
-            $nodeList = Db::name($this->config['system_node'])->whereIn('id', $nodeIds)->select()->toArray();
+            $nodeList = Db::name($this->config['system_node'])->whereIn('id', $nodeIds)->column('node', 'node');
         }
         return $nodeList;
     }
 
     public function getNodeList(): array
     {
-        $list = Db::name($this->config['system_node'])->order('node', 'desc')->select()->toArray();
+        $list = Db::name($this->config['system_node'])->column('id,node,title,type,is_auth', 'node');
         return $list;
     }
 
