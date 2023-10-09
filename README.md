@@ -1,15 +1,17 @@
 ## 项目介绍
+- 请注意，该分支为`main`，主要用到了`Laravel`相关组件
+- 如果你习惯使用`ThinkPHP`开发，请使用`thinkphp`分支 
+- [https://github.com/wolf-leo/EasyAdmin8-webman/tree/thinkphp/](https://github.com/wolf-leo/EasyAdmin8-webman/tree/thinkphp/)
+- [https://gitee.com/wolf18/EasyAdmin8-webman/tree/thinkphp/](https://gitee.com/wolf18/EasyAdmin8-webman/tree/thinkphp/)
 
 > `EasyAdmin8-webman` 在 [`EasyAdmin`](https://gitee.com/zhongshaofa/easyadmin) 的基础上使用 webman 最新版重构，PHP 最低版本要求不低于 8.0
 >
 > webman 和 layui v2.8.x 的快速开发的后台管理系统。
 >
-> 请注意，该分支为`main`，主要用到了`Laravel`相关组件
->
 > 项目地址：[http://easyadmin8.top](http://easyadmin8.top)
->
+> 
 > 演示地址：[http://webman.easyadmin8.top/admin](http://webman.easyadmin8.top/admin)
->
+> 
 >【如果不能访问，可以自行本地搭建预览或参考下方界面预览图】
 
 ## 安装教程
