@@ -6,8 +6,12 @@ return [
     // 超级管理员ID
     'super_admin_id'       => 1,
 
-    // 后台别名 默认后台访问路径
-    'admin_alias_name'     => getenv('EASYADMIN.ADMIN', 'admin'),
+    // 后台默认路径
+    'admin_alias_name'     => 'admin',
+    // 是否开启后台域名绑定
+    'admin_domain_status'  => env('EASYADMIN.ADMIN_DOMAIN_STATUS'),
+    // 后台域名绑定地址
+    'admin_domain'         => env('EASYADMIN.ADMIN_DOMAIN'),
 
     // 不需要验证登录的控制器
     'no_login_controller'  => [

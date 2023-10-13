@@ -27,7 +27,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
             shade: [0.02, '#000'],
         },
         url: function (url) {
-            return '/' + CONFIG.ADMIN + '/' + url;
+            return CONFIG.ADMIN ? '/' + CONFIG.ADMIN + '/' + url : '/' + url;
         },
         headers: function () {
             return {'X-CSRF-TOKEN': init.csrf_token};

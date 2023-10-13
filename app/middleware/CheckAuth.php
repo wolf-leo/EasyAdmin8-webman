@@ -22,9 +22,14 @@ class CheckAuth implements MiddlewareInterface
     {
         // 检测 .env 文件，正式环境后可删除
         if (!is_file(base_path() . DIRECTORY_SEPARATOR . ".env")) return $this->error('请配置.env文件');
-
+        $adminConfig         = config('admin');
+        $admin_domain_status = $adminConfig['admin_domain_status']; // 是否开启了后台域名绑定功能
+        if (!$admin_domain_status) {
+            if ($request->host(true) == $adminConfig['admin_domain']) {
+                return json(['code' => -1, 'msg' => '访问地址异常']);
+            }
+        }
         $adminId         = session('admin.id', 0);
-        $adminConfig     = config('admin');
         $controllerClass = explode('\\', $request->controller);
         $controller      = strtolower(str_replace('Controller', '', array_pop($controllerClass)));
         $action          = $request->action ?? 'index';

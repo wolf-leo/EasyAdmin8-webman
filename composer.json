@@ -42,7 +42,8 @@
     "webman/captcha": "^1.0",
     "aliyuncs/oss-sdk-php": "^2.6",
     "qcloud/cos-sdk-v5": "^2.6",
-    "qiniu/php-sdk": "^7.11"
+    "qiniu/php-sdk": "^7.11",
+    "webman/domain": "^1.0"
   },
   "suggest": {
     "ext-event": "For better performance. "

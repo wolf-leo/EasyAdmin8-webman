@@ -19,8 +19,10 @@ const SUPER_ADMIN_ID = 1;
  */
 function __url(string $url = '', array $vars = [], bool $suffix = false): string
 {
-    $url = config('admin')['admin_alias_name'] . (str_starts_with($url, '/') ? $url : "/{$url}");
-    return "/{$url}";
+    if (!config('admin.admin_domain_status')) {
+        $url = "/" . (config('admin')['admin_alias_name'] . (str_starts_with($url, '/') ? $url : "/{$url}"));
+    }
+    return $url ?: '/';
 }
 
 if (!function_exists('parse_name')) {

@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use app\admin\model\SystemAdmin;
 use common\controller\AdminController;
+use Shopwwi\LaravelCache\Cache;
 use support\Request;
 use support\Response;
 use Respect\Validation\Validator;
@@ -19,6 +20,7 @@ class LoginController extends AdminController
         if (!$request->isAjax()) {
             return $this->fetch('', compact('captcha'));
         }
+        Cache::flush();
         $post = $request->post();
         Validator::input($post, [
             'username' => Validator::notEmpty()->setName('用户名'),
@@ -68,6 +70,9 @@ class LoginController extends AdminController
     public function out(Request $request): Response
     {
         $request->session()->forget('admin');
-        return $this->success('退出登录成功', [], __url('/login'));
+        if ($request->isAjax()) {
+            return $this->success('退出登录成功', [], __url('/login'));
+        }
+        return redirect(__url('/login'));
     }
 }

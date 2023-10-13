@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "50ffc36f76ebeb3324d9efa5ea99fd37",
+    "content-hash": "02f619e32d310d44fad0e8fdc1dacdbd",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
@@ -3738,6 +3738,39 @@
                 "webman console"
             ],
             "time": "2023-07-26T06:31:50+00:00"
+        },
+        {
+            "name": "webman/domain",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webman-php/domain.git",
+                "reference": "0bdda6e198e5cc5345ee8856ab8abcb15383409d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webman-php/domain/zipball/0bdda6e198e5cc5345ee8856ab8abcb15383409d",
+                "reference": "0bdda6e198e5cc5345ee8856ab8abcb15383409d",
+                "shasum": ""
+            },
+            "require": {
+                "workerman/webman-framework": "^1.2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Webman\\Domain\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "support": {
+                "issues": "https://github.com/webman-php/domain/issues",
+                "source": "https://github.com/webman-php/domain/tree/v1.0.1"
+            },
+            "time": "2022-03-03T07:05:28+00:00"
         },
         {
             "name": "workerman/validation",
