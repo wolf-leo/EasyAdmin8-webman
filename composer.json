@@ -46,7 +46,8 @@
     "webman/think-orm": "^1.1",
     "webman/think-cache": "^1.0",
     "topthink/think-template": "^3.0",
-    "topthink/think-validate": "^2.0"
+    "topthink/think-validate": "^2.0",
+    "webman/domain": "^1.0"
   },
   "suggest": {
     "ext-event": "For better performance. "

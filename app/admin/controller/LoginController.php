@@ -7,6 +7,7 @@ use common\controller\AdminController;
 use support\Request;
 use support\Response;
 use think\Exception;
+use think\facade\Cache;
 use Webman\Captcha\CaptchaBuilder;
 use Webman\Captcha\PhraseBuilder;
 
@@ -19,6 +20,7 @@ class LoginController extends AdminController
         if (!$request->isAjax()) {
             return $this->fetch('', compact('captcha'));
         }
+        Cache::clear();
         $post = $request->post();
         $rule = [
             'username|用户名' => 'require',
@@ -73,6 +75,9 @@ class LoginController extends AdminController
     public function out(Request $request): Response
     {
         $request->session()->forget('admin');
-        return $this->success('退出登录成功', [], __url('/login'));
+        if ($request->isAjax()) {
+            return $this->success('退出登录成功', [], __url('/login'));
+        }
+        return redirect(__url('/login'));
     }
 }

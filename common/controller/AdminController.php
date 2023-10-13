@@ -80,7 +80,7 @@ class AdminController
         $jsBasePath           = ($secondary ? "{$secondary}/" : '') . strtolower($controller);
         $thisControllerJsPath = "admin/js/{$jsBasePath}.js";
         $autoloadJs           = file_exists($thisControllerJsPath);
-        $adminModuleName      = $adminConfig['admin_alias_name'];
+        $adminModuleName      = $adminConfig['admin_domain_status'] ? '' : $adminConfig['admin_alias_name'];
         $isSuperAdmin         = session('admin.id') == $adminConfig['super_admin_id'];
         $version              = Cache::get('version');
         if (empty($version)) {
