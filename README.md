@@ -1,6 +1,7 @@
 ## 项目介绍
+
 - 请注意，该分支为`main`，主要用到了`Laravel`相关组件
-- 如果你习惯使用`ThinkPHP`开发，请使用`thinkphp`分支 
+- 如果你习惯使用`ThinkPHP`开发，请使用`thinkphp`分支
 - [https://github.com/wolf-leo/EasyAdmin8-webman/tree/thinkphp/](https://github.com/wolf-leo/EasyAdmin8-webman/tree/thinkphp/)
 - [https://gitee.com/wolf18/EasyAdmin8-webman/tree/thinkphp/](https://gitee.com/wolf18/EasyAdmin8-webman/tree/thinkphp/)
 
@@ -9,9 +10,9 @@
 > webman 和 layui v2.8.x 的快速开发的后台管理系统。
 >
 > 项目地址：[http://easyadmin8.top](http://easyadmin8.top)
-> 
+>
 > 演示地址：[http://webman.easyadmin8.top/admin](http://webman.easyadmin8.top/admin)
-> 
+>
 >【如果不能访问，可以自行本地搭建预览或参考下方界面预览图】
 
 ## 安装教程
@@ -69,25 +70,17 @@ server {
 
 > 参考 [CURD命令大全](CURD.md)
 
+## 配置自定义域名
+
+> 参考 [自定义域名配置](CUSTOM_DOMAIN.md)
+
 ## 界面预览
 
-###                 
+![](public/static/common/images/easyadmin8-01.png)
 
-<center>
-  <img src="public/static/common/images/easyadmin8-01.png" />
-</center>
+![](public/static/common/images/easyadmin8-02.png)
 
-###                 
-
-<center>
-  <img src="public/static/common/images/easyadmin8-02.png" />
-</center>
-
-###                 
-
-<center>
-  <img src="public/static/common/images/easyadmin8-03.png" />
-</center>
+![](public/static/common/images/easyadmin8-03.png)
 
 ## 所有PHP版本
 
