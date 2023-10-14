@@ -21,11 +21,11 @@
 ```
 1.下载安装包
 
-  git clone -b thinkphp https://github.com/wolf-leo/EasyAdmin8-webman
+  git clone -b thinkphp https://github.com/wolf-leo/EasyAdmin8-webman EasyAdmin8-webman-thinkphp
 
   或者
 
-  git clone -b thinkphp https://gitee.com/wolf18/EasyAdmin8-webman
+  git clone -b thinkphp https://gitee.com/wolf18/EasyAdmin8-webman EasyAdmin8-webman-thinkphp
 
 2.安装依赖包（确保 PHP 版本 >= 8.0）
 
@@ -67,25 +67,17 @@ server {
 
 > 参考 [CURD命令大全](CURD.md)
 
+## 配置自定义域名
+
+> 参考 [自定义域名配置](CUSTOM_DOMAIN.md)
+
 ## 界面预览
 
-###                  
+![](public/static/common/images/easyadmin8-01.png)
 
-<center>
-  <img src="public/static/common/images/easyadmin8-01.png" />
-</center>
+![](public/static/common/images/easyadmin8-02.png)
 
-###                  
-
-<center>
-  <img src="public/static/common/images/easyadmin8-02.png" />
-</center>
-
-###                  
-
-<center>
-  <img src="public/static/common/images/easyadmin8-03.png" />
-</center>
+![](public/static/common/images/easyadmin8-03.png)
 
 ## 所有PHP版本
 
