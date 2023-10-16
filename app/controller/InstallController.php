@@ -122,7 +122,7 @@ class InstallController
             !is_dir($installPath) && @mkdir($installPath);
             !is_dir($installPath . 'lock' . DIRECTORY_SEPARATOR) && @mkdir($installPath . 'lock' . DIRECTORY_SEPARATOR);
             @file_put_contents($installPath . 'lock' . DIRECTORY_SEPARATOR . 'install.lock', date('Y-m-d H:i:s'));
-        } catch (\Exception | \PDOException | \Throwable $e) {
+        } catch (\Exception|\PDOException|\Throwable $e) {
             $data = [
                 'code' => 0,
                 'msg'  => "系统安装失败：" . $e->getMessage(),
@@ -173,7 +173,7 @@ class InstallController
     protected function createDatabase($database, $config): bool
     {
         try {
-            $con = mysqli_connect($config['host'] ?? '127.0.0.1', $config['username'] ?? 'root', $config['password'] ?? '');
+            $con = mysqli_connect($config['host'] ?? '127.0.0.1', $config['username'] ?? 'root', $config['password'] ?? '', null, $config['port'] ?? '');
             mysqli_query($con, "CREATE DATABASE IF NOT EXISTS `{$database}` DEFAULT CHARACTER SET {$config['charset']} COLLATE=utf8mb4_general_ci");
             mysqli_close($con);
         } catch (\Throwable $e) {
@@ -199,7 +199,7 @@ class InstallController
     protected function checkConnect(array $config): bool|Response
     {
         try {
-            $con          = mysqli_connect($config['host'] ?? '127.0.0.1', $config['username'] ?? 'root', $config['password'] ?? '');
+            $con          = mysqli_connect($config['host'] ?? '127.0.0.1', $config['username'] ?? 'root', $config['password'] ?? '', null, $config['port'] ?? '');
             $res          = mysqli_query($con, 'select VERSION()');
             $mysqlVersion = mysqli_fetch_row($res);
             mysqli_close($con);
