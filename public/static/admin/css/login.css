@@ -169,11 +169,11 @@
     margin: 0 auto;
 }
 
-
-body {
-    background: url(../images/loginbg.png) 0% 0% / cover no-repeat;
+.container {
+    background: #333333;
     position: static;
     font-size: 12px;
+    height: 100%;
 }
 
 input::-webkit-input-placeholder {
