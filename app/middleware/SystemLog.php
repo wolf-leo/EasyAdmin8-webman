@@ -2,7 +2,11 @@
 
 namespace app\middleware;
 
+use common\services\annotation\ControllerAnnotation;
+use common\services\annotation\NodeAnnotation;
 use common\services\SystemLogService;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\DocParser;
 use Webman\Http\Request;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;
@@ -37,9 +41,28 @@ class SystemLog implements MiddlewareInterface
             $method = strtolower($request->method());
             $url    = $request->path();
             if (in_array($method, ['post', 'put', 'delete'])) {
+                $title = '';
+                try {
+                    $pathInfoExp = explode('/', $url);
+                    $_controller = $pathInfoExp[2] ?? '';
+                    $_action     = ucfirst($pathInfoExp[3] ?? '');
+                    if ($_controller && $_action) {
+                        $className       = "app\admin\controller\\{$_controller}\\{$_action}Controller";
+                        $reflectionClass = new \ReflectionClass($className);
+                        $parser          = new DocParser();
+                        $parser->setIgnoreNotImportedAnnotations(true);
+                        $reader               = new AnnotationReader($parser);
+                        $controllerAnnotation = $reader->getClassAnnotation($reflectionClass, ControllerAnnotation::class);
+                        $reflectionAction     = $reflectionClass->getMethod(end($pathInfoExp) ?? '');
+                        $nodeAnnotation       = $reader->getMethodAnnotation($reflectionAction, NodeAnnotation::class);
+                        $title                = $controllerAnnotation->title . ' - ' . $nodeAnnotation->title;
+                    }
+                } catch (\Throwable $exception) {
+                }
                 $ip   = $request->getRealIp(true);
                 $data = [
                     'admin_id'    => session('admin.id'),
+                    'title'       => $title,
                     'url'         => $url,
                     'method'      => $method,
                     'ip'          => $ip,
