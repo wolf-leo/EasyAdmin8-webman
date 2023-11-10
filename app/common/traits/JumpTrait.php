@@ -1,6 +1,6 @@
 <?php
 
-namespace common\traits;
+namespace app\common\traits;
 
 use support\Response;
 

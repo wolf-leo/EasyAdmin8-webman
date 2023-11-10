@@ -1,6 +1,6 @@
 <?php
 
-namespace common\services\tool;
+namespace app\common\services\tool;
 
 class CommonTool
 {

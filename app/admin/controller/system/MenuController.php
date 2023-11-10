@@ -4,12 +4,12 @@ namespace app\admin\controller\system;
 
 use app\admin\model\SystemMenu;
 use app\admin\model\SystemNode;
-use common\controller\AdminController;
-use common\services\TriggerService;
+use app\common\controller\AdminController;
+use app\common\services\TriggerService;
 use support\Request;
 use support\Response;
-use common\services\annotation\ControllerAnnotation;
-use common\services\annotation\NodeAnnotation;
+use app\common\services\annotation\ControllerAnnotation;
+use app\common\services\annotation\NodeAnnotation;
 use think\Exception;
 
 /**

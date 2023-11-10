@@ -3,9 +3,9 @@
 namespace app\admin\controller;
 
 use app\admin\model\SystemUploadfile;
-use common\controller\AdminController;
-use common\services\MenuService;
-use common\services\UploadService;
+use app\common\controller\AdminController;
+use app\common\services\MenuService;
+use app\common\services\UploadService;
 use think\facade\Cache;
 use support\Request;
 use support\Response;

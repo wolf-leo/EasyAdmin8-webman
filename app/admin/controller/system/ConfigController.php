@@ -3,10 +3,10 @@
 namespace app\admin\controller\system;
 
 use app\admin\model\SystemConfig;
-use common\controller\AdminController;
-use common\services\annotation\ControllerAnnotation;
-use common\services\annotation\NodeAnnotation;
-use common\services\TriggerService;
+use app\common\controller\AdminController;
+use app\common\services\annotation\ControllerAnnotation;
+use app\common\services\annotation\NodeAnnotation;
+use app\common\services\TriggerService;
 use support\Request;
 use support\Response;
 

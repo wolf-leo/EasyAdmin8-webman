@@ -1,16 +1,16 @@
 <?php
 
-namespace common\traits;
+namespace app\common\traits;
 
-use common\services\tool\CommonTool;
+use app\common\services\tool\CommonTool;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use think\Exception;
 use think\facade\Db;
 use support\Request;
 use support\Response;
-use common\services\annotation\ControllerAnnotation;
-use common\services\annotation\NodeAnnotation;
+use app\common\services\annotation\ControllerAnnotation;
+use app\common\services\annotation\NodeAnnotation;
 
 /**
  * 后台CURD复用

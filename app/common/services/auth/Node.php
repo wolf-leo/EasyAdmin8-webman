@@ -1,14 +1,14 @@
 <?php
 
-namespace common\services\auth;
+namespace app\common\services\auth;
 
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
-use common\services\annotation\ControllerAnnotation;
-use common\services\annotation\NodeAnnotation;
-use common\services\tool\CommonTool;
+use app\common\services\annotation\ControllerAnnotation;
+use app\common\services\annotation\NodeAnnotation;
+use app\common\services\tool\CommonTool;
 use ReflectionException;
 
 /**

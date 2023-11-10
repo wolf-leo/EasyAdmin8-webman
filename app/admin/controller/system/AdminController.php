@@ -2,13 +2,13 @@
 
 namespace app\admin\controller\system;
 
-use common\controller\AdminController as Controller;
+use app\common\controller\AdminController as Controller;
 use app\admin\model\SystemAdmin;
-use common\services\TriggerService;
+use app\common\services\TriggerService;
 use support\Request;
 use support\Response;
-use common\services\annotation\ControllerAnnotation;
-use common\services\annotation\NodeAnnotation;
+use app\common\services\annotation\ControllerAnnotation;
+use app\common\services\annotation\NodeAnnotation;
 use think\Exception;
 
 /**

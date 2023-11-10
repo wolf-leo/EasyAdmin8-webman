@@ -1,6 +1,6 @@
 <?php
 
-namespace common\services;
+namespace app\common\services;
 
 use think\facade\Cache;
 use think\facade\Db;

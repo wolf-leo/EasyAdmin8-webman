@@ -3,10 +3,10 @@
 namespace app\admin\controller\system;
 
 use app\admin\model\SystemLog;
-use common\controller\AdminController;
-use common\services\annotation\ControllerAnnotation;
-use common\services\annotation\NodeAnnotation;
-use common\services\tool\CommonTool;
+use app\common\controller\AdminController;
+use app\common\services\annotation\ControllerAnnotation;
+use app\common\services\annotation\NodeAnnotation;
+use app\common\services\tool\CommonTool;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use think\facade\Db;

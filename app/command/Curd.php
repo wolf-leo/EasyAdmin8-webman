@@ -2,7 +2,7 @@
 
 namespace app\command;
 
-use common\services\curd\BuildCurd;
+use app\common\services\curd\BuildCurd;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

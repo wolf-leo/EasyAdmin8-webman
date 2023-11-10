@@ -1,10 +1,10 @@
 <?php
 
-namespace common\services\curd;
+namespace app\common\services\curd;
 
-use common\services\curd\exceptions\FileException;
-use common\services\curd\exceptions\TableException;
-use common\services\tool\CommonTool;
+use app\common\services\curd\exceptions\FileException;
+use app\common\services\curd\exceptions\TableException;
+use app\common\services\tool\CommonTool;
 use support\Db;
 
 /**

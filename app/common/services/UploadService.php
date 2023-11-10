@@ -1,6 +1,6 @@
 <?php
 
-namespace common\services;
+namespace app\common\services;
 
 use app\admin\model\SystemUploadfile;
 use OSS\Core\OssException;

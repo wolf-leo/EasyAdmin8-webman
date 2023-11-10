@@ -13,3 +13,9 @@
  */
 
 use Webman\Route;
+
+Route::group('/common', function () {
+    Route::any('/[{path:.+}]', function ($request) {
+        return view('404');
+    });
+});

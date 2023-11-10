@@ -2,9 +2,9 @@
 
 namespace app\middleware;
 
-use common\services\annotation\ControllerAnnotation;
-use common\services\annotation\NodeAnnotation;
-use common\services\SystemLogService;
+use app\common\services\annotation\ControllerAnnotation;
+use app\common\services\annotation\NodeAnnotation;
+use app\common\services\SystemLogService;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\DocParser;
 use Webman\Http\Request;
