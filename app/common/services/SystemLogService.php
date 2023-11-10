@@ -1,6 +1,6 @@
 <?php
 
-namespace common\services;
+namespace app\common\services;
 
 use Shopwwi\LaravelCache\Cache;
 use support\Db;

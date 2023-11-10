@@ -1,6 +1,6 @@
 <?php
 
-namespace common\services;
+namespace app\common\services;
 
 use support\Db;
 use Illuminate\Support\Str;

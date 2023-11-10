@@ -1,8 +1,8 @@
 <?php
 
-namespace common\services;
+namespace app\common\services;
 
-use common\services\auth\Node;
+use app\common\services\auth\Node;
 use Doctrine\Common\Annotations\AnnotationException;
 
 class NodeService

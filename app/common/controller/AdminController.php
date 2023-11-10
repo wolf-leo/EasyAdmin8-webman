@@ -1,9 +1,9 @@
 <?php
 
-namespace common\controller;
+namespace app\common\controller;
 
-use common\traits\Curd;
-use common\traits\JumpTrait;
+use app\common\traits\Curd;
+use app\common\traits\JumpTrait;
 use Shopwwi\LaravelCache\Cache;
 use support\Response;
 use support\View;

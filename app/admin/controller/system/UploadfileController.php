@@ -3,9 +3,9 @@
 namespace app\admin\controller\system;
 
 use app\admin\model\SystemUploadfile;
-use common\controller\AdminController;
-use common\services\annotation\ControllerAnnotation;
-use common\services\annotation\NodeAnnotation;
+use app\common\controller\AdminController;
+use app\common\services\annotation\ControllerAnnotation;
+use app\common\services\annotation\NodeAnnotation;
 
 /**
  * @ControllerAnnotation(title="上传文件管理")

@@ -2,9 +2,9 @@
 
 namespace {{controllerNamespace}};
 
-use common\controller\AdminController;
-use common\services\annotation\ControllerAnnotation;
-use common\services\annotation\NodeAnnotation;
+use app\common\controller\AdminController;
+use app\common\services\annotation\ControllerAnnotation;
+use app\common\services\annotation\NodeAnnotation;
 
 /**
  * @ControllerAnnotation(title="{{controllerAnnotation}}")

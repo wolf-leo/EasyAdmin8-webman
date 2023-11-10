@@ -2,8 +2,8 @@
 
 namespace app\middleware;
 
-use common\traits\JumpTrait;
-use common\services\AuthService;
+use app\common\traits\JumpTrait;
+use app\common\services\AuthService;
 use Webman\Http\Request;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;

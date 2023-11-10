@@ -2,14 +2,14 @@
 
 namespace app\admin\controller\system;
 
-use common\controller\AdminController;
+use app\common\controller\AdminController;
 use app\admin\model\SystemNode;
-use common\services\NodeService;
-use common\services\TriggerService;
+use app\common\services\NodeService;
+use app\common\services\TriggerService;
 use support\Request;
 use support\Response;
-use common\services\annotation\ControllerAnnotation;
-use common\services\annotation\NodeAnnotation;
+use app\common\services\annotation\ControllerAnnotation;
+use app\common\services\annotation\NodeAnnotation;
 
 /**
  * @ControllerAnnotation(title="系统节点管理")
