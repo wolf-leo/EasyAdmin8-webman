@@ -1303,13 +1303,17 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                         }
                         form.on('submit(' + filter + ')', function (data) {
                             var dataField = data.field;
-
-                            // 富文本数据处理
                             var editorList = document.querySelectorAll(".editor");
+                            // 富文本数据处理
                             if (editorList.length > 0) {
                                 $.each(editorList, function (i, v) {
-                                    var name = $(this).attr("name");
-                                    dataField[name] = CKEDITOR.instances[name].getData();
+                                    if (window.CONFIG.EDITOR_TYPE == 'ueditor') {
+                                        var name = $(this).attr("id");
+                                        dataField[name] = UE.getEditor(name).getContent();
+                                    } else {
+                                        var name = $(this).attr("name");
+                                        dataField[name] = CKEDITOR.instances[name].getData();
+                                    }
                                 });
                             }
 
@@ -1472,12 +1476,30 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                 var editorList = document.querySelectorAll(".editor");
                 if (editorList.length > 0) {
                     $.each(editorList, function (i, v) {
-                        CKEDITOR.replace(
-                            $(this).attr("name"),
-                            {
+                        if (window.CONFIG.EDITOR_TYPE == 'ueditor') {
+                            var name = $(this).attr("name");
+                            try {
+                                UE.getEditor(name, {
+                                    initialFrameWidth: '100%',
+                                    initialFrameHeight: 420,
+                                    initialContent: $(this).data('content'),
+                                    toolbars: [
+                                        ["fullscreen", "source", "|", "undo", "redo", "|", "bold", "italic", "underline", "fontborder", "strikethrough", "superscript", "subscript", "removeformat", "formatmatch", "autotypeset", "blockquote", "pasteplain", "|", "forecolor", "backcolor", "insertorderedlist", "insertunorderedlist", "selectall", "cleardoc", "|", "rowspacingtop", "rowspacingbottom", "lineheight", "|", "customstyle", "paragraph", "fontfamily", "fontsize", "|", "directionalityltr", "directionalityrtl", "indent", "|", "justifyleft", "justifycenter", "justifyright", "justifyjustify", "|", "touppercase", "tolowercase", "|", "link", "unlink", "anchor", "|", "imagenone", "imageleft", "imageright", "imagecenter", "|", "insertimage", "emotion", "insertframe", "insertcode", "pagebreak", "template", "background", "formula", "|", "horizontal", "date", "time", "spechars", "wordimage", "|", "inserttable", "deletetable", "insertparagraphbeforetable", "insertrow", "deleterow", "insertcol", "deletecol", "mergecells", "mergeright", "mergedown", "splittocells", "splittorows", "splittocols", "|", "print", "preview", "searchreplace", "help",]
+                                    ],
+                                });
+                            } catch (e) {
+                                location.reload()
+                            }
+                        } else {
+                            CKEDITOR.config.fileTools_requestHeaders = {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-Csrf-Token': init.csrf_token,
+                            };
+                            CKEDITOR.replace($(this).attr("name"), {
                                 height: $(this).height(),
-                                filebrowserImageUploadUrl: admin.url('ajax/upload?_token=' + init.csrf_token + '&type=editor'),
+                                filebrowserImageUploadUrl: admin.url('ajax/upload?type=editor'),
                             });
+                        }
                     });
                 }
             },

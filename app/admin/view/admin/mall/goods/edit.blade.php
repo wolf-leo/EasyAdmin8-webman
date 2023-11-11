@@ -63,7 +63,11 @@
         <div class="layui-form-item">
             <label class="layui-form-label">商品描述</label>
             <div class="layui-input-block">
-                <textarea name="describe" rows="20" class="layui-textarea editor" placeholder="请输入商品描述">{{$row['describe']}}</textarea>
+                @if(sysconfig('site','editor_type')=='ckeditor')
+                    <textarea name="describe" rows="20" class="layui-textarea editor" placeholder="请输入商品描述">{{html_entity_decode($row['describe'])}}</textarea>
+                @else
+                    <script type="text/plain" id="describe" name="describe" class="editor" data-content="{{html_entity_decode($row['describe'])}}"></script>
+                @endif
             </div>
         </div>
 
