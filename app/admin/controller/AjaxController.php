@@ -123,4 +123,65 @@ class AjaxController extends AdminController
         ];
         return json($data);
     }
+
+    /**
+     * @desc 百度编辑器上传
+     * @return Response
+     */
+    public function uploadUEditor(Request $request): Response
+    {
+        $uploadConfig      = sysconfig('upload');
+        $upload_allow_size = $uploadConfig['upload_allow_size'];
+        $_upload_allow_ext = explode(',', $uploadConfig['upload_allow_ext']);
+        $upload_allow_ext  = [];
+        array_map(function ($value) use (&$upload_allow_ext) {
+            $upload_allow_ext[] = '.' . $value;
+        }, $_upload_allow_ext);
+        $config      = [
+            // 上传图片配置项
+            "imageActionName"         => "image",
+            "imageFieldName"          => "file",
+            "imageMaxSize"            => $upload_allow_size,
+            "imageAllowFiles"         => $upload_allow_ext,
+            "imageCompressEnable"     => true,
+            "imageCompressBorder"     => 5000,
+            "imageInsertAlign"        => "none",
+            "imageUrlPrefix"          => "",
+            // 列出图片
+            "imageManagerActionName"  => "listImage",
+            "imageManagerListSize"    => 20,
+            "imageManagerUrlPrefix"   => "",
+            "imageManagerInsertAlign" => "none",
+            "imageManagerAllowFiles"  => $upload_allow_ext,
+        ];
+        $action      = $request->input('action', '');
+        $file        = $request->file('file');
+        $upload_type = $uploadConfig['upload_type'];
+        switch ($action) {
+            case 'image':
+                if ($this->isDemo) return json(['state' => '演示环境下不允许修改']);
+                try {
+                    $upload = UploadService::instance()->setConfig($uploadConfig)->$upload_type($file);
+                    $code   = $upload['code'] ?? 0;
+                    if ($code == 0) {
+                        return json(['state' => $upload['data'] ?? '上传错误信息']);
+                    } else {
+                        return json(['state' => 'SUCCESS', 'url' => $upload['data']['url'] ?? '']);
+                    }
+                } catch (\Exception $e) {
+                    return $this->error($e->getMessage());
+                }
+            case 'listImage':
+                $list   = (new SystemUploadfile())->order('id desc')->limit(100)->field('url')->select()->toArray();
+                $result = [
+                    "state" => "SUCCESS",
+                    "list"  => $list,
+                    "total" => 0,
+                    "start" => 0,
+                ];
+                return json($result);
+            default:
+                return json($config);
+        }
+    }
 }

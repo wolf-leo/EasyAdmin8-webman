@@ -9,7 +9,7 @@ return [
     // 后台默认路径
     'admin_alias_name'     => 'admin',
     // 是否开启后台域名绑定
-    'admin_domain_status'   => getenv('EASYADMIN.ADMIN_DOMAIN_STATUS') == 'true',
+    'admin_domain_status'  => getenv('EASYADMIN.ADMIN_DOMAIN_STATUS') == 'true',
     // 后台域名绑定地址
     'admin_domain'         => getenv('EASYADMIN.ADMIN_DOMAIN'),
 
@@ -43,5 +43,11 @@ return [
         'oss'   => '阿里云oss',
         'cos'   => '腾讯云cos',
         'qnoss' => '七牛云'
+    ],
+
+    // 默认编辑器
+    'editor_types'         => [
+        'ueditor'  => '百度编辑器',
+        'ckeditor' => 'CK编辑器',
     ],
 ];

@@ -1,3 +1,23 @@
+## `EasyAdmin8`所有版本 (当前项目为`webman`版本)
+
+> #### ThinkPHP:
+>
+>   [https://github.com/wolf-leo/EasyAdmin8](https://github.com/wolf-leo/EasyAdmin8)
+>
+>   [https://gitee.com/wolf18/EasyAdmin8](https://gitee.com/wolf18/EasyAdmin8)
+>
+> #### Laravel :
+>
+>   [https://github.com/wolf-leo/EasyAdmin8-Laravel](https://github.com/wolf-leo/EasyAdmin8-Laravel)
+>
+>   [https://gitee.com/wolf18/EasyAdmin8-Laravel](https://gitee.com/wolf18/EasyAdmin8-Laravel)
+>
+> #### webman :
+>
+>   [https://github.com/wolf-leo/EasyAdmin8-webman](https://github.com/wolf-leo/EasyAdmin8-webman)
+>
+>   [https://gitee.com/wolf18/EasyAdmin8-webman](https://gitee.com/wolf18/EasyAdmin8-webman)
+
 ## 项目介绍
 
 > `EasyAdmin8-webman` 在 [`EasyAdmin`](https://gitee.com/zhongshaofa/easyadmin) 的基础上使用 webman 最新版重构，PHP 最低版本要求不低于 8.0
@@ -79,26 +99,6 @@ server {
 
 ![](public/static/common/images/easyadmin8-03.png)
 
-## 所有PHP版本
-
-> #### ThinKPHP:
->
->   [https://github.com/wolf-leo/EasyAdmin8](https://github.com/wolf-leo/EasyAdmin8)
->
->   [https://gitee.com/wolf18/easyAdmin8](https://gitee.com/wolf18/easyAdmin8)
->
-> #### Laravel :
->
->   [https://github.com/wolf-leo/EasyAdmin8-Laravel](https://github.com/wolf-leo/EasyAdmin8-Laravel)
->
->   [https://gitee.com/wolf18/EasyAdmin8-Laravel](https://gitee.com/wolf18/EasyAdmin8-Laravel)
->
-> #### webman :
->
->   [https://github.com/wolf-leo/EasyAdmin8-webman](https://github.com/wolf-leo/EasyAdmin8-webman)
->
->   [https://gitee.com/wolf18/EasyAdmin8-webman](https://gitee.com/wolf18/EasyAdmin8-webman)
-
 ## 交流群
 
 <center>
@@ -126,6 +126,8 @@ server {
 * [CKEditor](https://github.com/ckeditor/ckeditor4)
 
 * [Echarts](https://github.com/apache/incubator-echarts)
+
+* [UEditorPlus](https://github.com/modstart-lib/ueditor-plus)
 
 ## 免责声明
 

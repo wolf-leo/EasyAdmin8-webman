@@ -21,7 +21,8 @@ class ConfigController extends AdminController
         parent::initialize();
         $this->model  = new SystemConfig();
         $upload_types = config('admin.upload_types');
-        $this->assign(compact('upload_types'));
+        $editor_types = config('admin.editor_types');
+        $this->assign(compact('upload_types', 'editor_types'));
     }
 
     /**
