@@ -1,3 +1,23 @@
+## `EasyAdmin8`所有版本 (当前项目为`webman`版本)
+
+> #### ThinkPHP:
+>
+>   [https://github.com/wolf-leo/EasyAdmin8](https://github.com/wolf-leo/EasyAdmin8)
+>
+>   [https://gitee.com/wolf18/EasyAdmin8](https://gitee.com/wolf18/EasyAdmin8)
+>
+> #### Laravel :
+>
+>   [https://github.com/wolf-leo/EasyAdmin8-Laravel](https://github.com/wolf-leo/EasyAdmin8-Laravel)
+>
+>   [https://gitee.com/wolf18/EasyAdmin8-Laravel](https://gitee.com/wolf18/EasyAdmin8-Laravel)
+>
+> #### webman :
+>
+>   [https://github.com/wolf-leo/EasyAdmin8-webman](https://github.com/wolf-leo/EasyAdmin8-webman)
+>
+>   [https://gitee.com/wolf18/EasyAdmin8-webman](https://gitee.com/wolf18/EasyAdmin8-webman)
+
 ## 项目介绍
 
 - 请注意，该分支为`main`，主要用到了`Laravel`相关组件
@@ -82,26 +102,6 @@ server {
 
 ![](public/static/common/images/easyadmin8-03.png)
 
-## 所有PHP版本
-
-> #### ThinKPHP:
->
->   [https://github.com/wolf-leo/EasyAdmin8](https://github.com/wolf-leo/EasyAdmin8)
->
->   [https://gitee.com/wolf18/easyAdmin8](https://gitee.com/wolf18/easyAdmin8)
->
-> #### Laravel :
->
->   [https://github.com/wolf-leo/EasyAdmin8-Laravel](https://github.com/wolf-leo/EasyAdmin8-Laravel)
->
->   [https://gitee.com/wolf18/EasyAdmin8-Laravel](https://gitee.com/wolf18/EasyAdmin8-Laravel)
->
-> #### webman :
->
->   [https://github.com/wolf-leo/EasyAdmin8-webman](https://github.com/wolf-leo/EasyAdmin8-webman)
->
->   [https://gitee.com/wolf18/EasyAdmin8-webman](https://gitee.com/wolf18/EasyAdmin8-webman)
-
 ## 交流群
 
 <center>
@@ -129,6 +129,8 @@ server {
 * [CKEditor](https://github.com/ckeditor/ckeditor4)
 
 * [Echarts](https://github.com/apache/incubator-echarts)
+
+* [UEditorPlus](https://github.com/modstart-lib/ueditor-plus)
 
 ## 免责声明
 
