@@ -1,30 +1,22 @@
 {
-  "name": "workerman/webman",
+  "name": "wolfcode/easyadmin8",
   "type": "project",
+  "url": "https://github.com/wolf-leo/EasyAdmin8-webman",
+  "description": "基于webman和Layui的快速开发的后台管理系统。",
   "keywords": [
-    "high performance",
-    "http service"
+    "webman",
+    "easyadmin",
+    "admin"
   ],
-  "homepage": "https://www.workerman.net",
+  "homepage": "https://easyadmin8.top/",
   "license": "MIT",
-  "description": "High performance HTTP Service Framework.",
   "authors": [
     {
-      "name": "walkor",
-      "email": "walkor@workerman.net",
-      "homepage": "https://www.workerman.net",
-      "role": "Developer"
+      "name": "wolfcode"
     }
   ],
-  "support": {
-    "email": "walkor@workerman.net",
-    "issues": "https://github.com/walkor/webman/issues",
-    "forum": "https://wenda.workerman.net/",
-    "wiki": "https://workerman.net/doc/webman",
-    "source": "https://github.com/walkor/webman"
-  },
   "require": {
-    "php": ">=7.2",
+    "php": ">=8.0.0",
     "workerman/webman-framework": "^1.5.0",
     "monolog/monolog": "^2.0",
     "illuminate/database": "^9.52",
