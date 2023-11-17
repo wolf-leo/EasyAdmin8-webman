@@ -1457,9 +1457,6 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                                 });
                                 var url = urlArray.join(uploadSign);
                                 admin.msg.success('选择成功', function () {
-                                    let _dom = $(e).parents('.layui-form-item').find('input')
-                                    $(_dom).attr('value', url)
-                                    $(_dom).trigger("input")
                                     $(elem).val(url);
                                     $(elem).trigger("input");
                                 });
