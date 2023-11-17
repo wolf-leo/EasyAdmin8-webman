@@ -1451,16 +1451,13 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                                     {field: 'create_time', width: 200, title: '创建时间', align: "center", search: 'range'},
                                 ]]
                             },
-                            done: function (e, data) {
+                            done: function (ele, data) {
                                 var urlArray = [];
                                 $.each(data.data, function (index, val) {
                                     urlArray.push(val.url)
                                 });
                                 var url = urlArray.join(uploadSign);
                                 admin.msg.success('选择成功', function () {
-                                    let _dom = $(e).parents('.layui-form-item').find('input')
-                                    $(_dom).attr('value', url)
-                                    $(_dom).trigger("input")
                                     $(elem).val(url);
                                     $(elem).trigger("input");
                                 });
