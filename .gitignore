@@ -7,3 +7,4 @@
 /tests/.phpunit.result.cache
 /public/storage
 /config/install/lock/install.lock
+composer.lock
