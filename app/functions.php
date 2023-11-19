@@ -112,3 +112,19 @@ if (!function_exists('json')) {
     }
 
 }
+
+/**
+ * @param $row
+ * @param string $name
+ * @param string $placeholder
+ * @return string
+ */
+function editor_textarea($row, string $name = 'desc', string $placeholder = '请输入'): string
+{
+    $editor_type = sysconfig('site', 'editor_type');
+    $detail      = $row[$name] ?? '';
+    return match ($editor_type) {
+        'ckeditor' => "<textarea name='{$name}' rows='20' class='layui-textarea editor' placeholder='{$placeholder}'>{$detail}</textarea>",
+        default    => "<script type='text/plain' id='{$name}' name='{$name}' class='editor' data-content='{$detail}'></script>",
+    };
+}
