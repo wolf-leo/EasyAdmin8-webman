@@ -871,7 +871,7 @@ class BuildCurd
             }
 
             // 判断富文本
-            if (in_array($field, $this->editorFields)) {
+            if (in_array($field, $this->editorFields) || in_array($val['type'], ['text', 'tinytext', 'mediumtext', 'longtext'])) {
                 $this->tableColumns[$field]['formType'] = 'editor';
                 continue;
             }
@@ -1134,6 +1134,12 @@ class BuildCurd
             $templateFile = "view{$this->DS}module{$this->DS}input";
             $define       = '';
 
+            // 根据formType去获取具体模板
+            if ($val['formType'] == 'editor') {
+                $templateFile   = "view{$this->DS}module{$this->DS}editor";
+                $val['default'] = '""';
+            }
+
             $addFormList .= CommonTool::replaceTemplate(
                 $this->getTemplate($templateFile),
                 [
@@ -1165,6 +1171,12 @@ class BuildCurd
 
             $define = '';
             $value  = '{$row.' . $field . '|default=\'\'}';
+
+            // 根据formType去获取具体模板
+            if ($val['formType'] == 'editor') {
+                $templateFile = "view{$this->DS}module{$this->DS}editor";
+                $value        = '$row["' . $field . '"]';
+            }
 
             $editFormList .= CommonTool::replaceTemplate(
                 $this->getTemplate($templateFile),
