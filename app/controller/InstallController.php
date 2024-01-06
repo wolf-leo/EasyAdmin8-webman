@@ -102,6 +102,7 @@ class InstallController
         $sqlArray    = $this->parseSql($sqlPath, $config['prefix'], 'ea_');
         $conn        = mysqli_connect($config['host'], $config['username'], $config['password'], null, $config['port']);
         try {
+            mysqli_set_charset($conn, $config['charset']);
             mysqli_select_db($conn, $config['database']);
             foreach ($sqlArray as $sql) {
                 mysqli_query($conn, $sql);
