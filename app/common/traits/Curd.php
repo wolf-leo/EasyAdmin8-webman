@@ -31,7 +31,7 @@ trait Curd
         }
         list($page, $limit, $where) = $this->buildTableParams();
         $count = $this->model->where($where)->count();
-        $list  = $this->model->where($where)->order($this->order)->limit($limit)->select()->toArray();
+        $list  = $this->model->where($where)->order($this->order)->page($page, $limit)->select()->toArray();
         $data  = [
             'code'  => 0,
             'msg'   => '',
