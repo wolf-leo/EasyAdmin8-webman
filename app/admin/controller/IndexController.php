@@ -21,13 +21,16 @@ class IndexController extends AdminController
 
     public function welcome(Request $request): Response
     {
-        $branch        = file_get_contents(base_path() . DIRECTORY_SEPARATOR . 'branch');
-        $webmanVersion = \Composer\InstalledVersions::getVersion('workerman/webman-framework');
-        $mysqlVersion  = Db::query("select VERSION() as version")[0]['version'] ?? '未知';
-        $phpVersion    = phpversion();
-        $versions      = compact('webmanVersion', 'mysqlVersion', 'phpVersion');
-        $quicks        = SystemQuick::where('status', 1)->field('id,title,icon,href')->order('sort', 'desc')->limit(8)->select()->toArray();
-        return $this->fetch('', compact('quicks', 'versions', 'branch'));
+        static $versions;
+        if (empty($versions)) {
+            $branch        = json_decode(file_get_contents('./composer.json'))->branch ?? 'main';
+            $webmanVersion = \Composer\InstalledVersions::getVersion('workerman/webman-framework');
+            $mysqlVersion  = Db::query("select VERSION() as version")[0]['version'] ?? '未知';
+            $phpVersion    = phpversion();
+            $versions      = compact('webmanVersion', 'mysqlVersion', 'phpVersion', 'branch');
+        }
+        $quicks = SystemQuick::where('status', 1)->field('id,title,icon,href')->order('sort', 'desc')->limit(8)->select()->toArray();
+        return $this->fetch('', compact('quicks', 'versions'));
     }
 
     public function editAdmin(Request $request): Response
@@ -43,7 +46,7 @@ class IndexController extends AdminController
                 $save = $row
                     ->allowField(['head_img', 'phone', 'remark', 'update_time'])
                     ->save($post);
-            } catch (\Exception $e) {
+            }catch (\Exception $e) {
                 return $this->error('保存失败:' . $e->getMessage());
             }
             return $save ? $this->success('保存成功') : $this->error('保存失败');
@@ -67,7 +70,7 @@ class IndexController extends AdminController
             ];
             try {
                 $this->validate($post, $rule);
-            } catch (Exception $exception) {
+            }catch (Exception $exception) {
                 return $this->error($exception->getMessage());
             }
             if ($post['password'] != $post['password_again']) {
@@ -77,12 +80,12 @@ class IndexController extends AdminController
             if ($newPwd == $row->password) return $this->error('新旧密码不能相同');
             try {
                 $save = $model->where('id', $id)->update(['password' => $newPwd]);
-            } catch (\Exception $e) {
+            }catch (\Exception $e) {
                 return $this->error('保存失败');
             }
             if ($save) {
                 return $this->success('保存成功');
-            } else {
+            }else {
                 return $this->error('保存失败');
             }
         }
