@@ -20,12 +20,15 @@ class IndexController extends AdminController
 
     public function welcome(Request $request): Response
     {
-        $branch        = file_get_contents(base_path() . DIRECTORY_SEPARATOR . 'branch');
-        $webmanVersion = \Composer\InstalledVersions::getVersion('workerman/webman-framework');
-        $mysqlVersion  = Db::select("select VERSION() as version")[0]->version ?? '未知';
-        $phpVersion    = phpversion();
-        $versions      = compact('webmanVersion', 'mysqlVersion', 'phpVersion', 'branch');
-        $quicks        = SystemQuick::where('status', 1)->select('id', 'title', 'icon', 'href')->orderByDesc('sort')->limit(8)->get()->toArray();
+        static $versions;
+        if (empty($versions)) {
+            $branch        = json_decode(file_get_contents('./composer.json'))->branch ?? 'main';
+            $webmanVersion = \Composer\InstalledVersions::getVersion('workerman/webman-framework');
+            $mysqlVersion  = Db::select("select VERSION() as version")[0]->version ?? '未知';
+            $phpVersion    = phpversion();
+            $versions      = compact('webmanVersion', 'mysqlVersion', 'phpVersion', 'branch');
+        }
+        $quicks = SystemQuick::where('status', 1)->select('id', 'title', 'icon', 'href')->orderByDesc('sort')->limit(8)->get()->toArray();
         return $this->fetch('', compact('quicks', 'versions'));
     }
 
@@ -39,7 +42,7 @@ class IndexController extends AdminController
             if ($this->isDemo) return $this->error('演示环境下不允许修改');
             try {
                 $save = updateFields($model, $row);
-            } catch (\Exception $e) {
+            }catch (\Exception $e) {
                 return $this->error('保存失败:' . $e->getMessage());
             }
             return $save ? $this->success('保存成功') : $this->error('保存失败');
@@ -75,12 +78,12 @@ class IndexController extends AdminController
             if ($newPwd == $row->password) return $this->error('新旧密码不能相同');
             try {
                 $save = $model->where('id', $id)->update(['password' => $newPwd]);
-            } catch (\Exception $e) {
+            }catch (\Exception $e) {
                 return $this->error('保存失败');
             }
             if ($save) {
                 return $this->success('保存成功');
-            } else {
+            }else {
                 return $this->error('保存失败');
             }
         }
