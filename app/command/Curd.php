@@ -10,6 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Curd extends Command
 {
+    protected static $defaultName        = 'curd';
+    protected static $defaultDescription = 'CURD一键生成';
 
     protected function configure()
     {
