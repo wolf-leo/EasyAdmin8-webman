@@ -18,7 +18,7 @@ return [
 
     // 各种数据库配置
     'connections' => [
-        'mysql' => [
+        'mysql'                => [
             'driver'      => 'mysql',
             'host'        => env('DB_HOST', '127.0.0.1'),
             'port'        => env('DB_PORT', 3306),
@@ -29,6 +29,23 @@ return [
             'charset'     => 'utf8mb4',
             'collation'   => 'utf8mb4_general_ci',
             'prefix'      => env('DB_PREFIX', ''),
+            'strict'      => true,
+            'engine'      => null,
+            'options'     => [
+                \PDO::ATTR_TIMEOUT => 3
+            ]
+        ],
+        'mysql_without_prefix' => [
+            'driver'      => 'mysql',
+            'host'        => env('DB_HOST', '127.0.0.1'),
+            'port'        => env('DB_PORT', 3306),
+            'database'    => env('DB_DATABASE', 'test'),
+            'username'    => env('DB_USERNAME', 'root'),
+            'password'    => env('DB_PASSWORD', ''),
+            'unix_socket' => '',
+            'charset'     => 'utf8mb4',
+            'collation'   => 'utf8mb4_general_ci',
+            'prefix'      => '',
             'strict'      => true,
             'engine'      => null,
             'options'     => [

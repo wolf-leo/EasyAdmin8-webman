@@ -1,0 +1,12 @@
+<?php
+
+namespace {{modelNamespace}};
+
+use app\model\BaseModel;
+
+class {{modelName}} extends BaseModel
+{
+
+    protected $connection = 'mysql_without_prefix'; // 链接不带表前缀的数据
+
+}
