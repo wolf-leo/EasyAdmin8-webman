@@ -10,7 +10,7 @@
 
 > `EasyAdmin8-webman` 在 [`EasyAdmin`](https://gitee.com/zhongshaofa/easyadmin) 的基础上使用 webman 最新版重构，PHP 最低版本要求不低于 8.0
 >
-> webman 和 layui v2.8.x 的快速开发的后台管理系统。
+> webman 和 layui v2.9.x 的快速开发的后台管理系统。
 >
 > 请注意，该分支为`thinkphp`，主要用到了`ThinkPHP`相关组件
 >
