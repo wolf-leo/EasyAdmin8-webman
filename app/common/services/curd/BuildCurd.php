@@ -140,13 +140,19 @@ class BuildCurd
      * 复选框字段后缀
      * @var array
      */
-    protected array $checkboxFieldSuffix = [];
+    protected array $checkboxFieldSuffix = ['checkbox'];
 
     /**
      * 单选框字段后缀
      * @var array
      */
-    protected array $radioFieldSuffix = [];
+    protected array $radioFieldSuffix = ['radio'];
+
+    /**
+     * 下拉选择字段后缀
+     * @var array
+     */
+    protected array $selectFieldSuffix = ['select'];
 
     /**
      * 单图片字段后缀
@@ -176,7 +182,7 @@ class BuildCurd
      * 时间字段后缀
      * @var array
      */
-    protected array $dateFieldSuffix = ['time', 'date'];
+    protected array $dateFieldSuffix = ['date', 'time'];
 
     /**
      * 开关组件字段
@@ -188,7 +194,19 @@ class BuildCurd
      * 下拉选择字段
      * @var array
      */
-    protected array $selectFileds = [];
+    protected array $selectFields = ['select'];
+
+    /**
+     * 单选选择字段
+     * @var array
+     */
+    protected array $radioFields = ['radio'];
+
+    /**
+     * 复选字段
+     * @var array
+     */
+    protected array $checkboxFields = ['checkbox'];
 
     /**
      * 富文本字段
@@ -371,7 +389,7 @@ class BuildCurd
                 $this->tableColumns[$foreignKey]['bindRelation']    = end($relationArray);
             }
             $this->relationArray[$relationTable] = $relation;
-            $this->selectFileds[]                = $foreignKey;
+            $this->selectFields[]                = $foreignKey;
         }catch (\Exception $e) {
             throw new TableException($e->getMessage());
         }
@@ -530,7 +548,7 @@ class BuildCurd
      */
     public function setSelectFileds($array)
     {
-        $this->selectFileds = array_merge($this->selectFileds, $array);
+        $this->selectFields = array_merge($this->selectFields, $array);
         return $this;
     }
 
@@ -641,8 +659,9 @@ class BuildCurd
         if (!empty($formTypeMatch) && isset($formTypeMatch[0])) {
             $column['comment'] = str_replace($formTypeMatch[0], '', $column['comment']);
             $formType          = trim(str_replace('}', '', str_replace('{', '', $formTypeMatch[0])));
-            if (in_array($formType, $this->formTypeArray)) {
-                $column['formType'] = $formType;
+            $_formType         = $this->checkCommentFormType($formType);
+            if ($_formType) {
+                $column['formType'] = $_formType;
             }
         }
 
@@ -885,7 +904,7 @@ class BuildCurd
             }
 
             // 判断下拉选择
-            if (in_array($field, $this->selectFileds)) {
+            if (in_array($field, $this->selectFields)) {
                 $this->tableColumns[$field]['formType'] = 'select';
                 continue;
             }
@@ -953,7 +972,7 @@ class BuildCurd
                 }
 
                 // 判断下拉选择
-                if (in_array($field, $this->selectFileds)) {
+                if (in_array($field, $this->selectFields)) {
                     $this->relationArray[$table]['tableColumns'][$field]['formType'] = 'select';
                     continue;
                 }
@@ -1139,9 +1158,48 @@ class BuildCurd
             $define       = '';
 
             // 根据formType去获取具体模板
-            if ($val['formType'] == 'editor') {
-                $templateFile   = "view{$this->DS}module{$this->DS}editor";
-                $val['default'] = '""';
+            // 根据formType去获取具体模板
+            if ($val['formType'] == 'image') {
+                $templateFile = "view{$this->DS}module{$this->DS}image";
+            }elseif ($val['formType'] == 'images') {
+                $templateFile = "view{$this->DS}module{$this->DS}images";
+                $define       = $val['define'] ?? '|';
+            }elseif ($val['formType'] == 'file') {
+                $templateFile = "view{$this->DS}module{$this->DS}file";
+            }elseif ($val['formType'] == 'files') {
+                $templateFile = "view{$this->DS}module{$this->DS}files";
+                $define       = $val['define'] ?? '|';
+            }elseif ($val['formType'] == 'editor') {
+                $templateFile = "view{$this->DS}module{$this->DS}editor";
+            }elseif ($val['formType'] == 'date') {
+                $templateFile = "view{$this->DS}module{$this->DS}date";
+                if (!empty($val['define'])) {
+                    $define = $val['define'];
+                }else {
+                    $define = 'datetime';
+                }
+                if (!in_array($define, ['year', 'month', 'date', 'time', 'datetime'])) {
+                    $define = 'datetime';
+                }
+            }elseif ($val['formType'] == 'radio') {
+                $templateFile = "view{$this->DS}module{$this->DS}radio";
+                if (!empty($val['define'])) {
+                    $define = $this->buildRadioView($field, '{in name="k" value="' . $val['default'] . '"}checked=""{/in}');
+                }
+            }elseif ($val['formType'] == 'checkbox') {
+                $templateFile = "view{$this->DS}module{$this->DS}checkbox";
+                if (!empty($val['define'])) {
+                    $define = $this->buildCheckboxView($field, '{in name="k" value="' . $val['default'] . '"}checked=""{/in}');
+                }
+            }elseif ($val['formType'] == 'select') {
+                $templateFile = "view{$this->DS}module{$this->DS}select";
+                if (isset($val['bindRelation'])) {
+                    $define = $this->buildOptionView($val['bindRelation']);
+                }elseif (!empty($val['define'])) {
+                    $define = $this->buildOptionView($field);
+                }
+            }elseif (in_array($field, ['remark']) || $val['formType'] == 'textarea') {
+                $templateFile = "view{$this->DS}module{$this->DS}textarea";
             }
 
             $addFormList .= CommonTool::replaceTemplate(
@@ -1177,9 +1235,47 @@ class BuildCurd
             $value  = '{{$row[\'' . $field . '\']}}';
 
             // 根据formType去获取具体模板
-            if ($val['formType'] == 'editor') {
+            if ($val['formType'] == 'image') {
+                $templateFile = "view{$this->DS}module{$this->DS}image";
+            }elseif ($val['formType'] == 'images') {
+                $templateFile = "view{$this->DS}module{$this->DS}images";
+            }elseif ($val['formType'] == 'file') {
+                $templateFile = "view{$this->DS}module{$this->DS}file";
+            }elseif ($val['formType'] == 'files') {
+                $templateFile = "view{$this->DS}module{$this->DS}files";
+            }elseif ($val['formType'] == 'editor') {
                 $templateFile = "view{$this->DS}module{$this->DS}editor";
-                $value        = '$row["' . $field . '"]';
+                $value        = '{$row.' . $field . '|raw|default=\'\'}';
+            }elseif ($val['formType'] == 'date') {
+                $templateFile = "view{$this->DS}module{$this->DS}date";
+                if (!empty($val['define'])) {
+                    $define = $val['define'];
+                }else {
+                    $define = 'datetime';
+                }
+                if (!in_array($define, ['year', 'month', 'date', 'time', 'datetime'])) {
+                    $define = 'datetime';
+                }
+            }elseif ($val['formType'] == 'radio') {
+                $templateFile = "view{$this->DS}module{$this->DS}radio";
+                if (!empty($val['define'])) {
+                    $define = $this->buildRadioView($field, '{in name="k" value="$row.' . $field . '"}checked=""{/in}');
+                }
+            }elseif ($val['formType'] == 'checkbox') {
+                $templateFile = "view{$this->DS}module{$this->DS}checkbox";
+                if (!empty($val['define'])) {
+                    $define = $this->buildCheckboxView($field, '{in name="k" value="$row.' . $field . '"}checked=""{/in}');
+                }
+            }elseif ($val['formType'] == 'select') {
+                $templateFile = "view{$this->DS}module{$this->DS}select";
+                if (isset($val['bindRelation'])) {
+                    $define = $this->buildOptionView($val['bindRelation'], '{in name="k" value="$row.' . $field . '"}selected=""{/in}');
+                }elseif (!empty($val['define'])) {
+                    $define = $this->buildOptionView($field, '{in name="k" value="$row.' . $field . '"}selected=""{/in}');
+                }
+            }elseif (in_array($field, ['remark']) || $val['formType'] == 'textarea') {
+                $templateFile = "view{$this->DS}module{$this->DS}textarea";
+                $value        = '{$row.' . $field . '|raw|default=\'\'}';
             }
 
             $editFormList .= CommonTool::replaceTemplate(
@@ -1357,7 +1453,7 @@ class BuildCurd
     protected function checkContain($string, $array): bool
     {
         foreach ($array as $vo) {
-            if (str_starts_with($string, $vo)) {
+            if (str_starts_with($vo, $string)) {
                 return true;
             }
         }
@@ -1384,4 +1480,22 @@ class BuildCurd
         return file_get_contents("{$this->dir}{$this->DS}templates{$this->DS}{$name}.code");
     }
 
+    /**
+     * 检测字段注释归类的类型
+     * @param string $formType
+     * @return string|null
+     */
+    protected function checkCommentFormType(string $formType = ''): ?string
+    {
+        $classProperties = get_class_vars(get_class($this));
+        foreach ($classProperties as $property => $classProperty) {
+            if (empty($property)) continue;
+            if (str_ends_with($property, 'FieldSuffix')) {
+                if (in_array($formType, $this->$property)) {
+                    return $this->$property[0] ?? '';
+                }
+            }
+        }
+        return '';
+    }
 }

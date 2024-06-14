@@ -16,6 +16,7 @@ class {{controllerName}}Controller extends AdminController
     {
         parent::initialize();
         $this->model = new {{modelFilename}}();
+        {{selectList}}
     }
 
 }
