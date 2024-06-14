@@ -7,4 +7,6 @@ use app\model\BaseModel;
 class {{modelName}} extends BaseModel
 {
 
+    {{selectList}}
+
 }
