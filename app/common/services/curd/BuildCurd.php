@@ -1184,12 +1184,12 @@ class BuildCurd
             }elseif ($val['formType'] == 'radio') {
                 $templateFile = "view{$this->DS}module{$this->DS}radio";
                 if (!empty($val['define'])) {
-                    $define = $this->buildRadioView($field, '{in name="k" value="' . $val['default'] . '"}checked=""{/in}');
+                    $define = $this->buildRadioView($field, '@if($row["' . $field . '"]==$k)checked=""@endif');
                 }
             }elseif ($val['formType'] == 'checkbox') {
                 $templateFile = "view{$this->DS}module{$this->DS}checkbox";
                 if (!empty($val['define'])) {
-                    $define = $this->buildCheckboxView($field, '{in name="k" value="' . $val['default'] . '"}checked=""{/in}');
+                    $define = $this->buildCheckboxView($field, '@if($row["' . $field . '"]==$k)checked=""@endif');
                 }
             }elseif ($val['formType'] == 'select') {
                 $templateFile = "view{$this->DS}module{$this->DS}select";
@@ -1232,7 +1232,7 @@ class BuildCurd
             $templateFile = "view{$this->DS}module{$this->DS}input";
 
             $define = '';
-            $value  = '$row["' . $field . '"]';
+            $value  = '{{$row[\'' . $field . '\']}}';
 
             // 根据formType去获取具体模板
             if ($val['formType'] == 'image') {
@@ -1245,7 +1245,7 @@ class BuildCurd
                 $templateFile = "view{$this->DS}module{$this->DS}files";
             }elseif ($val['formType'] == 'editor') {
                 $templateFile = "view{$this->DS}module{$this->DS}editor";
-                $value        = '$row["' . $field . '"]';
+                $value        = '$row[\'' . $field . '\']';
             }elseif ($val['formType'] == 'date') {
                 $templateFile = "view{$this->DS}module{$this->DS}date";
                 if (!empty($val['define'])) {
@@ -1259,23 +1259,23 @@ class BuildCurd
             }elseif ($val['formType'] == 'radio') {
                 $templateFile = "view{$this->DS}module{$this->DS}radio";
                 if (!empty($val['define'])) {
-                    $define = $this->buildRadioView($field, '{in name="k" value="$row.' . $field . '"}checked=""{/in}');
+                    $define = $this->buildRadioView($field, '@if($row["' . $field . '"]==$k)checked=""@endif');
                 }
             }elseif ($val['formType'] == 'checkbox') {
                 $templateFile = "view{$this->DS}module{$this->DS}checkbox";
                 if (!empty($val['define'])) {
-                    $define = $this->buildCheckboxView($field, '{in name="k" value="$row.' . $field . '"}checked=""{/in}');
+                    $define = $this->buildCheckboxView($field, '@if($row["' . $field . '"]==$k)checked=""@endif');
                 }
             }elseif ($val['formType'] == 'select') {
                 $templateFile = "view{$this->DS}module{$this->DS}select";
                 if (isset($val['bindRelation'])) {
-                    $define = $this->buildOptionView($val['bindRelation'], '{in name="k" value="$row.' . $field . '"}selected=""{/in}');
+                    $define = $this->buildOptionView($val['bindRelation'], '@if($row["' . $field . '"]==$k)selected=""@endif');
                 }elseif (!empty($val['define'])) {
-                    $define = $this->buildOptionView($field, '{in name="k" value="$row.' . $field . '"}selected=""{/in}');
+                    $define = $this->buildOptionView($field, '@if($row["' . $field . '"]==$k)selected=""@endif');
                 }
             }elseif (in_array($field, ['remark']) || $val['formType'] == 'textarea') {
                 $templateFile = "view{$this->DS}module{$this->DS}textarea";
-                $value        = '$row["' . $field . '"]';
+                $value        = '{{$row[\'' . $field . '\']}}';
             }
 
             $editFormList .= CommonTool::replaceTemplate(
