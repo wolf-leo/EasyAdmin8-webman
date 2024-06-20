@@ -1170,7 +1170,8 @@ class BuildCurd
                 $templateFile = "view{$this->DS}module{$this->DS}files";
                 $define       = $val['define'] ?? '|';
             }elseif ($val['formType'] == 'editor') {
-                $templateFile = "view{$this->DS}module{$this->DS}editor";
+                $templateFile   = "view{$this->DS}module{$this->DS}editor";
+                $val['default'] = '""';
             }elseif ($val['formType'] == 'date') {
                 $templateFile = "view{$this->DS}module{$this->DS}date";
                 if (!empty($val['define'])) {
@@ -1208,7 +1209,7 @@ class BuildCurd
                     'comment'  => $val['comment'],
                     'field'    => $field,
                     'required' => $this->buildRequiredHtml($val['required']),
-                    'value'    => $val['default'] ?: "''",
+                    'value'    => $val['default'],
                     'define'   => $define,
                 ]);
         }
