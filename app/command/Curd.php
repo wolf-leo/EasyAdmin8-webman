@@ -10,10 +10,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Curd extends Command
 {
-    protected static $defaultName        = 'curd';
-    protected static $defaultDescription = 'CURD一键生成';
+    //    protected static $defaultName        = 'curd';
+    //    protected static $defaultDescription = 'CURD一键生成';
 
-    protected static $defaultName = 'curd';
+    protected static $defaultName        = 'curd';
     protected static $defaultDescription = '快速生成CURD的命令, 包括控制器、视图、模型、JS文件.';
 
     protected function configure()
