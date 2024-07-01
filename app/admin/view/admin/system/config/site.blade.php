@@ -61,7 +61,7 @@
                 <input type="radio" name="editor_type" lay-filter="editor_type" value="{{$key}}" title="{{$val}}" @if($key==sysconfig('site','editor_type')) checked="" @endif>
             @endforeach
             <br>
-            <tip>默认百度编辑器。</tip>
+            <tip>默认推荐使用。</tip>
         </div>
     </div>
 

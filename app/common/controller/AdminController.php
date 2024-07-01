@@ -94,6 +94,8 @@ class AdminController
             'isSuperAdmin'         => $isSuperAdmin,
             'isDemo'               => $this->isDemo,
             'version'              => env('APP_DEBUG') ? time() : $version,
+            'adminUploadUrl'       => __url('ajax/upload', [], false),
+            'adminEditor'          => sysconfig('site', 'editor_type') ?: 'wangEditor',
         ];
         $this->assign($data);
     }
@@ -112,7 +114,7 @@ class AdminController
             $basePath = DIRECTORY_SEPARATOR . $this->controller . DIRECTORY_SEPARATOR . $this->action;
             if ($this->secondary) {
                 $template = 'admin' . DIRECTORY_SEPARATOR . $this->secondary . $basePath;
-            } else {
+            }else {
                 $template = 'admin' . $basePath;
             }
         }

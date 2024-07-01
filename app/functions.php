@@ -39,7 +39,7 @@ if (!function_exists('parse_name')) {
         if ($type) {
             $name = preg_replace_callback('/_([a-zA-Z])/', function ($match) {
                 return strtoupper($match[1]);
-            },                            $name);
+            }, $name);
 
             return $ucfirst ? ucfirst($name) : lcfirst($name);
         }
@@ -65,7 +65,7 @@ if (!function_exists('sysconfig')) {
                 $where['name'] = $name;
                 $value         = \app\admin\model\SystemConfig::where($where)->value('value');
                 Cache::put("sysconfig_{$group}_{$name}", $value, 3600);
-            } else {
+            }else {
                 $res   = \app\admin\model\SystemConfig::where($where)->select('value', 'name')->get()->toArray();
                 $value = collect($res)->pluck('value', 'name')->toArray();
                 Cache::put("sysconfig_{$group}", $value, 3600);
@@ -164,7 +164,8 @@ if (!function_exists('updateFields')) {
         $editor_type = sysconfig('site', 'editor_type');
         return match ($editor_type) {
             'ckeditor' => "<textarea name='{$name}' rows='20' class='layui-textarea editor' placeholder='{$placeholder}'>{$detail}</textarea>",
-            default    => "<script type='text/plain' id='{$name}' name='{$name}' class='editor' data-content='{$detail}'></script>",
+            'ueditor'  => "<script type='text/plain' id='{$name}' name='{$name}' class='editor' data-content='{$detail}'></script>",
+            default    => "<div class='wangEditor_div'><textarea name='{$name}' rows='20' class='layui-textarea editor layui-hide'>{$detail}</textarea><div id='editor_toolbar_{$name}'></div><div id='editor_{$name}' style='height: 300px'></div></div>",
         };
     }
 }
