@@ -114,7 +114,7 @@ class AdminController
         $tableOrder = request()->input('tableOrder', '');
         if (!empty($tableOrder)) {
             [$orderField, $orderType] = explode(' ', $tableOrder);
-            $this->order = [$orderField => $orderType ?: "desc"];
+            $this->order = [$orderField => $orderType == 'null' ? "desc" : $orderType];
         }
         return $this;
     }
