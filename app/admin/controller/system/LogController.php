@@ -35,7 +35,7 @@ class LogController extends AdminController
         if (empty($month)) $month = date('Ym');
         try {
             $count = $this->model->setMonth($month)->where($where)->count();
-            $list  = $this->model->setMonth($month)->where($where)->orderByDesc($this->order)->with(['admin'])->paginate($limit)->items();
+            $list  = $this->model->setMonth($month)->where($where)->orderBy($this->order, $this->sort)->with(['admin'])->paginate($limit)->items();
         } catch (\PDOException|\Exception $exception) {
             $count = 0;
             $list  = [];
