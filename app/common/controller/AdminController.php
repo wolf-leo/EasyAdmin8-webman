@@ -66,9 +66,10 @@ class AdminController
 
     protected function initialize()
     {
-        $request              = \request();
-        $this->adminConfig    = $adminConfig = config('admin', []);
-        $this->isDemo         = env('EASYADMIN.IS_DEMO', false);
+        $request           = \request();
+        $this->adminConfig = $adminConfig = config('admin', []);
+        $this->isDemo      = env('EASYADMIN.IS_DEMO', false);
+        $this->setOrder();
         $controllerClass      = explode('\\', $request->controller);
         $controller           = strtolower(str_replace('Controller', '', array_pop($controllerClass)));
         $_lastCtr             = array_pop($controllerClass);
@@ -102,6 +103,20 @@ class AdminController
             'adminEditor'          => sysconfig('site', 'editor_type') ?: 'wangEditor',
         ];
         $this->assign($data);
+    }
+
+    /**
+     * 初始化排序
+     * @return $this
+     */
+    public function setOrder(): static
+    {
+        $tableOrder = request()->input('tableOrder', '');
+        if (!empty($tableOrder)) {
+            [$orderField, $orderType] = explode(' ', $tableOrder);
+            $this->order = [$orderField => $orderType ?: "desc"];
+        }
+        return $this;
     }
 
     /**
