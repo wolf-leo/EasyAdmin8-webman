@@ -117,7 +117,7 @@ class AdminController
         if (!empty($tableOrder)) {
             [$orderField, $orderType] = explode(' ', $tableOrder);
             $this->order = $orderField;
-            $this->sort  = $orderType;
+            $this->sort  = $orderType == 'null' ? 'desc' : $orderType;
         }
         return $this;
     }
