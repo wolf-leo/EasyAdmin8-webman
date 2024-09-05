@@ -1346,11 +1346,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                                             break;
                                         case 'wangEditor':
                                             var name = $(this).attr("name");
-                                            try {
-                                                dataField[name] = eval("wangEditor_" + i + ".getHtml()");
-                                            } catch (e) {
-                                                layer.msg(e.message)
-                                            }
+                                            dataField[name] = (window["wangEditor_" + i]).getHtml()
                                             break;
                                         default:
                                             var name = $(this).attr("id");
@@ -1525,7 +1521,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                             case 'wangEditor':
                                 var wangEditor = window.wangEditor;
                                 var wangEditorName = "wangEditor_" + i
-                                wangEditors[wangEditorName] = wangEditor.createEditor({
+                                window[wangEditorName] = wangEditor.createEditor({
                                     selector: '#editor_' + $(this).attr('name'),
                                     html: $(this).text(),
                                     config: {
@@ -1551,8 +1547,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                                         },
                                     }
                                 })
-                                let editor = wangEditors.wangEditor_0
-                                window[wangEditorName] = wangEditors[wangEditorName]
+                                let editor = window[wangEditorName]
                                 wangEditor.createToolbar({
                                     editor,
                                     selector: '#editor_toolbar_' + $(this).attr("name"),
