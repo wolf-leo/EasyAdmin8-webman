@@ -26,8 +26,8 @@
             EDITOR_TYPE: "{{$adminEditor}}",
         };
     </script>
-    <script src="/static/plugs/layui-v2.x/layui.js?v={{$version}}" charset="utf-8"></script>
-    <script src="/static/plugs/require-2.3.6/require.js?v={{$version}}" charset="utf-8"></script>
+    <script src="/static/plugs/layui-v2.x/layui.js" charset="utf-8"></script>
+    <script src="/static/plugs/require-2.3.6/require.js" charset="utf-8"></script>
     <script src="/static/config-admin.js?v={{$version}}" charset="utf-8"></script>
     <script src="/static/common/js/admin.js?v={{$version}}" charset="utf-8"></script>
     @include('admin.layout.editor')
