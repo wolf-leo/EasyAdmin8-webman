@@ -36,7 +36,7 @@ class LogController extends AdminController
         try {
             $count = $this->model->setMonth($month)->where($where)->count();
             $list  = $this->model->setMonth($month)->where($where)->order($this->order)->with(['admin'])->limit($limit)->select()->toArray();
-        } catch (\PDOException|\Exception $exception) {
+        }catch (\PDOException|\Exception $exception) {
             $count = 0;
             $list  = [];
         }
@@ -73,7 +73,7 @@ class LogController extends AdminController
         if (empty($month)) $month = date('Ym');
         try {
             $list = $this->model->setMonth($month)->where($where)->order($this->order)->limit(100000)->select()->toArray();
-        } catch (\PDOException|\Exception $exception) {
+        }catch (\PDOException|\Exception $exception) {
             return $this->error($exception->getMessage());
         }
         if (empty($list)) return $this->error('暂无数据');
@@ -101,9 +101,17 @@ class LogController extends AdminController
             $writer->save($file_path);
             // 下载文件
             return response()->download($file_path, $fileName . '.xlsx');
-        } catch (\Exception|\PhpOffice\PhpSpreadsheet\Exception$e) {
+        }catch (\Exception|\PhpOffice\PhpSpreadsheet\Exception$e) {
             return $this->error($e->getMessage());
         }
+    }
+
+    /**
+     * @NodeAnnotation(title="框架日志")
+     */
+    public function record(): Response|string
+    {
+        return (new \Wolfcode\PhpLogviewer\webman\thinkphp\LogViewer())->fetch();
     }
 
 }
