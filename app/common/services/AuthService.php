@@ -80,7 +80,7 @@ class AuthService
         // 判断是否需要获取当前节点
         if (empty($node)) {
             $node = $this->getCurrentNode();
-        } else {
+        }else {
             $node = $this->parseNodeStr($node);
         }
         // 判断是否加入节点控制，优先获取缓存信息
@@ -110,7 +110,7 @@ class AuthService
     {
         $controllerClass = explode('\\', request()->controller);
         $controller      = strtolower(str_replace('Controller', '', array_pop($controllerClass)));
-        $action          = $request->action ?? 'index';
+        $action          = request()->action ?? 'index';
         $_lastCtr        = array_pop($controllerClass);
         $secondary       = $_lastCtr == 'controller' ? '' : $_lastCtr;
         return $secondary . '/' . ($controller ?? '') . '/' . ($action ?? '');
@@ -125,9 +125,9 @@ class AuthService
         $nodeList  = [];
         $adminInfo = Db::table($this->config['system_admin'])
             ->where([
-                        'id'     => $this->adminId,
-                        'status' => 1,
-                    ])->first();
+                'id'     => $this->adminId,
+                'status' => 1,
+            ])->first();
         $adminInfo = get_object_vars($adminInfo);
         if (!empty($adminInfo) && !empty($adminInfo['auth_ids'])) {
 
