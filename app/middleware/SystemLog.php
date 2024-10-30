@@ -57,7 +57,7 @@ class SystemLog implements MiddlewareInterface
                         $nodeAnnotation       = $reader->getMethodAnnotation($reflectionAction, NodeAnnotation::class);
                         $title                = $controllerAnnotation->title . ' - ' . $nodeAnnotation->title;
                     }
-                } catch (\Throwable $exception) {
+                }catch (\Throwable $exception) {
                 }
                 $ip   = $request->getRealIp(true);
                 $data = [
@@ -70,7 +70,7 @@ class SystemLog implements MiddlewareInterface
                     'useragent'   => $request->header('HTTP_USER_AGENT'),
                     'create_time' => time(),
                 ];
-                SystemLogService::instance()->save($data);
+                SystemLogService::instance()->setTableName()->save($data);
             }
         }
         return $handler($request);

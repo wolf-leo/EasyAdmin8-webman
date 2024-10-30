@@ -49,6 +49,20 @@ class SystemLogService
     }
 
     /**
+     * @param string|null $tableName
+     * @return $this
+     */
+    public function setTableName(?string $tableName = null): SystemLogService
+    {
+        if ($tableName) {
+            $this->tableName = $tableName;
+        }else {
+            $this->tableName = "system_log_{$this->tableSuffix}";
+        }
+        return $this;
+    }
+
+    /**
      * 获取实例对象
      */
     public static function instance(): ?SystemLogService
@@ -70,7 +84,7 @@ class SystemLogService
             $this->detectTable();
             Db::table($this->tableName)->insert($data);
             Db::commit();
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             Db::rollback();
             return false;
         }
