@@ -115,7 +115,7 @@ class Node
         $explodePath = explode(DIRECTORY_SEPARATOR, $path);
         list($list, $temp_list, $dirExplode) = [[], scandir($path), end($explodePath)];
         if ($dirExplode == 'controller') $dirExplode = '';
-        $middleDir = !empty($dirExplode) ? $dirExplode . DIRECTORY_SEPARATOR : '';
+        $middleDir = !empty($dirExplode) ? $dirExplode . '\\' : '';
         foreach ($temp_list as $file) {
             // 排除根目录和没有开启注解的模块
             if ($file == ".." || $file == ".") {
