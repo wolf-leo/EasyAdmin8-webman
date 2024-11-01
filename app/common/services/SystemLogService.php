@@ -57,7 +57,7 @@ class SystemLogService
         if ($tableName) {
             $this->tableName = $tableName;
         }else {
-            $this->tableName = "system_log_{$this->tableSuffix}";
+            $this->tableName = "system_log_" . date('Ym');
         }
         return $this;
     }
