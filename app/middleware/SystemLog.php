@@ -32,6 +32,7 @@ class SystemLog implements MiddlewareInterface
 
     public function process(Request $request, callable $handler): Response
     {
+        $response = $handler($request);
         if ($request->isAjax()) {
             $params = $request->all();
             if (isset($params['s'])) unset($params['s']);
@@ -59,15 +60,19 @@ class SystemLog implements MiddlewareInterface
                     }
                 }catch (\Throwable $exception) {
                 }
-                $ip   = $request->getRealIp(true);
-                $data = [
+                $ip = $request->getRealIp(true);
+                // 限制记录的响应内容，避免过大
+                $_response = $response->rawBody();
+                $_response = mb_substr($_response, 0, 3000, 'utf-8');
+                $data      = [
                     'admin_id'    => session('admin.id'),
                     'title'       => $title,
                     'url'         => $url,
                     'method'      => $method,
                     'ip'          => $ip,
                     'content'     => json_encode($params, JSON_UNESCAPED_UNICODE),
-                    'useragent'   => $request->header('HTTP_USER_AGENT'),
+                    'response'    => $_response,
+                    'useragent'   => $request->header('user-agent'),
                     'create_time' => time(),
                 ];
                 SystemLogService::instance()->setTableName()->save($data);
