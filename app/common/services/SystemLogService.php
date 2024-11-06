@@ -124,7 +124,7 @@ CREATE TABLE `{$this->tablePrefix}{$this->tableName}` (
   `url` varchar(1500) NOT NULL DEFAULT '' COMMENT '操作页面',
   `method` varchar(50) NOT NULL COMMENT '请求方法',
   `title` varchar(100) DEFAULT '' COMMENT '日志标题',
-  `content` text NOT NULL COMMENT '内容',
+  `content` json DEFAULT NULL COMMENT '内容',
   `response` json DEFAULT NULL COMMENT '回调数据',
   `ip` varchar(50) NOT NULL DEFAULT '' COMMENT 'IP',
   `useragent` varchar(255) DEFAULT '' COMMENT 'User-Agent',
