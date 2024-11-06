@@ -57,7 +57,8 @@ class SystemLogService
         if ($tableName) {
             $this->tableName = $tableName;
         }else {
-            $this->tableName = "system_log_" . date('Ym');
+            $this->tableSuffix = date('Ym');
+            $this->tableName   = "system_log_" . $this->tableSuffix;
         }
         return $this;
     }
@@ -124,6 +125,7 @@ CREATE TABLE `{$this->tablePrefix}{$this->tableName}` (
   `method` varchar(50) NOT NULL COMMENT '请求方法',
   `title` varchar(100) DEFAULT '' COMMENT '日志标题',
   `content` text NOT NULL COMMENT '内容',
+  `response` json DEFAULT NULL COMMENT '回调数据',
   `ip` varchar(50) NOT NULL DEFAULT '' COMMENT 'IP',
   `useragent` varchar(255) DEFAULT '' COMMENT 'User-Agent',
   `create_time` int(10) DEFAULT NULL COMMENT '操作时间',

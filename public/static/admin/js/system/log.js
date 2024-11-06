@@ -13,6 +13,7 @@ define(["jquery", "easy-admin"], function ($, ea) {
             var util = layui.util;
             ea.table.render({
                 init: init,
+                lineStyle: 'height: auto;word-break: break-all;',
                 toolbar: ['refresh', 'export',
                     [{
                         text: '框架日志',
@@ -43,6 +44,15 @@ define(["jquery", "easy-admin"], function ($, ea) {
                             let html = '<div class="layui-colla-item">' +
                                 '<div class="layui-colla-title">点击预览</div>' +
                                 '<div class="layui-colla-content">' + prettyFormat(res.content) + '</div>' +
+                                '</div>'
+                            return '<div class="layui-collapse" lay-accordion>' + html + '</div>'
+                        }
+                    },
+                    {
+                        field: 'response', minWidth: 200, title: '回调数据', align: "left", templet: function (res) {
+                            let html = '<div class="layui-colla-item">' +
+                                '<div class="layui-colla-title">点击预览</div>' +
+                                '<div class="layui-colla-content">' + prettyFormat(res.response) + '</div>' +
                                 '</div>'
                             return '<div class="layui-collapse" lay-accordion>' + html + '</div>'
                         }
