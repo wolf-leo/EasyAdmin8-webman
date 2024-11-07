@@ -197,6 +197,9 @@ class AdminController
                 case '%*':
                     $where[] = [$key, 'LIKE', "%{$val}"];
                     break;
+                case 'in':
+                    $where[] = [$key, 'IN', $val];
+                    break;
                 case 'range':
                     [$beginTime, $endTime] = explode(' - ', $val);
                     $where[] = [$key, '>=', strtotime($beginTime)];
