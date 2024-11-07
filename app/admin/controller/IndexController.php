@@ -28,7 +28,8 @@ class IndexController extends AdminController
             $phpVersion    = phpversion();
             $versions      = compact('webmanVersion', 'mysqlVersion', 'phpVersion', 'branch');
         }
-        $quicks = SystemQuick::where('status', 1)->select('id', 'title', 'icon', 'href')->orderByDesc('sort')->limit(8)->get()->toArray();
+        $quick_list = SystemQuick::where('status', 1)->select('id', 'title', 'icon', 'href')->orderByDesc('sort')->limit(50)->get()->toArray();
+        $quicks     = array_chunk($quick_list, 8);
         return $this->fetch('', compact('quicks', 'versions'));
     }
 

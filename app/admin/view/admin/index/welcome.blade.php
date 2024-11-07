@@ -71,14 +71,27 @@
                                 <div class="welcome-module">
                                     <div class="layui-row layui-col-space10">
 
-                                        @foreach($quicks as $vo)
-                                            <div class="layui-col-xs3 layuimini-qiuck-module">
-                                                <a layuimini-content-href="{{__url($vo['href'])}}" data-title="{{$vo['title']}}">
-                                                    <i class="{{$vo['icon']}}"></i>
-                                                    <cite>{{$vo['title']}}</cite>
-                                                </a>
+                                        <div class="swiper mySwiper">
+                                            <div class="swiper-wrapper">
+                                                @foreach($quicks as $value)
+
+                                                    <div class="swiper-slide">
+                                                        @foreach($value as $vo)
+
+                                                            <div class="layui-col-xs3 layuimini-qiuck-module">
+                                                                <a layuimini-content-href="{{__url($vo['href'])}}" data-title="{{$vo['title']}}">
+                                                                    <i class="{{$vo['icon']}}"></i>
+                                                                    <cite>{{$vo['title']}}</cite>
+                                                                </a>
+                                                            </div>
+                                                        @endforeach
+
+                                                    </div>
+                                                @endforeach
+
                                             </div>
-                                        @endforeach
+                                        </div>
+                                        <div class="swiper-pagination"></div>
 
                                     </div>
                                 </div>
