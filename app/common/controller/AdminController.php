@@ -5,6 +5,7 @@ namespace app\common\controller;
 use app\common\traits\Curd;
 use app\common\traits\JumpTrait;
 use Shopwwi\LaravelCache\Cache;
+use support\Db;
 use support\Response;
 use support\View;
 
@@ -180,6 +181,9 @@ class AdminController
                     break;
                 case '%*':
                     $where[] = [$key, 'LIKE', "%{$val}"];
+                    break;
+                case 'in':
+                    $where[] = [$key, 'IN', $val];
                     break;
                 case 'range':
                     [$beginTime, $endTime] = explode(' - ', $val);

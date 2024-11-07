@@ -19,7 +19,10 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
         table_render_id: 'currentTableRenderId',
         upload_url: 'ajax/upload',
         upload_exts: 'doc|gif|ico|icon|jpg|mp3|mp4|p12|pem|png|rar',
-        csrf_token: window.CONFIG.CSRF_TOKEN
+        csrf_token: window.CONFIG.CSRF_TOKEN,
+        wait_submit: false,
+        xmSelectList: {},
+        xmSelectModel: {},
     };
 
     var admin = {
@@ -114,6 +117,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                         // @todo 刷新csrf-token
                         let token = data.responseJSON ? data.responseJSON.__token__ : ''
                         init.csrf_token = token
+                        init.wait_submit = false
                     }
                 });
             }
@@ -357,6 +361,15 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                                     '</select>\n' +
                                     '</div>\n' +
                                     '</div>';
+                                break;
+                            case 'xmSelect':
+                                formHtml += '\t<div class="layui-form-item layui-inline">\n' +
+                                    '<label class="layui-form-label">' + d.title + '</label>\n' +
+                                    '<div class="layui-input-inline">\n' +
+                                    '<div id="c-' + d.fieldAlias + '" class="tableSearch-xmSelect xmSelect-' + d.fieldAlias + '" name="' + d.fieldAlias + '" data-search-op="' + d.searchOp + '"></div>\n' +
+                                    '</div>\n' +
+                                    '</div>';
+                                init.xmSelectList[d.fieldAlias] = d.selectList
                                 break;
                             case 'range':
                                 d.searchOp = 'range';
@@ -800,6 +813,17 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                 return value;
             },
             listenTableSearch: function (tableId) {
+                if (Object.keys(init.xmSelectList).length > 0) {
+                    $.each(init.xmSelectList, function (index, value) {
+                        const keysArray = Object.keys(value).map((key) => {
+                            return {name: value[key], value: key}
+                        })
+                        init.xmSelectModel[index] = xmSelect.render({
+                            el: '.xmSelect-' + index, language: 'zn', data: keysArray, name: index,
+                            filterable: true, paging: true, pageSize: 10, theme: {color: '#16b777'}, toolbar: {show: true},
+                        })
+                    })
+                }
                 form.on('submit(' + tableId + '_filter)', function (data) {
                     var dataField = data.field;
                     var formatFilter = {},
@@ -1125,6 +1149,11 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                 if (tableId === undefined || tableId === '' || tableId == null) {
                     tableId = init.table_render_id;
                 }
+                if (Object.keys(init.xmSelectModel).length > 0) {
+                    $.each(init.xmSelectModel, function (index, value) {
+                        init.xmSelectModel[index].setValue([])
+                    })
+                }
                 table.reload(tableId, {
                     page: {
                         curr: 1
@@ -1346,6 +1375,10 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                             url = admin.url(url);
                         }
                         form.on('submit(' + filter + ')', function (data) {
+                            if (init.wait_submit) {
+                                layer.msg('你点击太快了', {icon: 16, shade: 0.3, shadeClose: false, time: 1000})
+                                return false
+                            }
                             var dataField = data.field;
                             var editorList = document.querySelectorAll(".editor");
                             // 富文本数据处理
@@ -1369,8 +1402,8 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                             if (typeof preposeCallback === 'function') {
                                 dataField = preposeCallback(dataField);
                             }
+                            init.wait_submit = true
                             admin.api.form(url, dataField, ok, no, ex, refresh);
-
                             return false;
                         });
                     });
