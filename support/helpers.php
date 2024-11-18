@@ -73,15 +73,25 @@ function app_path(string $path = ''): string
 /**
  * Public path
  * @param string $path
+ * @param string|null $plugin
  * @return string
  */
-function public_path(string $path = ''): string
+function public_path(string $path = '', ?string $plugin = null): string
 {
-    static $publicPath = '';
-    if (!$publicPath) {
-        $publicPath = \config('app.public_path') ?: run_path('public');
+    static $publicPaths = [];
+    $plugin = $plugin ?? '';
+    if (isset($publicPaths[$plugin])) {
+        $publicPath = $publicPaths[$plugin];
+    } else {
+        $prefix = $plugin ? "plugin.$plugin." : '';
+        $pathPrefix = $plugin ? 'plugin' . DIRECTORY_SEPARATOR . $plugin . DIRECTORY_SEPARATOR : '';
+        $publicPath = \config("{$prefix}app.public_path", run_path("{$pathPrefix}public"));
+        if (count($publicPaths) > 32) {
+            $publicPaths = [];
+        }
+        $publicPaths[$plugin] = $publicPath;
     }
-    return path_combine($publicPath, $path);
+    return $path === '' ? $publicPath : path_combine($publicPath, $path);
 }
 
 /**
@@ -187,70 +197,70 @@ function redirect(string $location, int $status = 302, array $headers = []): Res
 
 /**
  * View response
- * @param string $template
+ * @param mixed $template
  * @param array $vars
  * @param string|null $app
  * @param string|null $plugin
  * @return Response
  */
-function view(string $template, array $vars = [], string $app = null, string $plugin = null): Response
+function view($template = null, array $vars = [], ?string $app = null, ?string $plugin = null): Response
 {
-    $request = \request();
-    $plugin = $plugin === null ? ($request->plugin ?? '') : $plugin;
+    [$template, $vars, $app, $plugin] = template_inputs($template, $vars, $app, $plugin);
     $handler = \config($plugin ? "plugin.$plugin.view.handler" : 'view.handler');
     return new Response(200, [], $handler::render($template, $vars, $app, $plugin));
 }
 
 /**
  * Raw view response
- * @param string $template
+ * @param mixed $template
  * @param array $vars
  * @param string|null $app
+ * @param string|null $plugin
  * @return Response
  * @throws Throwable
  */
-function raw_view(string $template, array $vars = [], string $app = null): Response
+function raw_view($template = null, array $vars = [], ?string $app = null, ?string $plugin = null): Response
 {
-    return new Response(200, [], Raw::render($template, $vars, $app));
+    return new Response(200, [], Raw::render(...template_inputs($template, $vars, $app, $plugin)));
 }
 
 /**
  * Blade view response
- * @param string $template
+ * @param mixed $template
  * @param array $vars
  * @param string|null $app
+ * @param string|null $plugin
  * @return Response
  */
-function blade_view(string $template, array $vars = [], string $app = null): Response
+function blade_view($template = null, array $vars = [], ?string $app = null, ?string $plugin = null): Response
 {
-    return new Response(200, [], Blade::render($template, $vars, $app));
+    return new Response(200, [], Blade::render(...template_inputs($template, $vars, $app, $plugin)));
 }
 
 /**
  * Think view response
- * @param string $template
+ * @param mixed $template
  * @param array $vars
  * @param string|null $app
+ * @param string|null $plugin
  * @return Response
  */
-function think_view(string $template, array $vars = [], string $app = null): Response
+function think_view($template = null, array $vars = [], ?string $app = null, ?string $plugin = null): Response
 {
-    return new Response(200, [], ThinkPHP::render($template, $vars, $app));
+    return new Response(200, [], ThinkPHP::render(...template_inputs($template, $vars, $app, $plugin)));
 }
 
 /**
  * Twig view response
- * @param string $template
+ * @param mixed $template
  * @param array $vars
  * @param string|null $app
+ * @param string|null $plugin
  * @return Response
- * @throws LoaderError
- * @throws RuntimeError
- * @throws SyntaxError
  */
-function twig_view(string $template, array $vars = [], string $app = null): Response
+function twig_view($template = null, array $vars = [], ?string $app = null, ?string $plugin = null): Response
 {
-    return new Response(200, [], Twig::render($template, $vars, $app));
+    return new Response(200, [], Twig::render(...template_inputs($template, $vars, $app, $plugin)));
 }
 
 /**
@@ -268,7 +278,7 @@ function request()
  * @param $default
  * @return array|mixed|null
  */
-function config(string $key = null, $default = null)
+function config(?string $key = null, $default = null)
 {
     return Config::get($key, $default);
 }
@@ -302,6 +312,7 @@ function route(string $name, ...$parameters): string
  * @param mixed $key
  * @param mixed $default
  * @return mixed|bool|Session
+ * @throws Exception
  */
 function session($key = null, $default = null)
 {
@@ -335,7 +346,7 @@ function session($key = null, $default = null)
  * @param string|null $locale
  * @return string
  */
-function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
+function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
 {
     $res = Translation::trans($id, $parameters, $domain, $locale);
     return $res === '' ? $id : $res;
@@ -346,7 +357,7 @@ function trans(string $id, array $parameters = [], string $domain = null, string
  * @param string|null $locale
  * @return string
  */
-function locale(string $locale = null): string
+function locale(?string $locale = null): string
 {
     if (!$locale) {
         return Translation::getLocale();
@@ -441,8 +452,13 @@ function worker_bind($worker, $class)
  */
 function worker_start($processName, $config)
 {
-    $worker = new Worker($config['listen'] ?? null, $config['context'] ?? []);
-    $propertyMap = [
+    if (isset($config['enable']) && !$config['enable']) {
+        return;
+    }
+    // feat：custom worker class [default: Workerman\Worker]
+    $class = is_a($class = $config['workerClass'] ?? '' , Worker::class, true) ? $class : Worker::class;
+    $worker = new $class($config['listen'] ?? null, $config['context'] ?? []);
+    $properties = [
         'count',
         'user',
         'group',
@@ -450,9 +466,10 @@ function worker_start($processName, $config)
         'reusePort',
         'transport',
         'protocol',
+        'eventLoop',
     ];
     $worker->name = $processName;
-    foreach ($propertyMap as $property) {
+    foreach ($properties as $property) {
         if (isset($config[$property])) {
             $worker->$property = $config[$property];
         }
@@ -496,6 +513,32 @@ function is_phar(): bool
 }
 
 /**
+ * Get template vars
+ * @param mixed $template
+ * @param array $vars
+ * @param string|null $app
+ * @param string|null $plugin
+ * @return array
+ */
+function template_inputs($template, array $vars, ?string $app, ?string $plugin): array
+{
+    $request = \request();
+    $plugin = $plugin === null ? ($request->plugin ?? '') : $plugin;
+    if (is_array($template)) {
+        $vars = $template;
+        $template = null;
+    }
+    if ($template === null && $controller = $request->controller) {
+        $controllerSuffix = config($plugin ? "plugin.$plugin.app.controller_suffix" : "app.controller_suffix", '');
+        $controllerName = $controllerSuffix !== '' ? substr($controller, 0, -strlen($controllerSuffix)) : $controller;
+        $path = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', substr(strrchr($controllerName, '\\'), 1)));
+        $actionFileBaseName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $request->action));
+        $template = "$path/$actionFileBaseName";
+    }
+    return [$template, $vars, $app, $plugin];
+}
+
+/**
  * Get cpu count
  * @return int
  */
@@ -510,11 +553,16 @@ function cpu_count(): int
         if (strtolower(PHP_OS) === 'darwin') {
             $count = (int)shell_exec('sysctl -n machdep.cpu.core_count');
         } else {
-            $count = (int)shell_exec('nproc');
+            try {
+                $count = (int)shell_exec('nproc');
+            } catch (\Throwable $ex) {
+                // Do nothing
+            }
         }
     }
     return $count > 0 ? $count : 4;
 }
+
 
 /**
  * Get request parameters, if no parameter name is passed, an array of all values is returned, default values is supported
@@ -522,7 +570,7 @@ function cpu_count(): int
  * @param mixed|null $default default value
  * @return mixed|null
  */
-function input(string $param = null, $default = null)
+function input(?string $param = null, $default = null)
 {
     return is_null($param) ? request()->all() : request()->input($param, $default);
 }

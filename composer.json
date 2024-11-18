@@ -1,7 +1,7 @@
 {
   "name": "wolfcode/easyadmin8",
   "type": "project",
-  "url": "https://github.com/wolf-leo/EasyAdmin8-webman",
+  "url": "https://github.com/EasyAdmin8/EasyAdmin8-webman",
   "description": "基于webman和Layui的快速开发的后台管理系统。",
   "keywords": [
     "webman",
@@ -17,12 +17,13 @@
   ],
   "require": {
     "php": ">=8.0.0",
-    "workerman/webman-framework": "^1.5.0",
+    "workerman/webman-framework": "^1.6.0",
     "monolog/monolog": "^2.0",
     "illuminate/database": "^9.52",
     "illuminate/pagination": "^9.52",
     "illuminate/events": "^9.52",
-    "symfony/var-dumper": "^6.0",
+    "symfony/var-dumper": "v6.0.19",
+    "symfony/finder": "v6.0.19",
     "vlucas/phpdotenv": "^5.5",
     "shopwwi/laravel-cache": "^1.0",
     "psr/container": "^2.0",
@@ -36,7 +37,7 @@
     "qcloud/cos-sdk-v5": "^2.6",
     "qiniu/php-sdk": "^7.11",
     "webman/domain": "^1.0",
-    "wolf-leo/phplogviewer": "^0.11.0"
+    "wolf-leo/phplogviewer": "^0.11.3"
   },
   "suggest": {
     "ext-event": "For better performance. "

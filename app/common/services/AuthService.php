@@ -128,7 +128,7 @@ class AuthService
                 'id'     => $this->adminId,
                 'status' => 1,
             ])->first();
-        $adminInfo = get_object_vars($adminInfo);
+        if ($adminInfo) $adminInfo = get_object_vars($adminInfo);
         if (!empty($adminInfo) && !empty($adminInfo['auth_ids'])) {
 
             $nodeIds  = Db::table($this->config['system_auth_node'])

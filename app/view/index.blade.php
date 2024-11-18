@@ -28,7 +28,7 @@
     <br>
     <br>
     <h3>
-        <a href="https://gitee.com/wolf18/EasyAdmin8-webman" target="_blank">查看文档</a>
+        <a href="https://gitee.com/EasyAdmin8/EasyAdmin8-webman" target="_blank">查看文档</a>
         <a href="{{$adminUrl}}">访问后台</a>
     </h3>
 </div>
