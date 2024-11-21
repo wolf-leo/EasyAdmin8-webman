@@ -76,7 +76,7 @@ function app_path(string $path = ''): string
  * @param string|null $plugin
  * @return string
  */
-function public_path(string $path = '', ?string $plugin = null): string
+function public_path(string $path = '', string $plugin = null): string
 {
     static $publicPaths = [];
     $plugin = $plugin ?? '';
@@ -203,7 +203,7 @@ function redirect(string $location, int $status = 302, array $headers = []): Res
  * @param string|null $plugin
  * @return Response
  */
-function view($template = null, array $vars = [], ?string $app = null, ?string $plugin = null): Response
+function view($template = null, array $vars = [], string $app = null, string $plugin = null): Response
 {
     [$template, $vars, $app, $plugin] = template_inputs($template, $vars, $app, $plugin);
     $handler = \config($plugin ? "plugin.$plugin.view.handler" : 'view.handler');
@@ -219,7 +219,7 @@ function view($template = null, array $vars = [], ?string $app = null, ?string $
  * @return Response
  * @throws Throwable
  */
-function raw_view($template = null, array $vars = [], ?string $app = null, ?string $plugin = null): Response
+function raw_view($template = null, array $vars = [], string $app = null, string $plugin = null): Response
 {
     return new Response(200, [], Raw::render(...template_inputs($template, $vars, $app, $plugin)));
 }
@@ -232,7 +232,7 @@ function raw_view($template = null, array $vars = [], ?string $app = null, ?stri
  * @param string|null $plugin
  * @return Response
  */
-function blade_view($template = null, array $vars = [], ?string $app = null, ?string $plugin = null): Response
+function blade_view($template = null, array $vars = [], string $app = null, string $plugin = null): Response
 {
     return new Response(200, [], Blade::render(...template_inputs($template, $vars, $app, $plugin)));
 }
@@ -245,7 +245,7 @@ function blade_view($template = null, array $vars = [], ?string $app = null, ?st
  * @param string|null $plugin
  * @return Response
  */
-function think_view($template = null, array $vars = [], ?string $app = null, ?string $plugin = null): Response
+function think_view($template = null, array $vars = [], string $app = null, string $plugin = null): Response
 {
     return new Response(200, [], ThinkPHP::render(...template_inputs($template, $vars, $app, $plugin)));
 }
@@ -258,7 +258,7 @@ function think_view($template = null, array $vars = [], ?string $app = null, ?st
  * @param string|null $plugin
  * @return Response
  */
-function twig_view($template = null, array $vars = [], ?string $app = null, ?string $plugin = null): Response
+function twig_view($template = null, array $vars = [], string $app = null, string $plugin = null): Response
 {
     return new Response(200, [], Twig::render(...template_inputs($template, $vars, $app, $plugin)));
 }
@@ -278,7 +278,7 @@ function request()
  * @param $default
  * @return array|mixed|null
  */
-function config(?string $key = null, $default = null)
+function config(string $key = null, $default = null)
 {
     return Config::get($key, $default);
 }
@@ -346,7 +346,7 @@ function session($key = null, $default = null)
  * @param string|null $locale
  * @return string
  */
-function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
+function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
 {
     $res = Translation::trans($id, $parameters, $domain, $locale);
     return $res === '' ? $id : $res;
@@ -357,7 +357,7 @@ function trans(string $id, array $parameters = [], ?string $domain = null, ?stri
  * @param string|null $locale
  * @return string
  */
-function locale(?string $locale = null): string
+function locale(string $locale = null): string
 {
     if (!$locale) {
         return Translation::getLocale();
@@ -570,7 +570,7 @@ function cpu_count(): int
  * @param mixed|null $default default value
  * @return mixed|null
  */
-function input(?string $param = null, $default = null)
+function input(string $param = null, $default = null)
 {
     return is_null($param) ? request()->all() : request()->input($param, $default);
 }

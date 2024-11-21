@@ -19,10 +19,13 @@ class InstallController
         if (is_file($installPath . DIRECTORY_SEPARATOR . 'lock' . DIRECTORY_SEPARATOR . 'install.lock')) {
             $isInstall = true;
             $errorInfo = '已安装系统，如需重新安装请删除文件：/config/install/lock/install.lock，或者删除 /install 路由';
-        } elseif (version_compare(phpversion(), '8.0.0', '<')) {
+        }elseif (version_compare(phpversion(), '8.0.0', '<')) {
             $errorInfo = 'PHP版本不能小于8.0.0';
-        } elseif (!extension_loaded("PDO")) {
+        }elseif (!extension_loaded("PDO")) {
             $errorInfo = '当前未开启PDO，无法进行安装';
+        }
+        if (!is_file(base_path() . DIRECTORY_SEPARATOR . '.env')) {
+            $errorInfo = '.env 文件不存在，请先配置 .env 文件';
         }
         if (!$request->isAjax()) {
             $currentHost = '://';
@@ -54,9 +57,9 @@ class InstallController
 
         if (strlen($adminUrl) < 2) {
             $validateError = '后台的地址不能小于2位数';
-        } elseif (strlen($password) < 5) {
+        }elseif (strlen($password) < 5) {
             $validateError = '管理员密码不能小于5位数';
-        } elseif (strlen($username) < 4) {
+        }elseif (strlen($username) < 4) {
             $validateError = '管理员账号不能小于4位数';
         }
         if (!empty($validateError)) return $this->error($validateError);
@@ -123,7 +126,7 @@ class InstallController
             !is_dir($installPath) && @mkdir($installPath);
             !is_dir($installPath . 'lock' . DIRECTORY_SEPARATOR) && @mkdir($installPath . 'lock' . DIRECTORY_SEPARATOR);
             @file_put_contents($installPath . 'lock' . DIRECTORY_SEPARATOR . 'install.lock', date('Y-m-d H:i:s'));
-        } catch (\Exception|\PDOException|\Throwable $e) {
+        }catch (\Exception|\PDOException|\Throwable $e) {
             $data = [
                 'code' => 0,
                 'msg'  => "系统安装失败：" . $e->getMessage(),
@@ -177,7 +180,7 @@ class InstallController
             $con = mysqli_connect($config['host'] ?? '127.0.0.1', $config['username'] ?? 'root', $config['password'] ?? '', null, $config['port'] ?? '');
             mysqli_query($con, "CREATE DATABASE IF NOT EXISTS `{$database}` DEFAULT CHARACTER SET {$config['charset']} COLLATE=utf8mb4_general_ci");
             mysqli_close($con);
-        } catch (\Throwable $e) {
+        }catch (\Throwable $e) {
             return false;
         }
         return true;
@@ -187,12 +190,12 @@ class InstallController
     {
         try {
             $check = Db::select("SELECT * FROM information_schema.schemata WHERE schema_name='{$database}'");
-        } catch (\Throwable $exception) {
+        }catch (\Throwable $exception) {
             $check = false;
         }
         if (empty($check)) {
             return false;
-        } else {
+        }else {
             return true;
         }
     }
@@ -212,7 +215,7 @@ class InstallController
                 ];
                 return $this->error('', $data);
             }
-        } catch (\Throwable $e) {
+        }catch (\Throwable $e) {
             $data = [
                 'code' => 0,
                 'msg'  => $e->getMessage()

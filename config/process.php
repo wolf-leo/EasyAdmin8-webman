@@ -17,7 +17,7 @@ global $argv;
 return [
     // File update detection and automatic reload
     'monitor' => [
-        'handler' => process\Monitor::class,
+        'handler' => app\process\Monitor::class,
         'reloadable' => false,
         'constructor' => [
             // Monitor these directories

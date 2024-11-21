@@ -4,9 +4,9 @@
  */
 require_once __DIR__ . '/vendor/autoload.php';
 
+use Dotenv\Dotenv;
 use app\process\Monitor;
 use support\App;
-use Dotenv\Dotenv;
 use Workerman\Worker;
 
 ini_set('display_errors', 'on');
@@ -31,9 +31,10 @@ $runtimeProcessPath = runtime_path() . DIRECTORY_SEPARATOR . '/windows';
 if (!is_dir($runtimeProcessPath)) {
     mkdir($runtimeProcessPath);
 }
-$processFiles = [
-    __DIR__ . DIRECTORY_SEPARATOR . 'start.php'
-];
+$processFiles = [];
+if (config('server.listen')) {
+    $processFiles[] = __DIR__ . DIRECTORY_SEPARATOR . 'start.php';
+}
 foreach (config('process', []) as $processName => $config) {
     $processFiles[] = write_process_file($runtimeProcessPath, $processName, '');
 }
@@ -52,7 +53,7 @@ foreach (config('plugin', []) as $firm => $projects) {
     }
 }
 
-function write_process_file($runtimeProcessPath, $processName, $firm)
+function write_process_file($runtimeProcessPath, $processName, $firm): string
 {
     $processParam = $firm ? "plugin.$firm.$processName" : $processName;
     $configParam = $firm ? "config('plugin.$firm.process')['$processName']" : "config('process')['$processName']";
@@ -61,6 +62,7 @@ function write_process_file($runtimeProcessPath, $processName, $firm)
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Workerman\Worker;
+use Workerman\Connection\TcpConnection;
 use Webman\Config;
 use support\App;
 
@@ -71,12 +73,21 @@ if (is_callable('opcache_reset')) {
     opcache_reset();
 }
 
+if (!\$appConfigFile = config_path('app.php')) {
+    throw new RuntimeException('Config file not found: app.php');
+}
+\$appConfig = require \$appConfigFile;
+if (\$timezone = \$appConfig['default_timezone'] ?? '') {
+    date_default_timezone_set(\$timezone);
+}
+
 App::loadAllConfig(['route']);
 
 worker_start('$processParam', $configParam);
 
 if (DIRECTORY_SEPARATOR != "/") {
     Worker::\$logFile = config('server')['log_file'] ?? Worker::\$logFile;
+    TcpConnection::\$defaultMaxPackageSize = config('server')['max_package_size'] ?? 10*1024*1024;
 }
 
 Worker::runAll();

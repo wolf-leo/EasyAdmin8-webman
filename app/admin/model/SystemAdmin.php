@@ -6,6 +6,12 @@ use app\model\BaseModel;
 
 class SystemAdmin extends BaseModel
 {
+    public array $notes = [
+        'login_type' => [
+            1 => '密码登录',
+            2 => '密码 + 谷歌验证码登录'
+        ],
+    ];
 
     public function getAuthList(): array
     {

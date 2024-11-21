@@ -31,6 +31,15 @@
                 </div>
             </div>
 
+            <div class="layui-form-item">
+                <label class="layui-form-label">登录方式</label>
+                <div class="layui-input-block">
+                    @foreach($notes['login_type'] as $key=>$value)
+                        <input type="radio" name="login_type" lay-skin="primary" title="{{$value}}" value="{{$key}}" lay-filter="loginType-filter" @if($key==$row['login_type']) checked @endif>
+                    @endforeach
+                </div>
+            </div>
+
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">备注信息</label>
                 <div class="layui-input-block">
