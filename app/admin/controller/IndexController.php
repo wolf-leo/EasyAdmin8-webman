@@ -5,6 +5,9 @@ namespace app\admin\controller;
 use app\admin\model\SystemAdmin;
 use app\admin\model\SystemQuick;
 use app\common\controller\AdminController;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\Exception;
 use think\facade\Db;
 use support\Request;
@@ -44,15 +47,19 @@ class IndexController extends AdminController
             if ($this->isDemo) return $this->error('演示环境下不允许修改');
             $post = $request->post();
             try {
-                $save = $row
-                    ->allowField(['head_img', 'phone', 'remark', 'update_time'])
-                    ->save($post);
-            }catch (\Exception $e) {
+                $login_type = $post['login_type'] ?? 1;
+                if ($login_type == 2) {
+                    $ga_secret = $model->where('id', $id)->value('ga_secret');
+                    if (empty($ga_secret)) return $this->error('请先绑定谷歌验证器');
+                }
+                $save = $row->allowField(['head_img', 'phone', 'remark', 'update_time', 'login_type'])->save($post);
+            }catch (\PDOException $e) {
                 return $this->error('保存失败:' . $e->getMessage());
             }
             return $save ? $this->success('保存成功') : $this->error('保存失败');
         }
-        $this->assign(compact('row'));
+        $notes = $model->notes;
+        $this->assign(compact('row', 'notes'));
         return $this->fetch();
     }
 
@@ -92,5 +99,40 @@ class IndexController extends AdminController
         }
         $this->assign(compact('row'));
         return $this->fetch();
+    }
+
+    /**
+     * 设置谷歌验证码
+     * @param Request $request
+     * @return Response
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public function set2fa(Request $request): Response
+    {
+        $id  = session('admin.id');
+        $row = (new SystemAdmin())->withoutField('password')->find($id);
+        if (!$row) return $this->error('用户信息不存在');
+        // You can see: https://gitee.com/wolf-code/authenticator
+        $ga = new \Wolfcode\Authenticator\google\PHPGangstaGoogleAuthenticator();
+        if (!$request->isAjax()) {
+            $old_secret = $row->ga_secret;
+            $secret     = $ga->createSecret(32);
+            $ga_title   = $this->isDemo ? 'EasyAdmin8演示环境' : '可自定义修改显示标题';
+            $dataUri    = $ga->getQRCode($ga_title, $secret)->getDataUri();
+            $this->assign(compact('row', 'dataUri', 'old_secret', 'secret'));
+            return $this->fetch();
+        }
+        if ($this->isDemo) return $this->error('演示环境下不允许修改');
+        $post      = $request->post();
+        $ga_secret = $post['ga_secret'] ?? '';
+        $ga_code   = $post['ga_code'] ?? '';
+        if (empty($ga_code)) return $this->error('请输入验证码');
+        if (!$ga->verifyCode($ga_secret, $ga_code)) return $this->error('验证码错误');
+        $row->ga_secret  = $ga_secret;
+        $row->login_type = 2;
+        $row->save();
+        return $this->success('操作成功');
     }
 }

@@ -28,7 +28,7 @@ class LoginController extends AdminController
         ];
         try {
             $this->validate($post, $rule);
-        } catch (Exception $exception) {
+        }catch (Exception $exception) {
             return $this->error($exception->getMessage());
         }
         if ($captcha) {
@@ -42,6 +42,11 @@ class LoginController extends AdminController
         }
         if ($admin->status == 0) {
             return $this->error('账号已被禁用');
+        }
+        if ($admin->login_type == 2) {
+            if (empty($post['ga_code'])) return $this->error('请输入谷歌验证码', ['is_ga_code' => true]);
+            $ga = new \Wolfcode\Authenticator\google\PHPGangstaGoogleAuthenticator();
+            if (!$ga->verifyCode($admin->ga_secret, $post['ga_code'])) return $this->error('谷歌验证码错误');;
         }
         $admin->login_num   += 1;
         $admin->update_time = time();
